@@ -64,6 +64,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::resource('/categories', 'CategoryController');
   Route::resource('/articles', 'ArticleController');
   Route::resource('/sets', 'SetController');
+  Route::resource('/currencies', 'CurrencyController');
   Route::post('/articles/addProducts', 'ArticleController@addProducts');
   Route::resource('/manufactures', 'ManufactureController');
   Route::resource('/products', 'ProductController');

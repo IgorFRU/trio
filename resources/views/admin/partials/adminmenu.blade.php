@@ -6,5 +6,6 @@
         <a class="nav-link small" href="{{ route('admin.vendors.index') }}"><i class="fas fa-store-alt"></i>  Поставщики</a>
         <a class="nav-link small" href="{{ route('admin.sets.index') }}"><i class="fas fa-tasks"></i> Группы товаров</a>
         <a class="nav-link small" href="{{ route('admin.units.index') }}"><i class="fas fa-tape"></i>  Ед. измерения</a>
+        <a class="nav-link small" href="{{ route('admin.currencies.index') }}"><i class="fas fa-money-bill-alt"></i> валюты</a>
     </nav>
 </div>

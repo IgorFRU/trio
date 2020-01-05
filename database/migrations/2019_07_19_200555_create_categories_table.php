@@ -23,6 +23,7 @@ class CreateCategoriesTable extends Migration
             $table->string('meta_description')->nullable();
             $table->string('meta_keywords')->nullable();
             $table->integer('views')->default(0)->unsigned();
+            $table->bigInteger('menu_id')->after('alias')->nullable()->default(0);
         });
     }
 

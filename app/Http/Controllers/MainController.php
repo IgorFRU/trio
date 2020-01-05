@@ -59,12 +59,27 @@ class MainController extends Controller
         $categories = Cache::remember('categories', $hour, function() {
             return Category::orderBy('category', 'ASC')->where('category_id', 0)->get();
         });
-        // dd($discounts);
+        $about = Setting::first();
+        if ($about == NULL) {
+            $about = Setting::create(
+                ['site_name'        => 'Паркетный мир - Симферополь',
+                'address'          => 'Симферополь, пр. Победы, 129/2',
+                'phone_1'          => '9788160166',
+                'phone_2'          => '',
+                'email'            => 'info@parketpro.com',
+                'viber'            => '9788160166',
+                'whatsapp'         => '9788160166',
+                'address'          => 'Симферополь, пр. Победы, 129/2',
+                'main_text'        => 'Паркет со всего мира по лучшим ценам!',
+                'orderstatus_id'   => '1'],
+            );
+        }
+        
         $data = array (
             'articles' => Article::orderBy('id', 'DESC')->limit(4)->get(),
             'discounts' => $discounts,
             'lastProducts' => Product::orderBy('id', 'DESC')->limit(4)->get(),
-            'about' => Setting::find(1)->first(),
+            'about' => $about,
             'categories' => $categories,
         );
         // dd($data['lastProducts']);

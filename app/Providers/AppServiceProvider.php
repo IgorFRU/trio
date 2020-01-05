@@ -16,6 +16,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
 
+use App\MyClasses\Cbr;
+
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 
@@ -42,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('Europe/Moscow');
 
         self::globalData();
+        self::adminMenu();
 
 
         Category::creating(function(Category $model){
@@ -223,6 +226,31 @@ class AppServiceProvider extends ServiceProvider
                 'cart_products' => $products,
                 'topmenu' => $topmenu,
             );
+            
+            $view->with($data);
+        });
+    }
+
+    public function adminMenu()
+    {
+        View::composer('layouts.admin-app', function ($view){
+
+            $hour = 60;
+            $cbrToday = Cbr::today();
+            $cbrTomorrow = Cbr::tomorrow();
+            $cbrNames = Cbr::getNames();             
+
+            $data = array (
+                'cbrToday'                  => $cbrToday,
+                'cbrTomorrow'               => $cbrTomorrow,
+                'cbrNames'                  => $cbrNames,
+            );
+
+            // $cbr = Cbr::get();
+
+            // Cache::put('cbr', $cbr, 600);
+
+            // $value = Cache::get('cbr');
             
             $view->with($data);
         });

@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>АДМИН - {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
     @section('scripts')
@@ -52,8 +52,9 @@
                                 <a class="dropdown-item {{ (Request::is('*categories*') ? 'active' : '') }}" href="{{ route('admin.categories.index') }}"><i class="fas fa-folder"></i> категории</a>
                                 <a class="dropdown-item {{ (Request::is('*manufactures*') ? 'active' : '') }}" href="{{ route('admin.manufactures.index') }}"><i class="fas fa-industry"></i> производители</a>
                                 <a class="dropdown-item {{ (Request::is('*vendors*') ? 'active' : '') }}" href="{{ route('admin.vendors.index') }}"><i class="fas fa-store-alt"></i>  Поставщики</a>
-                                <a class="dropdown-item {{ (Request::is('*vendors*') ? 'active' : '') }}" href="{{ route('admin.sets.index') }}"><i class="fas fa-tasks"></i> Группы товаров</a>
+                                <a class="dropdown-item {{ (Request::is('*sets*') ? 'active' : '') }}" href="{{ route('admin.sets.index') }}"><i class="fas fa-tasks"></i> Группы товаров</a>
                                 <a class="dropdown-item {{ (Request::is('*units*') ? 'active' : '') }}" href="{{ route('admin.units.index') }}"><i class="fas fa-tape"></i>  Ед. измерения</a>
+                                <a class="dropdown-item {{ (Request::is('*currencies*') ? 'active' : '') }}" href="{{ route('admin.currencies.index') }}"><i class="fas fa-money-bill-alt"></i> валюты</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -92,6 +93,45 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <ul class="currency">
+                                <div class="currency__today">
+                                    Сегодня                    
+                                    @foreach ($cbrToday as $key=>$value)
+                                    <span class="currency__child"> 
+                                        <i class="fa fa-{{strtolower($value->currency->currency) ?? ''}}" aria-hidden="true"></i>
+                                        <span class="currency__value">{{ $value->value ?? '-' }}</span>
+                                        <span                    
+                                        @if($value->value != -1)
+                                            @if(count($cbrTomorrow))
+                                                @if($value->value < $cbrTomorrow[$key]->value)
+                                                    class="currency__red" 
+                                                @elseif($value->value > $cbrTomorrow[$key]->value)
+                                                    class="currency__green"  
+                                                @else                       
+                                                    class="currency__grey"                        
+                                                @endif
+                                            @endif                                   
+                                        @else                       
+                                            class="currency__grey"                       
+                                        @endif>
+                                        </span>
+                                    </span>
+                                    @endforeach   
+                                </div>
+                                @if(count($cbrTomorrow))
+                                <div class="currency__tomorrow submenu">
+                                        Завтра
+                                        @foreach ($cbrTomorrow as $value)
+                                        <span>
+                                            <i class="fa fa-{{strtolower($value->currency->currency) ?? ''}}" aria-hidden="true"></i>
+                                            <span class="currency__value">{{ $value->value ?? '-' }}</span>
+                                        </span>    
+                                        @endforeach
+                                </div>
+                                @endif
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-link"></i>  На сайт</a>
                         </li>
