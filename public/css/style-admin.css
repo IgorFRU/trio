@@ -1,0 +1,131 @@
+* {
+    font-family: 'Cuprum', sans-serif;
+}
+
+.table td,
+.table th {
+    padding: 0.5rem;
+}
+
+.card-img-container {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-img-container img {
+    padding-top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+}
+
+.card-30 {
+    width: 30.33%;
+    margin: 10px 1.5%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-30 .card_buttons {
+    position: absolute;
+    top: 16px;
+    display: none;
+    width: 80%;
+}
+
+.card-30:hover .card_buttons {
+    display: flex;
+}
+
+.card-30:hover .card_buttons a {
+    margin-right: 10px;
+}
+
+.category_edit_img {
+    width: 100%;
+    overflow: hidden;
+}
+
+.category_edit_img img {
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+.edit_form {
+    margin-bottom: 50px;
+}
+
+.edit_form_bottom_menu {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #343a40;
+    left: 0;
+    padding: 10px;
+    padding-bottom: 0;
+    margin-bottom: -4px;
+    z-index: 10;
+}
+
+.tab_item {
+    display: none;
+}
+
+.tab_item.active {
+    display: block;
+}
+
+.main_image {
+    border: 4px solid rgba(255, 100, 85, 0.582);
+}
+
+#articleAddProductSearchResult>span {
+    cursor: pointer;
+}
+
+#articleAddProductResult>button,
+#categoryAddPropertyResult>button {
+    margin: 5px;
+    color: #fff;
+}
+
+#articleAddProductResult>button>a {
+    color: #fff;
+}
+
+#articleAddProductResult>button>span {
+    color: #ff8e8e;
+}
+
+.categoryPropertyItemTrash {
+    margin-left: 10px;
+    padding: 10px 15px;
+    background: #ff6363;
+    margin-right: -13px;
+    display: none;
+}
+
+#categoryAddPropertyResult>button:hover .categoryPropertyItemTrash {
+    display: inline;
+}
+
+nav {
+    text-transform: uppercase;
+}
+
+#ajaxUploadedImages {
+    margin: 10px 0;
+}
+
+
+/* 
+#ajaxUploadedImages .img_with_footer {
+    overflow: hidden;
+}
+
+#ajaxUploadedImages .img_with_footer img {
+    max-width: 100%;
+} */
