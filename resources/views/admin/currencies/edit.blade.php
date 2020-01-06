@@ -1,7 +1,7 @@
 @extends('layouts.admin-app')
 @section('adminmenu')
     @parent
-    @include('admin.partials.adminmenu2')
+    @include('admin.partials.adminmenu')
 @endsection
 @section('scripts')
     @parent
@@ -18,14 +18,14 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card edit_form">
-                <div class="card-header"><p class="h3">Редактирование статьи 
-                    <button type="button" class="btn btn-primary">{{ $article->article }}</button></p>
+                <div class="card-header"><p class="h3">Редактирование валюты 
+                    <button type="button" class="btn btn-primary">{{ $currency->currency }}</button></p>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('admin.articles.update', ['id' => $article->id])}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('admin.currencies.update', ['id' => $currency->id])}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="_method" value="put">
-                        @include('admin.articles.partials.form')
+                        @include('admin.currencies.partials.form')
                     
                     </form>                    
                 </div>

@@ -60,7 +60,7 @@ class CurrencyController extends Controller
 
         Currency::create($request->all());
         
-        return redirect()->route('admin.currency.index')->with('success', 'Валюта успешно добавлена');
+        return redirect()->route('admin.currencies.index')->with('success', 'Валюта успешно добавлена');
     }
 
     /**
@@ -105,7 +105,7 @@ class CurrencyController extends Controller
         
         $currency->update($request->all());
 
-        return redirect()->route('admin.currency.index')->with('success', 'Валюта успешно изменена');
+        return redirect()->route('admin.currencies.index')->with('success', 'Валюта успешно изменена');
     }
 
     /**

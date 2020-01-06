@@ -46,4 +46,8 @@ class Category extends Model
     public function property() {
         return $this->belongsToMany(Property::class)->orderBy('property', 'asc');
     }
+
+    public function menu() {
+        return $this->belongsTo(Menu::class);
+    }
 }

@@ -10,6 +10,7 @@ use App\Propertyvalue;
 use App\Manufacture;
 use App\Category;
 use App\Set;
+use App\Menu;
 use App\Setting;
 use App\Topmenu;
 use Carbon\Carbon;
@@ -71,22 +72,32 @@ class MainController extends Controller
                 'whatsapp'         => '9788160166',
                 'address'          => 'Симферополь, пр. Победы, 129/2',
                 'main_text'        => 'Паркет со всего мира по лучшим ценам!',
-                'orderstatus_id'   => '1'],
+                'orderstatus_id'   => '1']
             );
         }
-        
-        $data = array (
-            'articles' => Article::orderBy('id', 'DESC')->limit(4)->get(),
-            'discounts' => $discounts,
+
+        $data = [
+            'title' => 'Паркетный мир - Симферополь',
+            'description' => 'Все виды паркета в Крыму по лучшим ценам',
+            'menus' => Menu::orderBy('sortpriority', 'ASC')->get(),
+            'categories' => Category::orderBy('category', 'ASC')->get(),
             'lastProducts' => Product::orderBy('id', 'DESC')->limit(4)->get(),
+            'recomended_products' => Product::where([
+                ['recomended', '1']
+            ])->get(),
+            'articles' => Article::orderby('id')->limit(3)->get(),
             'about' => $about,
-            'categories' => $categories,
-        );
-        // dd($data['lastProducts']);
-        // dd($discounts->last_products);
+        ];
+        
         return view('welcome', $data);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $slug
+     * @return void
+     */
     public function staticpage($slug) {
         $staticpage = Topmenu::where('slug', $slug)->FirstOrFail();
         if(isset($staticpage)) {

@@ -55,6 +55,7 @@
                                 <a class="dropdown-item {{ (Request::is('*sets*') ? 'active' : '') }}" href="{{ route('admin.sets.index') }}"><i class="fas fa-tasks"></i> Группы товаров</a>
                                 <a class="dropdown-item {{ (Request::is('*units*') ? 'active' : '') }}" href="{{ route('admin.units.index') }}"><i class="fas fa-tape"></i>  Ед. измерения</a>
                                 <a class="dropdown-item {{ (Request::is('*currencies*') ? 'active' : '') }}" href="{{ route('admin.currencies.index') }}"><i class="fas fa-money-bill-alt"></i> валюты</a>
+                                <a class="dropdown-item {{ (Request::is('*menus*') ? 'active' : '') }}" href="{{ route('admin.menus.index') }}"><i class="fas fa-bars"></i> пункты меню</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
