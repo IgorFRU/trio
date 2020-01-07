@@ -85,19 +85,19 @@
                                     @if ($product->discount->type == '%')
                                         <div class='btn-group' role="group">
                                             <div class="btn text-light bg-success btn-sm" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ Carbon\Carbon::parse($product->discount->discount_end)->locale('ru')->isoFormat('DD MMMM YYYY', 'Do MMMM') }}"> 
-                                                {{ $product->price * $product->discount->numeral }} руб.
+                                                {{ $product->price * $product->discount->numeral }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}
                                             </div>
-                                            <div class="btn text-light bg-secondary btn-sm">{{ $product->price_number }} руб.</div>
+                                            <div class="btn text-light bg-secondary btn-sm">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
                                         </div>
                                     @elseif ($product->discount->type == 'rub')
                                         <div class='btn-group' role="group">
                                             <div class="btn text-light bg-success btn-sm" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ Carbon\Carbon::parse($product->discount->discount_end)->locale('ru')->isoFormat('DD MMMM YYYY', 'Do MMMM') }}">
-                                                {{ $product->price - $product->discount->value }} руб.
+                                                {{ $product->price - $product->discount->value }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}
                                             </div>
-                                            <div class="btn text-light bg-secondary btn-sm">{{ $product->price_number }} руб.</div>
+                                            <div class="btn text-light bg-secondary btn-sm">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
                                     @endif
                                 @else
-                                    <div class="btn text-light bg-success btn-sm">{{ $product->price_number }} руб.</div> 
+                                    <div class="btn text-light bg-success btn-sm">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div> 
                                 @endif
                                 
                             

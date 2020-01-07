@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Property;
+use App\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -39,6 +40,7 @@ class CategoryController extends Controller
             'category' => [],
             //коллекция вложенных подкатегорий
             'categories' => Category::with('children')->where('category_id', '0')->with('property')->get(),
+            'menus' => Menu::get(),
             'properties' => Property::orderBy('property', 'asc')->get(),
             //символ, обозначающий вложенность категорий
             'delimiter' => ''
@@ -90,6 +92,7 @@ class CategoryController extends Controller
             'category' => $category,
             'categories' => Category::with('children')->where('category_id', '0')->with('property')->get(),
             'properties' => Property::whereNotIn('id', $property_ids)->orderBy('property', 'asc')->get(),
+            'menus' => Menu::get(),
             'delimiter' => ''
         );
         return view('admin.categories.edit', $data);

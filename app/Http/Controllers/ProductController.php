@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Property;
+use App\Currency;
 use App\Propertyvalue;
 use App\Image;
 use App\ImageProduct;
@@ -207,6 +208,7 @@ class ProductController extends Controller
             'product' => $product,
             'categories' => Category::with('children')->where('category_id', '0')->get(),
             'manufactures' => Manufacture::get(),
+            'currencies' => Currency::get(),
             'discounts' => Discount::where('discount_end', '>', $today)->orderBy('discount_start', 'DESC')->get(),
             'vendors' => Vendor::get(),
             'units' => Unit::get(),

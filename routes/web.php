@@ -11,12 +11,12 @@
 |
 */
 
-Route::get('/', 'MainController@index')->name('index');
+Route::get('/', 'MainController@index')->middleware('currencyrates')->name('index');
 
-Route::get('/catalog/product/{product}', 'MainController@product2')->name('product.without_category');
-Route::get('/catalog', 'MainController@categories')->name('categories');
-Route::get('/catalog/{category}', 'MainController@category')->name('category');
-Route::get('/catalog/{category}/{product}', 'MainController@product')->name('product');
+Route::get('/catalog/product/{product}', 'MainController@product2')->middleware('currencyrates')->name('product.without_category');
+Route::get('/catalog', 'MainController@categories')->middleware('currencyrates')->name('categories');
+Route::get('/catalog/{category}', 'MainController@category')->middleware('currencyrates')->name('category');
+Route::get('/catalog/{category}/{product}', 'MainController@product')->middleware('currencyrates')->name('product');
 
 Route::get('/articles', 'MainController@articles')->name('articles');
 Route::get('/articles/{article}', 'MainController@article')->name('article');

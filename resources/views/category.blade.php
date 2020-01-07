@@ -56,72 +56,94 @@
         @else
             
         @endif
+    <section>
+    <section class="products">
         <div class="col-lg-9">
             <div class="section_title">
                 Товары
             </div>
         
-            <div class="product_cards col-lg-12 row">
+            <div class="products__cards col-lg-12 row">
                 @foreach ($products as $product)
                     {{-- @if (isset($checked_properties) && $product->property_active_product($checked_properties) ) --}}
-                        <div class="product_card white_box w23per">
-                            <div class="product_card__img">
-                                <img  class="img-fluid"
-                                @if(isset($product->images) && count($product->images) > 0)
-                                    src="{{ asset('imgs/products/thumbnails/')}}/{{ $product->main_or_first_image->thumbnail }}"
-                                    alt="{{ $product->main_or_first_image->alt }}"
-                                @else 
-                                    src="{{ asset('imgs/nopic.png')}}"
-                                @endif >
+                        <div class="products__card col-lg-3">
+                            <div class="products__card__image">
+                                @forelse ($product->images as $image)
+                                    @if ($image->main)
+                                        <img class="normal_product_image img-fluid" src="{{ asset('imgs/products/thumbnails/')}}/{{ $image->thumbnail}}" alt="">
+                                    @endif
+                                @empty
+                                    <img src="{{ asset('imgs/image_not_found.png')}}" alt="">
+                                @endforelse
                             </div>                    
-                            <div class="product_card__content p10">      
-                                <div class="product_card__content__info">
-                                    <div class="d-flex justify-content-between">
-                                        @isset($product->category->slug)
-                                            <span class="product_card__content__category"><a href="{{ route('category', $product->category->slug) }}">{{ $product->category->category ?? '' }}</a></span>
-                                        @endisset
-                                        @isset($product->manufacture->slug)
-                                            <span class="product_card__content__manufacture"><a href="{{ route('manufacture', $product->manufacture->slug) }}">{{ $product->manufacture->manufacture ?? '' }}</a></span>             
-                                        @endisset             
-                                    </div>
-                                    {{-- <span class="product_inner_scu">артикул: {{ $product->autoscu }}</span> --}}
+                            <div class="products__card__info">
+                                <div class="products__card__scu">
+                                    <span class="scu">
+                                        арт.: {{ $product->scu ?? ' - '}}
+                                    </span>                                  
+                                    <span class="manufacture">
+                                        <a href="#">{{ $product->manufacture->manufacture ?? ''}}</a>
+                                    </span>
                                 </div>
-                                    
-                                @if(isset($product->category->slug))
-                                    <h5><a href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">{{ Str::limit($product->product, 30, '... ') }}</a></h5>
-                                @else
-                                    <h5><a href="{{ route('product.without_category', $product->slug) }}">{{ Str::limit($product->product, 30, '... ') }}</a></h5>
-                                @endif
-
-                                {{ $product->property_active_product }}
-                                
-                                <div class="short_description">{{ $product->short_description ?? '' }}</div>
-                                <div class="prices row lg-12 d-flex justify-content-between">
-                                    <div class=" d-flex">
-                                        @if(isset($product->discount) && $product->actually_discount)
-                                            <div class="old_price">{{ number_format($product->price, 2, ',', ' ') }}</div>
-                                            <div class="new_price">
-                                            @if ($product->discount->type == '%')
-                                                {{ number_format($product->price * $product->discount->numeral, 2, ',', ' ') }} 
-                                            @elseif ($product->discount->type == 'rub')
-                                                {{ number_format($product->price - $product->discount->value, 2, ',', ' ') }}
-                                            @endif
-                                            </div>
+                                <div class="products__card__maininfo">
+                                    <div class="products__card__title">
+                                        @if($category->parent_id)
+                                        <h3><a href="{{ route('product.subcategory', ['category' => $category->category, 'subcategory' => $category->parent_id, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a></h3>
                                         @else
-                                            <div class="new_price">
-                                                {{ number_format($product->price, 2, ',', ' ') }}
-                                                
-                                            </div>
-                                            
+                                        <h3><a href="{{ route('product', ['category' => $category->category, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a></h3>
                                         @endif
                                     </div>
+        
+                                </div>
+                            </div>
+                            <div class="products__card__price">
+                                <span class="products__card__price__old">
+        
+                                </span>
+                                <div class="products__card__price__new">
+                                    <div>
+                                        <span class="value">
+                                            @if ($product->currency->to_update)
+                                                @php
+                                                    $oneUnit = floatToInt($product->price * $currencyrates[$product->currency->id]);
+                                                    $oneUnitNumeric = $oneUnit;
+                                                    echo ($oneUnitNumeric);
+                                                @endphp
+                                            @else
+                                                @php
+                                                    $oneUnit = floatToInt($product->price);
+                                                    $oneUnitNumeric = $oneUnit;
+                                                    echo ($oneUnitNumeric);
+                                                @endphp
+                                            @endif
+                                        </span>
+                                        <i class="fa fa-rub"></i>
+                                    </div>
+        
+                                    <div class="products__card__price__new__package">
+                                        <div class="active" data-price="@php echo ($oneUnit); @endphp"> за 1 {{ $product->unit->unit }}</div>
                                         @if ($product->packaging)
-                                            <div class="unit_buttons">
-                                                @isset($product->unit)<span class="unit_buttons__unit active" data-package="{{$product->unit_in_package ?? ''}}">1 {{ $product->unit->unit }}</span>@endisset <span class="unit_buttons__package" data-package="{{$product->unit_in_package ?? ''}}">1 уп.</span>
-                                            </div>
+                                        <div data-price="@php echo (round($oneUnitNumeric * $product->unit_in_package, 2)); @endphp"> за 1 уп. ({{ round($product->unit_in_package, 3) }} {{ $product->unit->unit }})</div>
                                         @endif
-                                        
-                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="products__card__buttons">
+                                <div class="products__card__buttons__input">
+                                    <input type="text" name="count" id="count" 
+                                    data-price="@php echo (round($oneUnitNumeric * $product->unit_in_package, 2)); @endphp" 
+                                    data-count="@php echo (round($product->unit_in_package, 2)); @endphp"
+                                    data-countpackage="1"
+                                    @if($product->packaging_sales) value= @php echo (round($product->unit_in_package, 2)); echo ($product->unit->unit); @endphp @endif >
+                                    <span class="plus"><i class="fa fa-plus"></i></span>
+                                    <span class="minus"><i class="fa fa-minus"></i></span>
+                                </div>
+                                <div class="for_payment">
+                                    к оплате: <span>@php echo (round($oneUnitNumeric * $product->unit_in_package, 2)); @endphp</span> <i class="fa fa-rub"></i>
+                                </div>
+                                <div class="buttons">
+                                    <div class="buy">В корзину</div>
+                                    <div class="one_click">Купить в 1 клик</div>
                                 </div>
                             </div>
                         </div>
@@ -130,12 +152,42 @@
             </div>
         </div>
     </section>
+    
     @else 
         <div class="wrap">
             В данной категории нет товаров
         </div>
     @endif
+
+    @php 
+    function floatToInt($number) { 
+        $floor = floor($number);
+        if ($number == $floor) { 
+            return number_format($number, 0, '.', ''); 
+        }
+        else {
+            return number_format(round($number, 2), 2, '.', '');
+        } 
+    } 
+    @endphp 
     
-    
+    <div class="modal_oneclick">
+    <div class="modal_oneclick__header">
+        Быстрый заказ
+        <div class="modal_oneclick__header__close">
+
+        </div>
+    </div>
+    <form id="modal_oneclick">
+        <input type="text" id="modal_oneclick_name" name="name" placeholder="Имя" required>
+        <input type="text" id="modal_oneclick_phone" name="phone" placeholder="Номер телефона" required>
+        <input type="text" id="modal_oneclick_quantity" name="quantity" placeholder="Количество" readonly>
+        <input type="text" id="modal_oneclick_price" name="price" placeholder="Сумма заказа" readonly>
+        
+        <input type="hidden" id="modal_oneclick_product" name="product">
+        <input type="hidden" id="modal_oneclick_url" name="url">
+        <div id="modal_oneclick_btn">Отправить</div>
+    </form>
+</div>
       
 @endsection

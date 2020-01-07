@@ -14,6 +14,7 @@ class Category extends Model
         'category_id', 
         'image', 
         'description', 
+        'menu_id', 
         'meta_description', 
         'meta_keywords',
     ];

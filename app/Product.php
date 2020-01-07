@@ -35,6 +35,7 @@ class Product extends Model
         'unit_in_package',
         'amount_in_package',
         'price',
+        'currency_id',
         'quantity',
         'quantity_vendor'
     ];
@@ -80,6 +81,11 @@ class Product extends Model
         // }
     }
 
+    public function getCurrencyIdAttribute($value) {
+        return $this->attributes['currency_id'];
+        // return $value;
+    }
+
     public function getPriceNumberAttribute() {
         return number_format($this->price, 2, ',', ' ');
     }
@@ -90,6 +96,10 @@ class Product extends Model
 
     public function category() {
         return $this->belongsTo(Category::class);
+    }
+
+    public function currency() {
+        return $this->belongsTo(Currency::class);
     }
     
     public function articles() {
@@ -126,6 +136,10 @@ class Product extends Model
 
     public function propertyvalue() {
         return $this->hasMany(Propertyvalue::class);
+    }
+
+    public function currencyrate() {
+        return $this->belongsTo(Currencyrate::class, 'currency_id');
     }
 
     //проверяет, отмечен ли товар в боковом меню фильтра товаров
@@ -173,7 +187,7 @@ class Product extends Model
         }      
     }
 
-    public function geNumberAttribute() {
+    public function getNumberAttribute() {
         return number_format($this, 2, ',', ' ');
     }
 }

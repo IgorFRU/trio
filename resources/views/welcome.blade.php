@@ -67,17 +67,19 @@
                             @foreach ($recomended_products as $product) 
                                 <div class="recomended_products__item grey_card_global">
                                     <div class="recomended_products__item__img">
-                                        @if ($product->thumbnail)
-                                            <img class="normal_product_image" src="{{ asset('imgs/products/thumbnail/')}}/{{ $product->thumbnail}}" alt="">
-                                        @else
-                                            <img src="{{ asset('imgs/image_not_found.png')}}" alt="">
-                                        @endif   
+                                        <img  class="img-fluid" 
+                                        @if(isset($product->images) && count($product->images) > 0)
+                                            src="{{ asset('imgs/products/thumbnails/')}}/{{ $product->main_or_first_image->thumbnail }}"
+                                            alt="{{ $product->main_or_first_image->alt }}"
+                                        @else 
+                                            src="{{ asset('imgs/nopic.png')}}"
+                                        @endif > 
                                     </div>
                                     <div class="recomended_products__item__title">
                                         @if($product->category->parent_id)
-                                            <a href="{{ route('product.subcategory', ['category' => $product->category->alias, 'subcategory' => $product->category->parent_id, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product_name }}</a>
+                                            <a href="{{ route('product.subcategory', ['category' => $product->category->slug, 'subcategory' => $product->category->parent_id, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a>
                                         @else
-                                            <a href="{{ route('product', ['category' => $product->category->alias, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product_name }}</a>
+                                            <a href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a>
                                         @endif
                                     </div>                            
                                 </div>
@@ -113,14 +115,16 @@
                     </div>
                     <div class="categories__boxes">                    
                             @forelse ($categories as $category)
-                        
+                        {{-- @php
+                            dd($category);
+                        @endphp --}}
                                 @if ($category->menu_id == $menu->id && count($category->products) > 0)
                                 <div class="categories__boxes__category">
-                                    <a href="/catalog/{{ $category->alias }}">
-                                        @if ($category->img)
-                                            <img src="{{ asset('imgs/categories')}}/{{ $category->img }}" alt="">
+                                    <a href="/catalog/{{ $category->slug }}">
+                                        @if ($category->image)
+                                            <img src="{{ asset('imgs/categories')}}/{{ $category->image  }}" alt="">
                                         @else
-                                            <img src="{{ asset('imgs/image_not_found.png') }}" alt="">
+                                            <img src="{{ asset('imgs/nopic.png') }}" alt="">
                                         @endif
                                         
                                     <p>{{ $category->category }}</p>

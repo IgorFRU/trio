@@ -28,7 +28,25 @@
         </div>
         
     </div>
-    <div class="col-lg-6">            
+    <div class="col-lg-6">
+        <div class="form-group row">
+            <label for="menu_id" class="col-md-4 col-form-label">Пункт меню</label>
+            <div class="col-md-8">
+                <select class="form-control" id="menu_id" name="menu_id">
+                    <option></option>
+                    @forelse ($menus as $menu)
+                        <option value="{{ $menu->id }}"
+                            @isset($category->menu_id)
+                                @if ($menu->id == $category->menu_id)
+                                selected = "selected"
+                                @endif
+                            @endisset>{{ $menu->menu }}</option>
+                    @empty
+                        
+                    @endforelse
+                </select>
+            </div>
+        </div>
         <div class="form-group row">
             <label for="category_id" class="col-md-4 col-form-label">Родительская категория</label>
             <div class="col-md-8">
@@ -36,7 +54,7 @@
                     <option value="0">-- Без родителя --</option>
                     @include('admin.categories.partials.child-categories', ['categories' => $categories])
                 </select>
-            </div> 
+            </div>
         </div>
         <div class="form-group row">
             <label for="image" class="col-sm-4 col-form-label">Изображение</label>

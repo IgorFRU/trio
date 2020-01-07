@@ -1,6 +1,5 @@
 
-<div class="col-lg-12">
-    
+<div class="col-lg-12">    
     <div class="form-group row">
         <div class='col-lg-3 row'>
             <label for="currency" class="col-lg-6 col-form-label">Код валюты</label>
@@ -28,8 +27,18 @@
                 @endif
             </div>
         </div>
-    </div>
-    
+    </div>    
+</div>
+
+<div class="col-lg-12">    
+    <div class="form-group row">
+        <div class='col-lg-12 row'>
+            <label for="css_style" class="col-lg-1 col-form-label">CSS</label>
+            <div class="col-lg-11">
+                <input type="text" name="css_style" class="form-control" id="css_style" value="{!! $currency->css_style ?? '' !!}" required maxlength="127">
+            </div>
+        </div>
+    </div>    
 </div>
    
 <div class="edit_form_bottom_menu">

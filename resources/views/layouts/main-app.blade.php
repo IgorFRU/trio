@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ $title. '. Паркетный мир - Симферополь' ?? "Паркетный мир - Симферополь"}}</title>
+    <title>{{ $title ?? "Паркетный мир - Симферополь"}}</title>
 
     <meta description="{{ $meta_description ?? $product->description ?? "Купить все виды паркета в Крыму по лучшим ценам!" }}">
     <meta keywords="{{ $meta_keywords ?? "" }}">
@@ -33,14 +33,14 @@
             <div class="topmenu">
                 <div class="wrap">
                     <div class="topmenu__body">
-                        {{-- <div class="topmenu__left">
+                        <div class="topmenu__left">
                             <a href="#">О нас</a>
                             <a href="#">Доставка</a>
                             <a href="#">Оплата</a>
                             <a href="#">Контакты</a>
-                            <a href="{{ route('articles.index') }}">Статьи</a>
+                            <a href="{{ route('articles') }}">Статьи</a>
                             <a href="#" class="topmenu__left__red">Акции</a>
-                        </div> --}}
+                        </div>
 
 
                         <div>
@@ -79,7 +79,12 @@
                         </div>
                         <ul class="fastmenu__body__tel">
 
-                            <li><a href="tel:+79788160166">8(978) 816 01 66</a></li>
+                            
+                            @if ($settings->phone_1 != NULL && $settings->phone_1 != '')
+                                <li><a href="tel:{{ $settings->full_main_phone }}">{{ $settings->main_phone }}</a></li>
+                            @else
+                                <li><a href="tel:+79788160166">8(978) 816 01 66</a></li>
+                            @endif
                             {{-- <li class="fastmenu__body__tel__hide"><a href="tel:+79788808206">8(978) 880 82 06</a></li> --}}
 
                             {{-- <li><a href="#" class="callme">Обратный звонок</a></li> --}}
@@ -127,11 +132,11 @@
                     @forelse ($categories as $category)
                         
                             @if ($category->menu_id == $menu->id)
-                                <li><a href="/catalog/{{ $category->alias }}">{{ $category->title }}</a>
+                                <li><a href="/catalog/{{ $category->slug }}">{{ $category->category }}</a>
                                     <ul class="mainmenu__ul_to_right">
                                     @forelse ($categories as $category_child)
                                         @if ($category_child->parent_id == $category->id)                                            
-                                            <li><a href="/catalog/{{ $category_child->alias }}">{{ $category_child->title }}</a>                                            
+                                            <li><a href="/catalog/{{ $category_child->slug }}">{{ $category_child->category }}</a>                                            
                                         @endif
                                     @empty                                        
                                     @endforelse

@@ -184,11 +184,33 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="row">
-                <div class="col col-lg-4">
+                <div class="col col-lg-2">
                     <div class="form-group row">
                         <label for="price" class="col-sm-4 col-form-label">Цена</label>
                         <div class="col-md-8">
                             <input type="text" name="price" class="form-control" id="price" value="{{ $product->price ?? '' }}">
+                        </div>                                    
+                    </div>    
+                </div>                
+                <div class="col col-lg-2">
+                    <div class="form-group row">
+                        <label for="currency_id" class="col-sm-4 col-form-label">Валюта</label>
+                        <div class="col-md-8">
+                            <select class="form-control" id="currency_id" name="currency_id">
+                                <option></option>
+                                @forelse ($currencies as $currency)
+                                    <option value="{{ $currency->id }}"
+                                        @isset($product->currency_id)
+                                            @if ($currency->id == $product->currency_id)
+                                            selected = "selected"
+                                            @endif
+                                        @endisset>
+                                        {{ $currency->currency_rus ?? $currency->currency }}
+                                    </option>
+                                @empty
+                                    
+                                @endforelse
+                            </select>
                         </div>                                    
                     </div>    
                 </div>

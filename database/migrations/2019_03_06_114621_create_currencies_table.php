@@ -18,7 +18,7 @@ class CreateCurrenciesTable extends Migration
             $table->char('currency', 3);
             $table->string('currency_rus', 16);
             $table->tinyInteger('to_update')->default(1);
-            $table->string('css_style', 32)->nullable();
+            $table->string('css_style', 127)->nullable();
             $table->timestamps();
         });
     }

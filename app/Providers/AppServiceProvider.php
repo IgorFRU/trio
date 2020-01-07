@@ -8,9 +8,11 @@ use App\Cart;
 use App\Category;
 use App\Article;
 use App\Set;
+use App\Setting;
 use App\Product;
 use App\Manufacture;
 use App\Topmenu;
+use App\Menu;
 use App\Http\Services\WorkWithImage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -208,6 +210,10 @@ class AppServiceProvider extends ServiceProvider
             $carts2 = $carts->pluck('product_id');
             // dd($carts2);
             $products = Product::whereIn('id', $carts2)->get();
+
+            $settings = Cache::remember('settings', $hour*3, function() {
+                return Setting::first();
+            }); 
             // dd($products);
             // $cart_products = array();
             // foreach ($carts as $key => $cart) {
@@ -225,6 +231,8 @@ class AppServiceProvider extends ServiceProvider
                 'carts' => $carts1,
                 'cart_products' => $products,
                 'topmenu' => $topmenu,
+                'settings' => $settings, 
+                'menus' => Menu::orderBy('sortpriority', 'ASC')->get(),
             );
             
             $view->with($data);

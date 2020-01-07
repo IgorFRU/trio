@@ -15,6 +15,8 @@ use App\Setting;
 use App\Topmenu;
 use Carbon\Carbon;
 
+use App\MyClasses\Cbr;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Cache;
@@ -195,11 +197,13 @@ class MainController extends Controller
         $local_title = $category->category;
         // dd($products_array, $property_values, $unique_property_values, $properties);
         $data = array (
+            'title' => $category->category . ' - Паркетный мир - Симферополь',
             'products' => $products,
             'category' => $category,
             'properties' => $properties,
             'checked_properties' => $new_array,
             'local_title' => $local_title,
+            'currencyrates' => Cbr::getAssociate(),
             // 'subcategories' => Category::where('slug', $slug)->firstOrFail()
         );
         // dd($data['properties']);
