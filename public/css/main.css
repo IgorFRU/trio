@@ -111,7 +111,7 @@ a {
 } */
 
 section {
-    padding-bottom: 20px;
+    /* padding-bottom: 20px; */
 }
 
 section.top1 {
@@ -233,7 +233,7 @@ section.top1 {
 .fastmenu__tosmall.active {
     width: 200px;
     transition: 0.2s;
-    background: #577d90;
+    /* background: #577d90; */
 }
 
 .fastmenu__tosmall p {
@@ -419,7 +419,7 @@ menu {
     padding: 0px;
     z-index: 2;
     font-size: 16px;
-    /* position: absolute; */
+    position: fixed;
     width: 100%;
     transition: 0.3s;
     border-bottom: 4px solid rgb(87, 125, 144);
@@ -1049,6 +1049,12 @@ section.categories .categories__boxes .categories__boxes__category p {
     font-size: 14px;
 }
 
+section.product h1 {
+    color: #577d90;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
 section.products,
 #firstsection {
     padding-top: 140px;
@@ -1083,8 +1089,34 @@ section.products .wrap {
     z-index: 1;
 }
 
-section.products .breadcrumbs {
+.breadcrumbs {
     padding: 20px 0;
+    font-size: 14px;
+}
+
+.breadcrumbs li {
+    display: inline-block;
+    margin-right: 10px;
+    position: relative;
+}
+
+.breadcrumbs li::after {
+    content: '\2022';
+    position: absolute;
+    right: -9px;
+}
+
+.breadcrumbs li.active {
+    font-weight: bold;
+}
+
+.breadcrumbs li.active::after {
+    content: '';
+}
+
+.breadcrumbs li a {
+    border-bottom: 1px solid;
+    color: #636b6f;
 }
 
 section.products .products__cards {
@@ -1152,13 +1184,15 @@ section.products .products__cards .products__card .products__card__info .product
 
 section.products .products__cards .products__card .products__card__info .products__card__title h3 {
     font-weight: normal;
+    font-size: 1.1rem;
 }
 
 .products__card__info .products__card__maininfo {}
 
 .products__card .products__card__price {
     position: absolute;
-    bottom: 0;
+    bottom: -20px;
+    left: 0;
     width: 100%;
     text-align: center;
     padding: 5px;
@@ -1201,7 +1235,8 @@ section.products .products__cards .products__card .products__card__info .product
 
 .products__card .products__card__buttons {
     position: absolute;
-    bottom: -96px;
+    bottom: -121px;
+    left: 0;
     background: #fff;
     border-top: 0;
     width: 100%;

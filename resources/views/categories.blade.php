@@ -4,10 +4,12 @@
     <!-- <script src="{{ asset('js/discount_countdown.js') }}" defer></script> -->
 @endsection
 @section('content')
+<section id="firstsection">
 @component('components.breadcrumb')
     @slot('main') <i class="fas fa-home"></i> @endslot     
     @slot('active') Категории товаров @endslot
 @endcomponent 
+</section>
 
     <section class="category_cards row wrap">
     @foreach ($categories as $category)

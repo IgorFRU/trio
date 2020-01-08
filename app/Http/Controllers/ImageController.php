@@ -39,8 +39,6 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        
-
         if ($request->path == 'product') {
             $path = public_path().'\imgs\products\\';
             if (!file_exists($path)) {
@@ -110,7 +108,7 @@ class ImageController extends Controller
                 'productname' => $productname,
                 'alt' => $request->alt,
                 'thumbnail' => $filename_thumbnail,
-                'main' => $request->main
+                'main' => $main
             ]);    
             
             echo json_encode($image);

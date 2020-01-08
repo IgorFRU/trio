@@ -94,9 +94,9 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
+                        <li class="nav-item dropdown">
                             <ul class="currency">
-                                <div class="currency__today">
+                                <li class="currency__today nav-item">
                                     Сегодня                    
                                     @foreach ($cbrToday as $key=>$value)
                                     <span class="currency__child"> 
@@ -119,7 +119,7 @@
                                         </span>
                                     </span>
                                     @endforeach   
-                                </div>
+                                </li>
                                 @if(count($cbrTomorrow))
                                 <div class="currency__tomorrow submenu">
                                         Завтра

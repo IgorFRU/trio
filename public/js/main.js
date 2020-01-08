@@ -32,6 +32,7 @@ $(document).ready(function() {
             if ($(window).scrollTop() > oldScroll + 50) {
                 oldScroll = $(window).scrollTop();
                 $('.fastmenu').addClass('active');
+                $('.mainmenu').css('margin-top', '45px');
                 $('.fastmenu__tosmall > span').addClass('active');
                 $('.fastmenu__tosmall').addClass('active');
                 //$('.logo').addClass('hide');
@@ -45,6 +46,7 @@ $(document).ready(function() {
                 $('.fastmenu__tosmall').removeClass('active');
                 //$('.logo').removeClass('hide');
                 $('.fastmenu').children().removeClass('hide');
+                $('.mainmenu').css('margin-top', marginMainMenu);
             }
         }
     });

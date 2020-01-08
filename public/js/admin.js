@@ -168,24 +168,28 @@ $(function() {
         if (method == 'store') {
             var filename = $('#filename').val();
             var alt = $('#alt').val();
+            var main = $('#main_img').val();
             var formData = new FormData();
 
             formData.append('name', filename);
             formData.append('alt', alt);
+            formData.append('main', main);
             formData.append('path', 'product');
             formData.append('method', method);
             formData.append('image', $("#productImage").prop("files")[0]);
 
-            console.log(FormData);
+            console.log(main);
         } else if (method == 'update') {
             var filename = $('#filename').val();
             var alt = $('#alt').val();
+            var main = $('#main_img').val();
             var image_id = $('#add_image').attr('data-id');
             var formData = new FormData();
 
             formData.append('method', method);
             formData.append('name', filename);
             formData.append('alt', alt);
+            formData.append('main', main);
             formData.append('id', image_id);
             formData.append('path', 'product');
         }

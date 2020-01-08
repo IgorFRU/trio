@@ -8,6 +8,7 @@
 {{-- @php
     dd($category->parents);
 @endphp --}}
+<section id="firstsection">
 @component('components.breadcrumb')
     @slot('main') <i class="fas fa-home"></i> @endslot
     @slot('parent') Категории товаров @endslot
@@ -19,6 +20,7 @@
     
     @slot('active') {{ $category->category }} @endslot
 @endcomponent 
+</section>
    <section class="wrap">
         <h1>{{ $category->category }}</h1>
         {!! $category->description !!}
@@ -56,9 +58,8 @@
         @else
             
         @endif
-    <section>
-    <section class="products">
-        <div class="col-lg-9">
+    </section>
+    <section class="products wrap">
             <div class="section_title">
                 Товары
             </div>
@@ -73,7 +74,7 @@
                                         <img class="normal_product_image img-fluid" src="{{ asset('imgs/products/thumbnails/')}}/{{ $image->thumbnail}}" alt="">
                                     @endif
                                 @empty
-                                    <img src="{{ asset('imgs/image_not_found.png')}}" alt="">
+                                    <img src="{{ asset('imgs/nopic.png')}}" alt="">
                                 @endforelse
                             </div>                    
                             <div class="products__card__info">
@@ -121,9 +122,9 @@
                                     </div>
         
                                     <div class="products__card__price__new__package">
-                                        <div class="active" data-price="@php echo ($oneUnit); @endphp"> за 1 {{ $product->unit->unit }}</div>
+                                        <div class="active" data-price="{{ $oneUnit }}"> за 1 {{ $product->unit->unit ?? 'ед.' }}</div>
                                         @if ($product->packaging)
-                                        <div data-price="@php echo (round($oneUnitNumeric * $product->unit_in_package, 2)); @endphp"> за 1 уп. ({{ round($product->unit_in_package, 3) }} {{ $product->unit->unit }})</div>
+                                        <div data-price="{{ round($oneUnitNumeric * $product->unit_in_package, 2) }}"> за 1 уп. ({{ round($product->unit_in_package, 3) }} {{ $product->unit->unit  ?? 'ед.'}})</div>
                                         @endif
                                     </div>
                                 </div>
@@ -131,10 +132,10 @@
                             <div class="products__card__buttons">
                                 <div class="products__card__buttons__input">
                                     <input type="text" name="count" id="count" 
-                                    data-price="@php echo (round($oneUnitNumeric * $product->unit_in_package, 2)); @endphp" 
-                                    data-count="@php echo (round($product->unit_in_package, 2)); @endphp"
+                                    data-price="{{ round($oneUnitNumeric * $product->unit_in_package, 2) }}" 
+                                    data-count="{{ round($product->unit_in_package, 2) }}"
                                     data-countpackage="1"
-                                    @if($product->packaging_sales) value= @php echo (round($product->unit_in_package, 2)); echo ($product->unit->unit); @endphp @endif >
+                                    @if($product->packaging_sales) value= @php echo (round($product->unit_in_package, 2)); @endphp {{ $product->unit->unit ?? 'ед.' }} @endif >
                                     <span class="plus"><i class="fa fa-plus"></i></span>
                                     <span class="minus"><i class="fa fa-minus"></i></span>
                                 </div>
@@ -150,7 +151,6 @@
                     {{-- @endif --}}
                 @endforeach
             </div>
-        </div>
     </section>
     
     @else 

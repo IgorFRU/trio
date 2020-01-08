@@ -137,6 +137,9 @@ class MainController extends Controller
         }
 
         $category = Category::where('slug', $slug)->with('property')->firstOrFail();
+        if (isset($category)) {
+            $category->increment('views', 1);
+        }
         $products = Product::orderBy('id', 'DESC')->where('category_id', $category->id)->get();
 
         if ($prop) {
@@ -287,6 +290,9 @@ class MainController extends Controller
 
     public function product($category_slug = NULL, $slug) {
         $product = Product::where('slug', $slug)->firstOrFail();
+        if (isset($product)) {
+            $product->increment('views', 1);
+        }
         if (isset($category_slug)) {
             // $id = Product::where('slug', $slug)->pluck('category_id')->first();
             $properties = $product->category->property;

@@ -37,7 +37,9 @@ class Product extends Model
         'price',
         'currency_id',
         'quantity',
-        'quantity_vendor'
+        'quantity_vendor',
+        'sample',
+        'recomended'
     ];
 
     public function setSlugAttribute($value) {
@@ -76,9 +78,9 @@ class Product extends Model
         if ($value > 0) {
             $this->attributes['unit_in_package'] = preg_replace('~,~', '.', $value);
         }
-        // } elseif ($value == 0) {
-        //     $this->attributes['unit_in_package'] = 0;
-        // }
+        if ($this->unit_in_package == NULL || $this->unit_in_package == '' || $this->unit_in_package == 0) {
+            $this->attributes['unit_in_package'] = 1;
+        }
     }
 
     public function getCurrencyIdAttribute($value) {

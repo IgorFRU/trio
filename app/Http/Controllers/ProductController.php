@@ -118,6 +118,7 @@ class ProductController extends Controller
             'discounts' => Discount::where('discount_end', '>', $today)->orderBy('discount_start', 'DESC')->get(),
             'vendors' => Vendor::get(),
             'units' => Unit::get(),
+            'currencies' => Currency::get(),
             'typeRequest' => 'create',       //тип запроса - создание или редактирование, чтобы можно было менять action формы
             //символ, обозначающий вложенность категорий
             'delimiter' => ''

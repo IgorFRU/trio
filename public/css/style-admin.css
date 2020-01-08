@@ -7,6 +7,11 @@
     padding: 0.5rem;
 }
 
+.currency__today {
+    line-height: 38px;
+    color: #e3342f;
+}
+
 .card-img-container {
     height: 200px;
     overflow: hidden;
