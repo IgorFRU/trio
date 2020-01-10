@@ -1,3 +1,7 @@
+:root {
+    --light-grey: #e8e8e8;
+}
+
 html,
 body {
     background-color: #fff;
@@ -19,6 +23,10 @@ li {
 
 a {
     text-decoration: none;
+}
+
+.bg-light-grey {
+    background: var(--light-grey);
 }
 
 .logo__body {
@@ -942,7 +950,7 @@ transition: 0.3s;
 }*/
 
 section.categories {
-    background: #e8e8e8;
+    background: var(--light-grey);
     /* background-image: linear-gradient(45deg, #6d4a4a, #633838); */
     color: #eee;
     padding: 10px 0;
@@ -1060,8 +1068,14 @@ section.products,
     padding-top: 140px;
     position: relative;
     transition: 0.3s;
-    /* background: #e8e8e8; */
+    /* background: var(--light-grey); */
+}
+
+section.products,
+section.product {
+    /* background: var(--light-grey); */
     padding-bottom: 60px;
+    padding-top: 60px;
 }
 
 section.products .products__category {
@@ -1128,9 +1142,9 @@ section.products .products__cards {
 section.products .products__cards .products__card {
     width: 230px;
     background: #fff;
-    margin: 0 5px 30px;
+    margin: 0 0 30px;
     height: 400px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     padding-bottom: 40px;
     position: relative;
@@ -1139,10 +1153,11 @@ section.products .products__cards .products__card {
 section.products .products__cards .products__card:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
     transition: 0.3s;
+    z-index: 1;
 }
 
 section.products .products__cards .products__card .products__card__image {
-    width: 100%;
+    /* width: 100%; */
     height: 230px;
     overflow: hidden;
     position: relative;
@@ -1191,7 +1206,7 @@ section.products .products__cards .products__card .products__card__info .product
 
 .products__card .products__card__price {
     position: absolute;
-    bottom: -20px;
+    bottom: 0;
     left: 0;
     width: 100%;
     text-align: center;
@@ -1207,7 +1222,7 @@ section.products .products__cards .products__card .products__card__info .product
 
 .products__card__price__new .value {
     font-size: 24px;
-    font-weight: bold;
+    /* font-weight: bold; */
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 
@@ -1235,7 +1250,7 @@ section.products .products__cards .products__card .products__card__info .product
 
 .products__card .products__card__buttons {
     position: absolute;
-    bottom: -121px;
+    bottom: -101px;
     left: 0;
     background: #fff;
     border-top: 0;
@@ -1370,6 +1385,7 @@ footer .footer_content a {
 .modal_oneclick {
     right: -500px;
     transition: 0.3s ease;
+    z-index: 10;
 }
 
 .modal_send_question {
@@ -1469,7 +1485,7 @@ footer .footer_content a {
 }
 
 .grey_card_global {
-    background: #e8e8e8;
+    background: var(--light-grey);
 }
 
 section.product .product__card {}
@@ -1630,6 +1646,10 @@ section.product .product__images .product__mainimage {
     font-size: 20px;
 }
 
+.product__subtitle {
+    margin: 20px 0 40px -15px;
+}
+
 .product__title .product__maininfo__add {
     color: #a1a1a1;
     margin-top: 15px;
@@ -1723,6 +1743,7 @@ section.product .product__images .product__mainimage {
 
 .recomended_products {
     overflow: hidden;
+    margin: 70px auto;
 }
 
 .recomended_products__slider {

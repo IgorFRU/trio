@@ -18,12 +18,12 @@
         @slot('active') {{ $product->product }} @endslot
     @endcomponent 
 </section>
-<section class="product wrap">
-    <div class="white_box p10">
+<section class="product bg-light-grey">
+    <div class="wrap">
+    <div class="white_card_global p10">
         <div class="col-lg-12 row">
-            <div class="col-lg-12">
-                <h1 class="col-lg-12">{{ $product->product }} @isset($product->scu) (арт.: {{$product->scu}}) @endisset @isset($product->category->category)  - {{ $product->category->category }} @endisset @isset($product->manufacture->manufacture)  {{ $product->manufacture->manufacture }} @endisset</h1>
-                <div class="col-lg-12 product__subtitle d-flex justify-content-start">
+                <h1>{{ $product->product }} @isset($product->scu) (арт.: {{$product->scu}}) @endisset @isset($product->category->category)  - {{ $product->category->category }} @endisset @isset($product->manufacture->manufacture)  {{ $product->manufacture->manufacture }} @endisset</h1>
+                <div class="col-lg-12 row product__subtitle">
                     @isset($product->autoscu)
                         <span class="product_card__content__category">внутренний артикул: {{ $product->autoscu ?? '' }}</span>
                     @endisset
@@ -34,7 +34,6 @@
                         <span class="product_card__content__manufacture"> | <a href="{{ route('manufacture', $product->manufacture->slug) }}">{{ $product->manufacture->manufacture ?? '' }}</a></span>             
                     @endisset
                 </div>
-            </div>
             <div class="product__images col-lg-4 row">
                 @if (isset($product->images))
                     @if (count($product->images) > 1)
@@ -117,79 +116,77 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <div class="properties_prices col-lg-12 row">
-                    {{-- @php
-                        dd($product->category->property);
-                    @endphp --}}
-                    
-                    
-                    
-                    {{-- @php
-                        dd($product->category->property)
-                    @endphp --}}
-                    <div class="product__properties color_l_grey col-lg-5">
-                        @isset($product->delivery_time)
-                            <div class="italic" style="display: block;"><i class="far fa-calendar-alt"></i> срок поставки: {{ $product->delivery_time }}</div>
-                        @endisset
-                        @isset($product->category->property)
-                        <div>
-                            @foreach ($product->category->property as $property)
-                                @if (isset($property->property) && isset($propertyvalues[$property->id]))
-                                    <div class="product__property d-flex justify-content-between">
-                                        <span class="product__property__title">{{ $property->property }}</span> <span>{{ $propertyvalues[$property->id] ?? '' }}</span>
+                <div class="properties_prices col-lg-12"> 
+                        <div class="product__price__value price">
+                            <div class="price_top">
+                                <div class="price__title">
+                                    <span class="price__title__word">Цена:</span>
+                                    <span class="products__card__price__old"> @if ($product->actually_discount)
+                                        {{ $product->old_price }}
+                                    @endif </span>
+                                    <div class="products__card__price__new">
+                                            <div>
+                                                <span class="value">     
+                                                    {{ $product->discount_price }}
+                                                </span>
+                                                <i class="fa fa-rub"></i>
+                                            </div>
+                
+                                            <div class="products__card__price__new__package">
+                                                <div class="active" data-price="{{ $product->discount_price }}"> за 1 {{ $product->unit->unit ?? 'ед.' }}</div>
+                                                @if ($product->unit_in_package)
+                                                <div data-price="{{ round($product->discount_price * $product->unit_in_package, 2) }}"> за 1 уп. ({{ round($product->unit_in_package, 3) }} {{ $product->unit->unit ?? 'ед.' }})</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="products__card__buttons">
+                                            <div class="products__card__buttons__input">
+                                                <input type="text" name="count" id="count" 
+                                                data-price="{{ round($product->discount_price * $product->unit_in_package, 2) }}" 
+                                                data-count="{{ round($product->unit_in_package, 2) }}"
+                                                data-countpackage="1"
+                                                @if($product->packaging) value={{ round($product->unit_in_package, 2) }} {{ $product->unit->unit ?? 'ед.' }} @endif >
+                                                <span class="plus"><i class="fa fa-plus"></i></span>
+                                                <span class="minus"><i class="fa fa-minus"></i></span>
+                                            </div>
+                                            <div class="for_payment">
+                                                к оплате: <span>{{ round($product->discount_price * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
+                                            </div>
+                                            <div class="buttons">
+                                                <div class="one_click">Купить в 1 клик</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                @endif
+                                <div class="price__selector">
+    
+                                </div>
                                 
-                            @endforeach
+                                
+                            </div>
                         </div>
-                        @endisset
-                        <p>{{ $product->short_description ?? '' }}</p>
-                    </div>
-
-                    
-                    
-                    <div class="product__prices col-lg-7">
-                        <div class="product__price__value">
-                            Цена: @if ($product->actually_discount)
-                            @php
-                                $new_price_unit = $product->discount_price;
-                            @endphp
-                                <span class="product__prices__old">{{ $product->price_number }}</span><span id="price" class="product__prices__new new_price"> {{ number_format($new_price_unit, 2, ',', ' ') }} </span><i class="fas fa-ruble-sign"></i>
-                            @else
-                                <span id="price" class="product__prices__new  new_price"> {{ $product->price_number }} </span><i class="fas fa-ruble-sign"></i>
-                            @endif
-                            за 1 {{ $product->unit->unit ?? 'ед.' }}
-                        </div>
-                        {{-- @php
-                        dd($product->price);
-                    @endphp --}}
-                        @if($product->packaging)
-                        <div class="product__price__value__package">
-                            Цена: @if ($product->actually_discount)
-                                <span class="product__prices__old">{{ number_format($product->price * $product->unit_in_package, 2, ',', ' ') }}</span><span class="product__prices__new new_price"> {{ number_format($product->discount_price * $product->unit_in_package, 2, ',', ' ') }} </span><i class="fas fa-ruble-sign"></i>
-                            @else
-                                <span class="product__prices__new  new_price"> {{ number_format($product->price * $product->unit_in_package, 2, ',', ' ') }} </span><i class="fas fa-ruble-sign"></i>
-                            @endif
-                            за 1 уп. ({{ $product->unit_number ?? '' }} {{ $product->unit->unit ?? '' }})
-                        </div>   
-                        @endif
-                        <div class="product__input_units">
-                            Кол-во {{ $product->unit->unit ?? 'ед.' }}:
-                            <span class="product__input_units_minus"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
-                            <input type="text" name="product__input_units" id="product__input_units" data-package="{{ $product->unit_in_package ?? 1 }}" value="@if ($product->packaging && isset($product->unit_in_package)){{ number_format($product->unit_in_package, 3, ',', '') }}@else 1 @endif"> 
-                            <span class="product__input_units_plus"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
-                                (упаковок: <span class="count_package">1</span>)
-                        </div>
-                        <div class="product__result_price">
-                            <span>Итого: </span>
-                            <div></div>
-                            <i class="fas fa-ruble-sign"></i>
-                            <span class='to_cart btn btn-primary' data-product="{{ $product->id }}"><i class="fas fa-shopping-cart"></i> купить</span>
-                        </div>
-                    </div>
                 </div>
             </div>
             
+        </div>
+        <div class="col-lg-12">
+            <div class="product__properties color_l_grey col-lg-5">
+                @isset($product->delivery_time)
+                    <div class="italic" style="display: block;"><i class="far fa-calendar-alt"></i> срок поставки: {{ $product->delivery_time }}</div>
+                @endisset
+                @isset($product->category->property)
+                <div>
+                    @foreach ($product->category->property as $property)
+                        @if (isset($property->property) && isset($propertyvalues[$property->id]))
+                            <div class="product__property d-flex justify-content-between">
+                                <span class="product__property__title">{{ $property->property }}</span> <span>{{ $propertyvalues[$property->id] ?? '' }}</span>
+                            </div>
+                        @endif
+                        
+                    @endforeach
+                </div>
+                @endisset
+                <p>{{ $product->short_description ?? '' }}</p>
+            </div>
         </div>
         @isset($product->description)
         <hr>
@@ -199,8 +196,26 @@
         @endisset
         
     </div>
+</div>
 </section>
     
-    
+<div class="modal_oneclick">
+    <div class="modal_oneclick__header">
+        Быстрый заказ
+        <div class="modal_oneclick__header__close">
+
+        </div>
+    </div>
+    <form id="modal_oneclick">
+        <input type="text" id="modal_oneclick_name" name="name" placeholder="Имя" required>
+        <input type="text" id="modal_oneclick_phone" name="phone" placeholder="Номер телефона" required>
+        <input type="text" id="modal_oneclick_quantity" name="quantity" placeholder="Количество" readonly>
+        <input type="text" id="modal_oneclick_price" name="price" placeholder="Сумма заказа" readonly>
+        
+        <input type="hidden" id="modal_oneclick_product" name="product">
+        <input type="hidden" id="modal_oneclick_url" name="url">
+        <div id="modal_oneclick_btn">Отправить</div>
+    </form>
+</div>
       
 @endsection

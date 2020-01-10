@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
+
+use App\MyClasses\Cbr;
+
 class Product extends Model
 {
     protected $fillable = [
@@ -170,26 +173,51 @@ class Product extends Model
         }        
     }
 
-    public function getDiscountPriceAttribute($value) {
+    public function getDiscountPriceAttribute($value) {        
+        if ($this->currency->to_update) {
+            $currencyrates = Cbr::getAssociate();
+            $price = self::floatToInt($this->price * $currencyrates[$this->currency->id]);
+        }
+        else {
+            $price = self::floatToInt($this->price);
+        }
         if ($this->discount->type == '%') {
-            if ($this->price * $this->discount->numeral <= 0) {
+            if ($price * $this->discount->numeral <= 0) {
                 return 0.01;
             } else {
-                return $this->price * $this->discount->numeral;
+                return round($price * $this->discount->numeral, 2);
             }            
         }
         else if ($this->discount->type == 'rub') {
-            if ($this->price - $this->discount->value <= 0) {
+            if ($price - $this->discount->value <= 0) {
                 return 0.01;
             } else {
-                return $this->price - $this->discount->value;
+                return round($price - $this->discount->value, 2);
             }
-            
-            
         }      
+    }
+
+    public function getOldPriceAttribute($value) {        
+        if ($this->currency->to_update) {
+            $currencyrates = Cbr::getAssociate();
+            return self::floatToInt($this->price * $currencyrates[$this->currency->id]);
+        }
+        else {
+            return self::floatToInt($this->price);
+        }
     }
 
     public function getNumberAttribute() {
         return number_format($this, 2, ',', ' ');
     }
+
+    public function floatToInt($number) { 
+        $floor = floor($number);
+        if ($number == $floor) { 
+            return number_format($number, 0, '.', ''); 
+        }
+        else {
+            return number_format(round($number, 2), 2, '.', '');
+        } 
+    } 
 }

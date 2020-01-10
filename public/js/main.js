@@ -91,12 +91,25 @@ $(document).ready(function() {
         });
     });
 
+    /**
+     * Удаление всплывающего окна заказа товара, если его цена = 0
+     */
     var salePackage2 = document.querySelectorAll('.products__card__price__new__package');
     salePackage2.forEach(function(btn, i) {
+        const priceValue = btn.parentNode.parentNode.querySelector('.value').innerText;
         if (btn.querySelectorAll('div').length < 2) {
             btn.parentNode.parentNode.parentNode.querySelector('.products__card__buttons').remove();
         }
+        if (priceValue <= 0) {
+            btn.parentNode.parentNode.parentNode.querySelector('.products__card__buttons').remove();
+            if (priceValue < 0) {
+                btn.parentNode.parentNode.querySelector('.value').innerText = 0;
+            }
+        }
     });
+
+
+
 
     // var priceInInput = document.querySelectorAll('.products__card__buttons__input > input');
     // console.log(priceInInput);
@@ -108,10 +121,11 @@ $(document).ready(function() {
     pricePlus.forEach(function(plus, i) {
         const countInInput = plus.parentNode.parentNode.querySelector('.products__card__buttons__input > input');
         const forPayment = plus.parentNode.parentNode.querySelector('.for_payment > span');
+        const unit = forPayment.getAttribute('data-unit');
         plus.addEventListener('click', () => {
             let count = countInInput.dataset.countpackage;
             count++;
-            countInInput.value = Math.round(countInInput.dataset.count * count * 100) / 100 + ' м.кв.';
+            countInInput.value = Math.round(countInInput.dataset.count * count * 100) / 100 + ' ' + unit;
             countInInput.dataset.countpackage = count;
             forPayment.innerText = (Math.round(count * countInInput.dataset.price * 100) / 100).toLocaleString('ru');
 
@@ -122,12 +136,13 @@ $(document).ready(function() {
     priceMinus.forEach(function(minus, i) {
         const countInInput = minus.parentNode.querySelector('.products__card__buttons__input > input');
         const forPayment = minus.parentNode.parentNode.querySelector('.for_payment > span');
+        const unit = forPayment.getAttribute('data-unit');
         minus.addEventListener('click', () => {
             let count = countInInput.dataset.countpackage;
             if (count > 1) {
                 count--;
                 countInInput.dataset.countpackage = count;
-                countInInput.value = Math.round(countInInput.dataset.count * count * 100) / 100 + ' м.кв.';
+                countInInput.value = Math.round(countInInput.dataset.count * count * 100) / 100 + ' ' + unit;
                 forPayment.innerText = (Math.round(count * countInInput.dataset.price * 100) / 100).toLocaleString('ru');
             }
         });
@@ -184,24 +199,30 @@ $(document).ready(function() {
 
     var otherProductImagesPosition = 0;
     var step = 0;
-    otherProductImageDown.addEventListener('click', () => {
-        otherProductImagesPosition -= 75;
-        step++;
-        otherProductImagesContainer.style.top = otherProductImagesPosition + 'px';
-        otherProductImageUp.style.display = 'block';
-        if (otherProductImagesSize - step == 4) {
-            otherProductImageDown.style.display = 'none';
-        }
-    });
-    otherProductImageUp.addEventListener('click', () => {
-        otherProductImagesPosition += 75;
-        step--;
-        otherProductImagesContainer.style.top = otherProductImagesPosition + 'px';
-        otherProductImageDown.style.display = 'block';
-        if (step == 0) {
-            otherProductImageUp.style.display = 'none';
-        }
-    });
+
+    if (otherProductImageDown != null) {
+        otherProductImageDown.addEventListener('click', () => {
+            otherProductImagesPosition -= 75;
+            step++;
+            otherProductImagesContainer.style.top = otherProductImagesPosition + 'px';
+            otherProductImageUp.style.display = 'block';
+            if (otherProductImagesSize - step == 4) {
+                otherProductImageDown.style.display = 'none';
+            }
+        });
+    }
+
+    if (otherProductImageUp != null) {
+        otherProductImageUp.addEventListener('click', () => {
+            otherProductImagesPosition += 75;
+            step--;
+            otherProductImagesContainer.style.top = otherProductImagesPosition + 'px';
+            otherProductImageDown.style.display = 'block';
+            if (step == 0) {
+                otherProductImageUp.style.display = 'none';
+            }
+        });
+    }
     //Конец
     //-----------------------------------------  
 });
