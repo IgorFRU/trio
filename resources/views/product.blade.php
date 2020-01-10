@@ -25,16 +25,16 @@
                 <h1>{{ $product->product }} @isset($product->scu) (арт.: {{$product->scu}}) @endisset @isset($product->category->category)  - {{ $product->category->category }} @endisset @isset($product->manufacture->manufacture)  {{ $product->manufacture->manufacture }} @endisset</h1>
                 <div class="col-lg-12 row product__subtitle">
                     @isset($product->autoscu)
-                        <span class="product_card__content__category">внутренний артикул: {{ $product->autoscu ?? '' }}</span>
+                        <span class="product_card__content__category">артикул: <span class="c-black">{{ $product->autoscu ?? '' }} @isset($product->scu) ({{ $product->scu }}) @endisset </span></span>
                     @endisset
                     @isset($product->category->slug)
-                        <span class="product_card__content__category"> | <a href="{{ route('category', $product->category->slug) }}">{{ $product->category->category ?? '' }}</a></span>
+                        <span class="product_card__content__category"> | категория: <a href="{{ route('category', $product->category->slug) }}"><span class="c-black">{{ $product->category->category ?? '' }}</span></a></span>
                     @endisset
                     @isset($product->manufacture->slug)
-                        <span class="product_card__content__manufacture"> | <a href="{{ route('manufacture', $product->manufacture->slug) }}">{{ $product->manufacture->manufacture ?? '' }}</a></span>             
+                        <span class="product_card__content__manufacture"> | производитель: <a href="{{ route('manufacture', $product->manufacture->slug) }}"><span class="c-black">{{ $product->manufacture->manufacture ?? '' }}</span></a></span>             
                     @endisset
                 </div>
-            <div class="product__images col-lg-4 row">
+            <div class="product__images col-lg-5 row">
                 @if (isset($product->images))
                     @if (count($product->images) > 1)
                         <div class="product__images__many">
@@ -115,55 +115,58 @@
                     
                 </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <div class="properties_prices col-lg-12"> 
                         <div class="product__price__value price">
                             <div class="price_top">
                                 <div class="price__title">
-                                    <span class="price__title__word">Цена:</span>
-                                    <span class="products__card__price__old"> @if ($product->actually_discount)
-                                        {{ $product->old_price }}
-                                    @endif </span>
-                                    <div class="products__card__price__new">
-                                            <div>
-                                                <span class="value">     
-                                                    {{ $product->discount_price }}
-                                                </span>
-                                                <i class="fa fa-rub"></i>
+                                    <div class="normal_price">
+                                        Цена: @if ($product->actually_discount)
+                                            <span class="price_value product_price_value">{{ $product->discount_price }} </span>
+                                            <i class="fa fa-rub"></i>
+                                            <div class="old_price_value product_old_price_value">
+                                                {{ $product->old_price }}
+                                                <span class="old_price_tooltip btn text-dark bg-warning btn-sm">экономия <span class="price_value">{{ $product->old_price - $product->discount_price }} руб.</span></span>
                                             </div>
-                
-                                            <div class="products__card__price__new__package">
-                                                <div class="active" data-price="{{ $product->discount_price }}"> за 1 {{ $product->unit->unit ?? 'ед.' }}</div>
-                                                @if ($product->unit_in_package)
-                                                <div data-price="{{ round($product->discount_price * $product->unit_in_package, 2) }}"> за 1 уп. ({{ round($product->unit_in_package, 3) }} {{ $product->unit->unit ?? 'ед.' }})</div>
-                                                @endif
-                                            </div>
+                                            
+                                            (за 1 {{$product->unit->unit ?? 'ед.' }})
+                                        @else
+                                            <span class="price_value product_price_value">{{ $product->old_price }} </span>
+                                            <i class="fa fa-rub"></i>             
+                                            (за 1 {{$product->unit->unit ?? 'ед.' }})
+                                        @endif
+                                    </div>
+                                    @if ($product->packaging)
+                                        Цена за 1 упаковку ({{ round($product->unit_in_package, 3) ?? '-' }} {{$product->unit->unit ?? 'ед.' }})
+                                        <div class="bg-light product_package_price_value">
+                                            <span class="price_value bold">{{ $product->package_price }}</span>
+                                            <i class="fa fa-rub"></i>
                                         </div>
-                                        <div class="products__card__buttons">
-                                            <div class="products__card__buttons__input">
-                                                <input type="text" name="count" id="count" 
-                                                data-price="{{ round($product->discount_price * $product->unit_in_package, 2) }}" 
-                                                data-count="{{ round($product->unit_in_package, 2) }}"
-                                                data-countpackage="1"
-                                                @if($product->packaging) value={{ round($product->unit_in_package, 2) }} {{ $product->unit->unit ?? 'ед.' }} @endif >
-                                                <span class="plus"><i class="fa fa-plus"></i></span>
-                                                <span class="minus"><i class="fa fa-minus"></i></span>
-                                            </div>
-                                            <div class="for_payment">
-                                                к оплате: <span>{{ round($product->discount_price * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
-                                            </div>
-                                            <div class="buttons">
-                                                <div class="one_click">Купить в 1 клик</div>
-                                            </div>
+                                    @endif
+
+                                    <div class="products__card__buttons">
+                                        <div class="products__card__buttons__input">
+                                            <span class="minus"><i class="fa fa-minus"></i></span>
+                                            <input type="text" name="count" id="count" 
+                                            data-price="{{ round($product->discount_price * $product->unit_in_package, 2) }}" 
+                                            data-count="{{ round($product->unit_in_package, 2) }}"
+                                            data-countpackage="1"
+                                            @if($product->packaging) value="{{ round($product->unit_in_package, 2) }} {{ $product->unit->unit ?? 'ед.' }}" @endif >
+                                            <span class="plus"><i class="fa fa-plus"></i></span>
+                                        </div>
+                                        <div class="for_payment">
+                                            к оплате: <span data-unit="{{ $product->unit->unit ?? 'ед.' }}">{{ round($product->discount_price * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
+                                        </div>
+                                        <div class="buttons">
+                                            <div class="one_click btn">Купить в 1 клик</div>
                                         </div>
                                     </div>
-                                <div class="price__selector">
-    
                                 </div>
-                                
-                                
+                            <div class="price__selector">
+
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
             

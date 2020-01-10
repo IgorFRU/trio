@@ -1,5 +1,6 @@
 :root {
     --light-grey: #e8e8e8;
+    --dark-grey: #333;
 }
 
 html,
@@ -27,6 +28,14 @@ a {
 
 .bg-light-grey {
     background: var(--light-grey);
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.c-black {
+    color: #000;;
 }
 
 .logo__body {
@@ -1216,6 +1225,44 @@ section.products .products__cards .products__card .products__card__info .product
     color: #fff;
 }
 
+.product_price_value {
+    color: var(--dark-grey);
+    font-weight: bold;
+    font-size: 24px;
+    padding: 0 0 0 10px;
+}
+
+.product_old_price_value {
+    font-weight: bold;
+    font-size: 16px;
+    padding: 0 10px 0 10px;
+    text-decoration: line-through;
+    display: inline-block;
+    position: relative;
+}
+
+.product_old_price_value:hover .old_price_tooltip {
+    display: block;
+}
+
+.product_old_price_value .old_price_tooltip {
+    position: absolute;
+    top: -45px;
+    right: -50%;
+    display: none;
+}
+
+.product_package_price_value {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin: 20px 10px;
+}
+
+.product_package_price_value .price_value {
+    color: #333;
+}
+
 .products__card__info .products__card__title a {
     color: #12506f;
 }
@@ -1719,6 +1766,7 @@ section.product .product__images .product__mainimage {
     font-family: sans-serif;
     color: #636b6f;
     font-size: 18px;
+    text-align: center;
 }
 
 .price_top .price__title .products__card__buttons .for_payment {

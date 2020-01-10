@@ -181,20 +181,24 @@ class Product extends Model
         else {
             $price = self::floatToInt($this->price);
         }
-        if ($this->discount->type == '%') {
-            if ($price * $this->discount->numeral <= 0) {
-                return 0.01;
-            } else {
-                return round($price * $this->discount->numeral, 2);
-            }            
-        }
-        else if ($this->discount->type == 'rub') {
-            if ($price - $this->discount->value <= 0) {
-                return 0.01;
-            } else {
-                return round($price - $this->discount->value, 2);
+        if ($this->discount) {
+            if ($this->discount->type == '%') {
+                if ($price * $this->discount->numeral <= 0) {
+                    return 0.01;
+                } else {
+                    return round($price * $this->discount->numeral, 2);
+                }            
             }
-        }      
+            else if ($this->discount->type == 'rub') {
+                if ($price - $this->discount->value <= 0) {
+                    return 0.01;
+                } else {
+                    return round($price - $this->discount->value, 2);
+                }
+            }
+        } else {
+            return $price;
+        }
     }
 
     public function getOldPriceAttribute($value) {        
@@ -205,6 +209,15 @@ class Product extends Model
         else {
             return self::floatToInt($this->price);
         }
+    }
+
+    public function getPackagePriceAttribute($value) {
+        if ($this->packaging) {
+            return self::floatToInt($this->discount_price * $this->unit_in_package);
+        } else {
+            return $this->discount_price;
+        }
+        
     }
 
     public function getNumberAttribute() {

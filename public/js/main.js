@@ -80,7 +80,7 @@ $(document).ready(function() {
     salePackage.forEach(function(btn, i) {
         btn.addEventListener('click', () => {
             const oldPrice = btn.parentNode.children;
-            const showPriceValue = btn.parentNode.parentNode.querySelector('div > span.value');
+            const showPriceValue = btn.parentNode.parentNode.querySelector('div > span.price_value');
 
             for (let i = 0; i < oldPrice.length; i++) {
                 oldPrice[i].classList.remove('active');
@@ -96,14 +96,14 @@ $(document).ready(function() {
      */
     var salePackage2 = document.querySelectorAll('.products__card__price__new__package');
     salePackage2.forEach(function(btn, i) {
-        const priceValue = btn.parentNode.parentNode.querySelector('.value').innerText;
+        const priceValue = btn.parentNode.parentNode.querySelector('.price_value').innerText;
         if (btn.querySelectorAll('div').length < 2) {
             btn.parentNode.parentNode.parentNode.querySelector('.products__card__buttons').remove();
         }
         if (priceValue <= 0) {
             btn.parentNode.parentNode.parentNode.querySelector('.products__card__buttons').remove();
             if (priceValue < 0) {
-                btn.parentNode.parentNode.querySelector('.value').innerText = 0;
+                btn.parentNode.parentNode.querySelector('.price_value').innerText = 0;
             }
         }
     });
@@ -166,6 +166,16 @@ $(document).ready(function() {
         });
 
     });
+
+    /** Formatting price */
+    (function() {
+        let priceValues = document.querySelectorAll('.price_value');
+        priceValues.forEach(element => {
+            element.innerText = (Math.round(element.innerText * 100) / 100).toLocaleString('ru');
+
+            
+        });
+    }());
 
     $('.help_btn').click(function() {
         $('.modal_send_question').addClass("active");

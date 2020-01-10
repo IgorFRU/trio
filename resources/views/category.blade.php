@@ -99,7 +99,7 @@
                             </span>
                             <div class="products__card__price__new">
                                 <div>
-                                    <span class="value">
+                                    <span class="price_value">
                                         @if ($product->currency->to_update)
                                             @php
                                                 $oneUnit = floatToInt($product->price * $currencyrates[$product->currency->id]);
@@ -136,7 +136,7 @@
                                 <span class="minus"><i class="fa fa-minus"></i></span>
                             </div>
                             <div class="for_payment">
-                                к оплате: <span data-unit="{{ $product->unit->unit ?? 'ед.' }}">@php echo (round($oneUnitNumeric * $product->unit_in_package, 2)); @endphp</span> <i class="fa fa-rub"></i>
+                                к оплате: <span data-unit="{{ $product->unit->unit ?? 'ед.' }}"> {{ round($oneUnitNumeric * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
                             </div>
                             <div class="buttons">
                                 <div class="buy">В корзину</div>
