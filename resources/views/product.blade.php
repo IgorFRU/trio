@@ -84,30 +84,30 @@
                 <div class="product_superiorities">
                     @if($product->pay_online)
                         <div class="product_superiority">
-                            <span class="product_superiority__left l-green">
+                            <span class="product_superiority__left">
                                 <i class="fas fa-credit-card"></i>
                             </span>
-                            <span class="product_superiority__right m-green">
-                                Этот товар можно оплатить онлайн
+                            <span class="product_superiority__right">
+                                Можно оплатить онлайн
                             </span>
                         </div>
                     @endif                    
                     @if($product->sample)
                         <div class="product_superiority">
-                            <span class="product_superiority__left l-green">
+                            <span class="product_superiority__left">
                                 <i class="fas fa-eye"></i>
                             </span>
-                            <span class="product_superiority__right m-green">
-                                В магазине есть образец товара
+                            <span class="product_superiority__right">
+                                В магазине есть образец
                             </span>
                         </div>
                     @endif
                     @if($product->actually_discount)
                         <div class="product_superiority">
-                            <span class="product_superiority__left l-red">
+                            <span class="product_superiority__left">
                                 <i class="fas fa-percentage"></i>
                             </span>
-                            <span class="product_superiority__right m-red">
+                            <span class="product_superiority__right">
                                 Акция до {{ $product->discount->d_m_y }}
                             </span>
                         </div>
@@ -115,20 +115,25 @@
                     
                 </div>
             </div>
-            <div class="col-lg-7">
+            <div class="col-lg-4">
                 <div class="properties_prices col-lg-12"> 
                         <div class="product__price__value price">
                             <div class="price_top">
                                 <div class="price__title">
                                     <div class="normal_price">
+                                        @if ($product->actually_discount)
+                                            <div>
+                                                <div class="old_price_tooltip text-light bg-danger btn-sm disabled" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ $product->discount->d_m_y ?? '' }}">
+                                                    - <span class="price_value" >{{ $product->discount->value ?? '--' }}</span> {{ $product->discount->rus_type ?? '--' }}
+                                                </div>
+                                            </div>
+                                        @endif
                                         Цена: @if ($product->actually_discount)
                                             <span class="price_value product_price_value">{{ $product->discount_price }} </span>
                                             <i class="fa fa-rub"></i>
-                                            <div class="old_price_value product_old_price_value">
+                                            <div class="old_price_value product_old_price_value price_value">
                                                 {{ $product->old_price }}
-                                                <span class="old_price_tooltip btn text-dark bg-warning btn-sm">экономия <span class="price_value">{{ $product->old_price - $product->discount_price }} руб.</span></span>
                                             </div>
-                                            
                                             (за 1 {{$product->unit->unit ?? 'ед.' }})
                                         @else
                                             <span class="price_value product_price_value">{{ $product->old_price }} </span>
@@ -155,7 +160,7 @@
                                             <span class="plus"><i class="fa fa-plus"></i></span>
                                         </div>
                                         <div class="for_payment">
-                                            к оплате: <span data-unit="{{ $product->unit->unit ?? 'ед.' }}">{{ round($product->discount_price * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
+                                            к оплате: <span class="price_value" data-unit="{{ $product->unit->unit ?? 'ед.' }}">{{ round($product->discount_price * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
                                         </div>
                                         <div class="buttons">
                                             <div class="one_click btn">Купить в 1 клик</div>
@@ -170,18 +175,19 @@
                 </div>
             </div>
             
-        </div>
-        <div class="col-lg-12">
-            <div class="product__properties color_l_grey col-lg-5">
+        <div class="col-lg-3 product_properties">
                 @isset($product->delivery_time)
-                    <div class="italic" style="display: block;"><i class="far fa-calendar-alt"></i> срок поставки: {{ $product->delivery_time }}</div>
+                    <div class="italic product_properties__delivery" style="display: block;"><i class="far fa-calendar-alt"></i> срок поставки: {{ $product->delivery_time }}</div>
                 @endisset
                 @isset($product->category->property)
                 <div>
+                    @isset($product->category->property)
+                        <h5>Характеристики</h5>
+                    @endisset
                     @foreach ($product->category->property as $property)
                         @if (isset($property->property) && isset($propertyvalues[$property->id]))
                             <div class="product__property d-flex justify-content-between">
-                                <span class="product__property__title">{{ $property->property }}</span> <span>{{ $propertyvalues[$property->id] ?? '' }}</span>
+                                <span class="product__property__title">{{ $property->property }}</span> <span  class="product__property__value">{{ $propertyvalues[$property->id] ?? '' }}</span>
                             </div>
                         @endif
                         
@@ -189,7 +195,8 @@
                 </div>
                 @endisset
                 <p>{{ $product->short_description ?? '' }}</p>
-            </div>
+        </div>
+            
         </div>
         @isset($product->description)
         <hr>

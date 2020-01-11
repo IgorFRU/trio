@@ -305,6 +305,7 @@ class MainController extends Controller
 
         $local_title = $product->product . ' - ' . $product->category->category;
         $data = array (
+            'title' => $product->product . ' ' . $product->scu . ' - Паркетный мир - Симферополь',
             'product' => $product,
             'propertyvalues' => $propertyvalues,
             'local_title' => $local_title,

@@ -84,7 +84,7 @@
                                 @if(isset($product->discount) && $product->actually_discount)
                                     @if ($product->discount->type == '%')
                                         <div class='btn-group' role="group">
-                                            <div class="btn text-light bg-success btn-sm" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ Carbon\Carbon::parse($product->discount->discount_end)->locale('ru')->isoFormat('DD MMMM YYYY', 'Do MMMM') }}"> 
+                                            <div class="btn text-light bg-success btn-sm" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ $product->discount->d_m_y ?? '' }}"> 
                                                 {{ $product->price * $product->discount->numeral }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}
                                             </div>
                                             <div class="btn text-light bg-secondary btn-sm">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
