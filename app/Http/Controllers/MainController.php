@@ -200,7 +200,7 @@ class MainController extends Controller
         $local_title = $category->category;
         // dd($products_array, $property_values, $unique_property_values, $properties);
         $data = array (
-            'title' => $category->category . ' - Паркетный мир - Симферополь',
+            'title' => $category->category . '. Купить товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
             'products' => $products,
             'category' => $category,
             'properties' => $properties,
@@ -237,6 +237,9 @@ class MainController extends Controller
 
     public function article($slug) {
         $article = Article::with('products')->where('slug', $slug)->FirstOrFail();
+        if(isset($article)) {
+            $article->increment('views', 1);
+        }
         $local_title = $article->article;
         $data = array (
             'article' => $article,
@@ -281,6 +284,7 @@ class MainController extends Controller
         $manufacture = Manufacture::where('slug', $slug)->firstOrFail();
         // dd($category);
         $data = array (
+            'title' => $manufacture->manufacture . '. Купить товары производителя ' . $manufacture->manufacture . ' - Паркетный мир (Симферополь)',
             'products' => Product::orderBy('id', 'DESC')->where('manufacture_id', $manufacture->id)->get(),
             'manufacture' => $manufacture,
         );

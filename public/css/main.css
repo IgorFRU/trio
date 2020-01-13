@@ -1007,7 +1007,7 @@ section.categories .categories__boxes .categories__boxes__category img {
     min-width: 100%;
 }
 
-section.categories .categories__boxes .categories__boxes__category p {
+section.categories .categories__boxes .categories__boxes__category > a > p {
     display: block;
     position: absolute;
     bottom: 0;
@@ -1227,9 +1227,20 @@ section.products .products__cards .products__card .products__card__info .product
     width: 100%;
     text-align: center;
     padding: 5px;
-    background: #577d90;
+    /* background: #577d90; */
     box-sizing: border-box;
-    color: #fff;
+    /* color: #fff; */
+}
+
+
+.products__card__price__old {
+    text-decoration: line-through;
+    font-weight: bold;
+}
+.products__card__price__new {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--main-blue);
 }
 
 .product_price_value {
@@ -1237,6 +1248,10 @@ section.products .products__cards .products__card .products__card__info .product
     font-weight: bold;
     font-size: 24px;
     padding: 0 0 0 10px;
+}
+
+.product_price_package_value {
+    margin-top: 20px;
 }
 
 .product_old_price_value {
@@ -1291,12 +1306,15 @@ section.products .products__cards .products__card .products__card__info .product
     display: flex;
     width: 100%;
     justify-content: space-around;
+    font-weight: normal;
+    color: var(--medium-grey);
 }
 
 .products__card__price__new__package div {
     width: 35%;
     cursor: pointer;
     font-size: 13px;
+    color: var;
 }
 
 .products__card__price__new__package div:nth-child(2) {
@@ -1306,7 +1324,8 @@ section.products .products__cards .products__card .products__card__info .product
 
 .products__card__price__new__package div.active {
     font-weight: bold;
-    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+    color: var(--main-blue);
+    /* text-shadow: 0 0 1px rgba(0, 0, 0, 0.5); */
 }
 
 .products__card .products__card__buttons {
@@ -1341,7 +1360,7 @@ section.products .products__cards .products__card .products__card__info .product
 }
 
 section.products .products__cards .products__card:hover .products__card__buttons {
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 5px rgba(0, 0, 0, 0.4);
     transform: scaleY(1);
     transition: 0.1s;
     z-index: 2;
@@ -1381,8 +1400,8 @@ section.products .products__cards .products__card:hover .products__card__buttons
 }
 
 .products__card .products__card__buttons .buttons div:last-child {
-    /* background: #577d90; */
-    background: #905757;
+    background: var(--main-blue);
+    font-weight: bold;
 }
 
 .products__card__buttons__input span {
@@ -1519,6 +1538,29 @@ footer .footer_content a {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+}
+
+.modal_oneclick__header__close::before,
+.modal_oneclick__header__close::after,
+.modal_send_question__header .modal_send_question__header__close::before,
+.modal_send_question__header .modal_send_question__header__close::after {
+    content: '';
+    width: 20px;
+    height: 2px;
+    background:#fff;
+    position: absolute;
+    left: 5px;
+    top: 14px;
+}
+
+.modal_oneclick__header__close::before,
+.modal_send_question__header .modal_send_question__header__close::before {
+    transform: rotate(45deg);
+}
+
+.modal_oneclick__header__close::after,
+.modal_send_question__header .modal_send_question__header__close::after {
+    transform: rotate(-45deg);
 }
 
 .modal_oneclick form,
@@ -1799,6 +1841,7 @@ section.product .product__images .product__mainimage {
 .price_top .price__title .products__card__price__new {
     text-align: center;
 }
+
 
 .price_top .price__title .products__card__price__new__package {
     width: 190px;

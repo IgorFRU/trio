@@ -4,10 +4,6 @@
     <!-- <script src="{{ asset('js/discount_countdown.js') }}" defer></script> -->
 @endsection
 @section('content')
-
-{{-- @php
-    dd($category->parents);
-@endphp --}}
 <section id="firstsection">
 @component('components.breadcrumb')
     @slot('main') <i class="fas fa-home"></i> @endslot
@@ -77,10 +73,12 @@
                             <div class="products__card__scu">
                                 <span class="scu">
                                     арт.: {{ $product->scu ?? ' - '}}
-                                </span>                                  
-                                <span class="manufacture">
-                                    <a href="#">{{ $product->manufacture->manufacture ?? ''}}</a>
-                                </span>
+                                </span>   
+                                @if ($product->manufacture != '' || $product->manufacture != NULL)
+                                    <span class="manufacture">
+                                        <a href="{{ route('manufacture', $product->manufacture->slug) }}"><span class="c-black">{{ $product->manufacture->manufacture ?? '' }}</span></a>
+                                    </span>
+                                @endif                                
                             </div>
                             <div class="products__card__maininfo">
                                 <div class="products__card__title">
@@ -93,34 +91,32 @@
     
                             </div>
                         </div>
-                        <div class="products__card__price">
-                            <span class="products__card__price__old">
-    
-                            </span>
+                        <div class="products__card__price">                            
+                            @if ($product->actually_discount)
+                                <span class="products__card__price__old price_value">
+                                    {{ $product->old_price }} 
+                                </span>
+                                <i class="fa fa-rub"></i>
+                                <span class="old_price_tooltip text-light bg-danger btn-sm disabled" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ $product->discount->d_m_y ?? '' }}">
+                                    - <span class="price_value" >{{ $product->discount->value ?? '--' }}</span> {{ $product->discount->rus_type ?? '--' }}
+                                </span>
+                            @endif
                             <div class="products__card__price__new">
                                 <div>
                                     <span class="price_value">
-                                        @if ($product->currency->to_update)
-                                            @php
-                                                $oneUnit = floatToInt($product->price * $currencyrates[$product->currency->id]);
-                                                $oneUnitNumeric = $oneUnit;
-                                                echo ($oneUnitNumeric);
-                                            @endphp
+                                        @if ($product->actually_discount)
+                                            {{ $product->discount_price }}
                                         @else
-                                            @php
-                                                $oneUnit = floatToInt($product->price);
-                                                $oneUnitNumeric = $oneUnit;
-                                                echo ($oneUnitNumeric);
-                                            @endphp
+                                            {{ $product->old_price }}
                                         @endif
                                     </span>
                                     <i class="fa fa-rub"></i>
                                 </div>
     
                                 <div class="products__card__price__new__package">
-                                    <div class="active" data-price="{{ $oneUnit }}"> за 1 {{ $product->unit->unit ?? 'ед.' }}</div>
+                                    <div class="active" data-price="{{ $product->discount_price ?? $product->old_price }}"> за 1 {{ $product->unit->unit ?? 'ед.' }}</div>
                                     @if ($product->packaging)
-                                    <div data-price="{{ round($oneUnitNumeric * $product->unit_in_package, 2) }}"> за 1 уп. ({{ round($product->unit_in_package, 3) }} {{ $product->unit->unit  ?? 'ед.'}})</div>
+                                    <div data-price="{{ $product->package_price }}"> за 1 уп. ({{ round($product->unit_in_package, 3) }} {{ $product->unit->unit  ?? 'ед.'}})</div>
                                     @endif
                                 </div>
                             </div>
@@ -128,7 +124,7 @@
                         <div class="products__card__buttons">
                             <div class="products__card__buttons__input">
                                 <input type="text" name="count" id="count" 
-                                data-price="{{ round($oneUnitNumeric * $product->unit_in_package, 2) }}" 
+                                data-price="{{ $product->package_price }}" 
                                 data-count="{{ round($product->unit_in_package, 2) }}"
                                 data-countpackage="1"
                                 @if($product->packaging) value="{{ round($product->unit_in_package, 2) }} {{ $product->unit->unit ?? 'ед.' }}" @endif >
@@ -136,7 +132,7 @@
                                 <span class="minus"><i class="fa fa-minus"></i></span>
                             </div>
                             <div class="for_payment">
-                                к оплате: <span data-unit="{{ $product->unit->unit ?? 'ед.' }}"> {{ round($oneUnitNumeric * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
+                                к оплате: <span class="price_value" data-unit="{{ $product->unit->unit ?? 'ед.' }}"> {{ $product->package_price }}</span> <i class="fa fa-rub"></i>
                             </div>
                             <div class="buttons">
                                 <div class="buy">В корзину</div>
@@ -157,37 +153,5 @@
     </section>
 </div>
 
-</section>
-
-    @php 
-    function floatToInt($number) { 
-        $floor = floor($number);
-        if ($number == $floor) { 
-            return number_format($number, 0, '.', ''); 
-        }
-        else {
-            return number_format(round($number, 2), 2, '.', '');
-        } 
-    } 
-    @endphp 
-    
-    <div class="modal_oneclick">
-    <div class="modal_oneclick__header">
-        Быстрый заказ
-        <div class="modal_oneclick__header__close">
-
-        </div>
-    </div>
-    <form id="modal_oneclick">
-        <input type="text" id="modal_oneclick_name" name="name" placeholder="Имя" required>
-        <input type="text" id="modal_oneclick_phone" name="phone" placeholder="Номер телефона" required>
-        <input type="text" id="modal_oneclick_quantity" name="quantity" placeholder="Количество" readonly>
-        <input type="text" id="modal_oneclick_price" name="price" placeholder="Сумма заказа" readonly>
-        
-        <input type="hidden" id="modal_oneclick_product" name="product">
-        <input type="hidden" id="modal_oneclick_url" name="url">
-        <div id="modal_oneclick_btn">Отправить</div>
-    </form>
-</div>
-      
+</section>    
 @endsection

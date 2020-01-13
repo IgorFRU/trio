@@ -85,7 +85,7 @@ $(document).ready(function() {
             for (let i = 0; i < oldPrice.length; i++) {
                 oldPrice[i].classList.remove('active');
             }
-            showPriceValue.innerText = btn.dataset.price;
+            showPriceValue.innerText = (Math.round(btn.dataset.price * 100) / 100).toLocaleString('ru');
             btn.classList.add('active');
 
         });

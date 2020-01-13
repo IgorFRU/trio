@@ -138,7 +138,7 @@
                                                 <i class="fas fa-info-circle"></i>
                                             </div>
                                             <div class="categories__boxes__category__info">
-                                                <span>{{ $category->description }}</span>
+                                                <span>{!! $category->description !!}</span>
                                             </div>
                                         @endif
                                         

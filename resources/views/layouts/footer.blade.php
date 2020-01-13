@@ -45,4 +45,22 @@
             </div>
         </div>
     </div>
+    <div class="modal_oneclick">
+        <div class="modal_oneclick__header">
+            Быстрый заказ
+            <div class="modal_oneclick__header__close">
+    
+            </div>
+        </div>
+        <form id="modal_oneclick">
+            <input type="text" id="modal_oneclick_name" name="name" placeholder="Имя" required>
+            <input type="text" id="modal_oneclick_phone" name="phone" placeholder="Номер телефона" required>
+            <input type="text" id="modal_oneclick_quantity" name="quantity" placeholder="Количество" readonly>
+            <input type="text" id="modal_oneclick_price" name="price" placeholder="Сумма заказа" readonly>
+            
+            <input type="hidden" id="modal_oneclick_product" name="product">
+            <input type="hidden" id="modal_oneclick_url" name="url">
+            <div id="modal_oneclick_btn">Отправить</div>
+        </form>
+    </div>
 </footer>

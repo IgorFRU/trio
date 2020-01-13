@@ -19,6 +19,7 @@ class CreateArticlesTable extends Migration
             $table->string('article');
             $table->text('description')->nullable();
             $table->string('image')->nullable();
+            $table->integer('views')->default(0)->unsigned();
             $table->timestamps();
         });
     }

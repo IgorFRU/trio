@@ -82,7 +82,7 @@
                     
                 @endif
                 <div class="product_superiorities">
-                    @if($product->pay_online)
+                    {{-- @if($product->pay_online)
                         <div class="product_superiority">
                             <span class="product_superiority__left">
                                 <i class="fas fa-credit-card"></i>
@@ -91,7 +91,7 @@
                                 Можно оплатить онлайн
                             </span>
                         </div>
-                    @endif                    
+                    @endif                     --}}
                     @if($product->sample)
                         <div class="product_superiority">
                             <span class="product_superiority__left">
@@ -102,7 +102,7 @@
                             </span>
                         </div>
                     @endif
-                    @if($product->actually_discount)
+                    {{-- @if($product->actually_discount)
                         <div class="product_superiority">
                             <span class="product_superiority__left">
                                 <i class="fas fa-percentage"></i>
@@ -111,7 +111,7 @@
                                 Акция до {{ $product->discount->d_m_y }}
                             </span>
                         </div>
-                    @endif
+                    @endif --}}
                     
                 </div>
             </div>
@@ -142,10 +142,12 @@
                                         @endif
                                     </div>
                                     @if ($product->packaging)
-                                        Цена за 1 упаковку ({{ round($product->unit_in_package, 3) ?? '-' }} {{$product->unit->unit ?? 'ед.' }})
-                                        <div class="bg-light product_package_price_value">
-                                            <span class="price_value bold">{{ $product->package_price }}</span>
-                                            <i class="fa fa-rub"></i>
+                                        <div class="product_price_package_value">
+                                            Цена за 1 упаковку ({{ round($product->unit_in_package, 3) ?? '-' }} {{$product->unit->unit ?? 'ед.' }}):
+                                            <div class="bg-light product_package_price_value">
+                                                <span class="price_value bold">{{ $product->package_price }}</span>
+                                                <i class="fa fa-rub"></i>
+                                            </div>
                                         </div>
                                     @endif
 
@@ -209,23 +211,6 @@
 </div>
 </section>
     
-<div class="modal_oneclick">
-    <div class="modal_oneclick__header">
-        Быстрый заказ
-        <div class="modal_oneclick__header__close">
 
-        </div>
-    </div>
-    <form id="modal_oneclick">
-        <input type="text" id="modal_oneclick_name" name="name" placeholder="Имя" required>
-        <input type="text" id="modal_oneclick_phone" name="phone" placeholder="Номер телефона" required>
-        <input type="text" id="modal_oneclick_quantity" name="quantity" placeholder="Количество" readonly>
-        <input type="text" id="modal_oneclick_price" name="price" placeholder="Сумма заказа" readonly>
-        
-        <input type="hidden" id="modal_oneclick_product" name="product">
-        <input type="hidden" id="modal_oneclick_url" name="url">
-        <div id="modal_oneclick_btn">Отправить</div>
-    </form>
-</div>
       
 @endsection

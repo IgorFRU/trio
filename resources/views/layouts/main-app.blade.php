@@ -40,7 +40,7 @@
                             <a href="#">Оплата</a>
                             <a href="#">Контакты</a>
                             <a href="{{ route('articles') }}">Статьи</a>
-                            <a href="#" class="topmenu__left__red">Акции</a>
+                            <a href="{{ route('sales') }}" class="topmenu__left__red">Акции</a>
                         </div>
 
 
