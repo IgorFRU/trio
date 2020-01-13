@@ -1,7 +1,7 @@
 <footer>
     <div class="wrap">
         <div class="footer_content">
-            <div class="footer_content__card footer_content__about">
+            {{-- <div class="footer_content__card footer_content__about">
                 <div class="footer_content__title">
                     О нас
                 </div>
@@ -13,7 +13,7 @@
                         <li><a href="#">Статьи</a></li>
                     </ul>    
                 </div>                
-            </div>
+            </div> --}}
             <div class="footer_content__card footer_content__contacts">
                 <div class="footer_content__title">
                     Контакты
@@ -31,18 +31,19 @@
                 </div>
                 <div>
                     <ul>
-                        <li><a href="#">Ламинат</a></li>
-                        <li><a href="#">Паркетная доска</a></li>
-                        <li><a href="#">Масла и воски</a></li>
-                        <li><a href="#">Инженерная доска</a></li>
+                        @forelse ($top_categories as $item)
+                            <li><a href="/catalog/{{ $item->slug }}">{{ $item->category }}</a></li>
+                        @empty
+                            
+                        @endforelse
                     </ul>
                 </div>
             </div>
-            <div class="footer_content__card footer_content__socials">
+            {{-- <div class="footer_content__card footer_content__socials">
                 <div class="footer_content__title">
                     Мы в соцсетях
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
     <div class="modal_oneclick">
@@ -53,6 +54,7 @@
             </div>
         </div>
         <form id="modal_oneclick">
+            @csrf
             <input type="text" id="modal_oneclick_name" name="name" placeholder="Имя" required>
             <input type="text" id="modal_oneclick_phone" name="phone" placeholder="Номер телефона" required>
             <input type="text" id="modal_oneclick_quantity" name="quantity" placeholder="Количество" readonly>

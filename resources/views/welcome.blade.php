@@ -43,9 +43,9 @@
                     <div class="top1__boxes">
                         @foreach ($articles as $article)
                             <div class="top1_box">
-                                <a href="{{ route('article.show', ['article' => $article->alias]) }}">
+                                <a href="{{ route('article', ['article' => $article->slug]) }}">
                                     <img src="{{asset('imgs/articles')}}/{{ $article->img }}" alt="">
-                                    <p>{{ $article->article_name }}</p>
+                                    <p>{{ $article->article }}</p>
                                 </a>
                             </div>    
                         @endforeach

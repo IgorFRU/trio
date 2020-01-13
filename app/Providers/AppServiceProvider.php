@@ -47,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
 
         self::globalData();
         self::adminMenu();
+        self::footerData();
 
 
         Category::creating(function(Category $model){
@@ -234,6 +235,27 @@ class AppServiceProvider extends ServiceProvider
                 'settings' => $settings, 
                 'menus' => Menu::orderBy('sortpriority', 'ASC')->get(),
             );
+            
+            $view->with($data);
+        });
+    }
+
+    public function footerData() {
+        View::composer('layouts.footer', function ($view){
+
+            $hour = 60;
+            
+            $top_categories = Category::orderBy('views', 'ASC')->limit(4)->get();
+
+            $data = array (
+                'top_categories' => $top_categories,
+            );
+
+            // $cbr = Cbr::get();
+
+            // Cache::put('cbr', $cbr, 600);
+
+            // $value = Cache::get('cbr');
             
             $view->with($data);
         });

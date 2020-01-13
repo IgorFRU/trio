@@ -165,7 +165,11 @@
                                             к оплате: <span class="price_value" data-unit="{{ $product->unit->unit ?? 'ед.' }}">{{ round($product->discount_price * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
                                         </div>
                                         <div class="buttons">
-                                            <div class="one_click btn">Купить в 1 клик</div>
+                                            @if ($product->discount_price > 0)
+                                                <div class="one_click btn">Купить в 1 клик</div>
+                                            @else
+                                                <div class="btn btn-warning">В данный момент этот товар нельзя приобрести</div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

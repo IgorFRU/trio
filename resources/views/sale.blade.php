@@ -4,15 +4,18 @@
     <!-- <script src="{{ asset('js/discount_countdown.js') }}" defer></script> -->
 @endsection
 @section('content')
-    
+<section id="firstsection">
 @component('components.breadcrumb')
     @slot('main') <i class="fas fa-home"></i> @endslot
     @slot('parent') Акции @endslot
         @slot('parent_route') {{ route('sales') }} @endslot   
-    @slot('active') {{ $sale->discount }} {{ $sale->value }}{{ $sale->type }} @endslot    
+    @slot('active') {{ $sale->discount }} {{ $sale->value }} {{ $sale->rus_type }} @endslot    
 @endcomponent 
-<section class="category_cards row wrap">
-    <h1 class="col-lg-12">{{ $sale->discount }} {{ $sale->value }}{{ $sale->type }}</h1>
+</section>
+<section class="bg-light-grey products">
+<div class="wrap">
+    <section class="white_card_global">   
+        <h1>{{ $sale->discount }} {{ $sale->value }} {{ $sale->rus_type }}</h1>
     {{-- <div class="discount_date p10 @if($sale->it_actuality) bg-blue @else bg-l-grey  @endif"><span>-{{ $sale->value }}{{ $sale->rus_type }}</span></div> --}}
     <div class="card_info col-lg-12 @if($sale->it_actuality) color-green  @endif">{{ $sale->start_d_m_y }} - {{ $sale->d_m_y }} @if(!$sale->it_actuality) <br>(акция закончилась!) @endif</div>
     <div>
@@ -21,78 +24,103 @@
         @if($sale->it_actuality && count($sale->product) > 0)
             <section class="col-lg-12">
                 <div class="section_title">
-                    Товары, участвующие в акции
+                    <h3>Товары, участвующие в акции</h3>
                 </div>
             
-                <div class="product_cards col-lg-12 row">
-                    @forelse ($sale->product as $product)
+                <div class="products__cards col-lg-12">
+                    @foreach ($sale->product as $product)
+                        @if ($product->published)   
                         {{-- @if (isset($checked_properties) && $product->property_active_product($checked_properties) ) --}}
-                            <div class="product_card white_box w23per">
-                                <div class="product_card__img">
-                                    <img  class="img-fluid"
-                                    @if(isset($product->images) && count($product->images) > 0)
-                                        src="{{ asset('imgs/products/thumbnails/')}}/{{ $product->main_or_first_image->thumbnail }}"
-                                        alt="{{ $product->main_or_first_image->alt }}"
-                                    @else 
-                                        src="{{ asset('imgs/nopic.png')}}"
-                                    @endif >
-                                </div>                    
-                                <div class="product_card__content p10">      
-                                    <div class="product_card__content__info">
-                                        <div class="d-flex justify-content-between">
-                                            @isset($product->category->slug)
-                                                <span class="product_card__content__category"><a href="{{ route('category', $product->category->slug) }}">{{ $product->category->category ?? '' }}</a></span>
-                                            @endisset
-                                            @isset($product->manufacture->slug)
-                                                <span class="product_card__content__manufacture"><a href="{{ route('manufacture', $product->manufacture->slug) }}">{{ $product->manufacture->manufacture ?? '' }}</a></span>             
-                                            @endisset             
+                            <div class="col-lg-3">
+                                <div class="products__card">
+                                    <div class="products__card__image">
+                                        @if (count($product->images) > 0)
+                                            <img class="normal_product_image img-fluid" src="{{ asset('imgs/products/thumbnails/')}}/{{ $product->main_or_first_image->thumbnail}}" alt="">
+                                            
+                                        @else
+                                            <img src="{{ asset('imgs/nopic.png')}}" alt="">
+                                        @endif
+                                    </div>                    
+                                    <div class="products__card__info">
+                                        <div class="products__card__scu">
+                                            <span class="scu">
+                                                арт.: {{ $product->scu ?? ' - '}}
+                                            </span>   
+                                            @if ($product->manufacture != '' || $product->manufacture != NULL)
+                                                <span class="manufacture">
+                                                    <a href="{{ route('manufacture', $product->manufacture->slug) }}"><span class="c-black">{{ $product->manufacture->manufacture ?? '' }}</span></a>
+                                                </span>
+                                            @endif                                
                                         </div>
-                                        {{-- <span class="product_inner_scu">артикул: {{ $product->autoscu }}</span> --}}
-                                    </div>
-                                        
-                                    @if(isset($product->category->slug))
-                                        <h5><a href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">{{ Str::limit($product->product, 30, '... ') }}</a></h5>
-                                    @else
-                                        <h5><a href="{{ route('product.without_category', $product->slug) }}">{{ Str::limit($product->product, 30, '... ') }}</a></h5>
-                                    @endif
-                                    
-                                    <div class="short_description">{{ $product->short_description ?? '' }}</div>
-                                    <div class="prices row lg-12 d-flex justify-content-between">
-                                        <div class=" d-flex">
-                                            @if(isset($product->discount) && $product->actually_discount)
-                                                <div class="old_price">{{ number_format($product->price, 2, ',', ' ') }}</div>
-                                                <div class="new_price">
-                                                @if ($product->discount->type == '%')
-                                                    {{ number_format($product->price * $product->discount->numeral, 2, ',', ' ') }} 
-                                                @elseif ($product->discount->type == 'rub')
-                                                    {{ number_format($product->price - $product->discount->value, 2, ',', ' ') }}
+                                        <div class="products__card__maininfo">
+                                            <div class="products__card__title">
+                                                @if($product->category->parent_id)
+                                                <h3><a href="{{ route('product.subcategory', ['category' => $product->category->category, 'subcategory' => $product->category->parent_id, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a></h3>
+                                                @else
+                                                <h3><a href="{{ route('product', ['category' => $product->category->category, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a></h3>
                                                 @endif
-                                                </div>
-                                            @else
-                                                <div class="new_price">
-                                                    {{ number_format($product->price, 2, ',', ' ') }}
-                                                    
-                                                </div>
-                                                
-                                            @endif
+                                            </div>
+                
                                         </div>
-                                            @if ($product->packaging)
-                                                <div class="unit_buttons">
-                                                    @isset($product->unit)<span class="unit_buttons__unit active" data-package="{{$product->unit_in_package ?? ''}}">1 {{ $product->unit->unit }}</span>@endisset <span class="unit_buttons__package" data-package="{{$product->unit_in_package ?? ''}}">1 уп.</span>
-                                                </div>
-                                            @endif
-                                            
-                                            
+                                    </div>
+                                    <div class="products__card__price">                            
+                                        @if ($product->actually_discount)
+                                            <span class="products__card__price__old price_value">
+                                                {{ $product->old_price }} 
+                                            </span>
+                                            <i class="fa fa-rub"></i>
+                                            <span class="old_price_tooltip text-light bg-danger btn-sm disabled" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ $product->discount->d_m_y ?? '' }}">
+                                                - <span class="price_value" >{{ $product->discount->value ?? '--' }}</span> {{ $product->discount->rus_type ?? '--' }}
+                                            </span>
+                                        @endif
+                                        <div class="products__card__price__new">
+                                            <div>
+                                                <span class="price_value">
+                                                    @if ($product->actually_discount)
+                                                        {{ $product->discount_price }}
+                                                    @else
+                                                        {{ $product->old_price }}
+                                                    @endif
+                                                </span>
+                                                <i class="fa fa-rub"></i>
+                                            </div>
+                
+                                            <div class="products__card__price__new__package">
+                                                <div class="active" data-price="{{ $product->discount_price ?? $product->old_price }}"> за 1 {{ $product->unit->unit ?? 'ед.' }}</div>
+                                                @if ($product->packaging)
+                                                <div data-price="{{ $product->package_price }}"> за 1 уп. ({{ round($product->unit_in_package, 3) }} {{ $product->unit->unit  ?? 'ед.'}})</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="products__card__buttons">
+                                        <div class="products__card__buttons__input">
+                                            <input type="text" name="count" id="count" 
+                                            data-price="{{ $product->package_price }}" 
+                                            data-count="{{ round($product->unit_in_package, 2) }}"
+                                            data-countpackage="1"
+                                            @if($product->packaging) value="{{ round($product->unit_in_package, 2) }} {{ $product->unit->unit ?? 'ед.' }}" @endif >
+                                            <span class="plus"><i class="fa fa-plus"></i></span>
+                                            <span class="minus"><i class="fa fa-minus"></i></span>
+                                        </div>
+                                        <div class="for_payment">
+                                            к оплате: <span class="price_value" data-unit="{{ $product->unit->unit ?? 'ед.' }}"> {{ $product->package_price }}</span> <i class="fa fa-rub"></i>
+                                        </div>
+                                        <div class="buttons">
+                                            <div class="buy">В корзину</div>
+                                            <div class="one_click">Купить в 1 клик</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         {{-- @endif --}}
-                    @empty
-                    @endforelse
+                        @endif
+                    @endforeach
                 </div>
             </section>
         @endif
-</section>
+    </section>
+</div>
     
     
       

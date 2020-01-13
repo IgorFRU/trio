@@ -3,6 +3,8 @@
     --medium-grey: #636b6f;
     --dark-grey: #333;
     --main-blue: #577d90;
+    --dark-green: #27642b;
+    --dark-red: #8a2f2f;
 }
 
 html,
@@ -34,6 +36,14 @@ a {
 
 .bg-main-blue {
     background: var(--main-blue);
+}
+
+.dark-green {
+    color: var(--dark-green);
+}
+
+.dark-red {
+    color: var(--dark-red);
 }
 
 .bold {
@@ -983,14 +993,16 @@ section.categories {
     padding-left: 10px;
 } */
 
-section.categories .categories__boxes {
+section.categories .categories__boxes,
+section.sub_categories .categories__boxes {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
 }
 
-section.categories .categories__boxes .categories__boxes__category {
+section.categories .categories__boxes .categories__boxes__category,
+section.sub_categories .categories__boxes .categories__boxes__category {
     width: 250px;
     height: 200px;
     overflow: hidden;
@@ -1000,14 +1012,16 @@ section.categories .categories__boxes .categories__boxes__category {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-section.categories .categories__boxes .categories__boxes__category img {
+section.categories .categories__boxes .categories__boxes__category img,
+section.sub_categories .categories__boxes .categories__boxes__category img {
     max-height: 150%;
     transform: scale(1);
     transition: 0.5s;
     min-width: 100%;
 }
 
-section.categories .categories__boxes .categories__boxes__category > a > p {
+section.categories .categories__boxes .categories__boxes__category>a>p,
+section.sub_categories .categories__boxes .categories__boxes__category>a>p {
     display: block;
     position: absolute;
     bottom: 0;
@@ -1160,27 +1174,30 @@ section.products .products__cards {
 }
 
 section.products .products__cards .products__card {
-    width: 230px;
+    /* width: 230px; */
     background: #fff;
     margin: 0 0 30px;
     height: 400px;
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     padding-bottom: 40px;
     position: relative;
+    border-radius: 0.25rem;
 }
 
 section.products .products__cards .products__card:hover {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
     transition: 0.3s;
     z-index: 1;
+    border-radius: 0.25rem 0.25rem 0 0;
 }
 
 section.products .products__cards .products__card .products__card__image {
-    /* width: 100%; */
+    width: 100%;
     height: 230px;
     overflow: hidden;
     position: relative;
+    border-radius: 0.25rem 0.25rem 0 0;
 }
 
 .products__card__image img {
@@ -1216,6 +1233,8 @@ section.products .products__cards .products__card .products__card__info .product
 section.products .products__cards .products__card .products__card__info .products__card__title h3 {
     font-weight: normal;
     font-size: 1.1rem;
+    max-height: 60px;
+    overflow: hidden;
 }
 
 .products__card__info .products__card__maininfo {}
@@ -1232,15 +1251,19 @@ section.products .products__cards .products__card .products__card__info .product
     /* color: #fff; */
 }
 
-
 .products__card__price__old {
     text-decoration: line-through;
     font-weight: bold;
 }
+
 .products__card__price__new {
     font-weight: bold;
     font-size: 1.1rem;
     color: var(--main-blue);
+}
+
+.products__card__price__new>div {
+    margin: 5px 0;
 }
 
 .product_price_value {
@@ -1293,7 +1316,7 @@ section.products .products__cards .products__card .products__card__info .product
 }
 
 .products__card__info .products__card__title a {
-    color: #12506f;
+    /* color: #12506f; */
 }
 
 .products__card__price__new .value {
@@ -1547,7 +1570,7 @@ footer .footer_content a {
     content: '';
     width: 20px;
     height: 2px;
-    background:#fff;
+    background: #fff;
     position: absolute;
     left: 5px;
     top: 14px;
@@ -1842,7 +1865,6 @@ section.product .product__images .product__mainimage {
     text-align: center;
 }
 
-
 .price_top .price__title .products__card__price__new__package {
     width: 190px;
 }
@@ -1940,4 +1962,19 @@ section.product .product__images .product__mainimage {
 
 .about_main p {
     text-indent: 20px;
+}
+
+.card_info {}
+
+.card_info_sale_date {
+    /* font-weight: bold; */
+}
+
+.card_description {
+    margin-top: 15px;
+    color: var(--medium-grey);
+}
+
+.pagination li {
+    z-index: 0;
 }

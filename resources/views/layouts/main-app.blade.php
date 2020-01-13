@@ -35,16 +35,17 @@
                 <div class="wrap">
                     <div class="topmenu__body">
                         <div class="topmenu__left">
-                            <a href="#">О нас</a>
-                            <a href="#">Доставка</a>
-                            <a href="#">Оплата</a>
-                            <a href="#">Контакты</a>
+                            @forelse ($topmenu as $topmenu_item)
+                                <a href="{{ route('staticpage', $topmenu_item->slug) }}">{{ $topmenu_item->title }}</a>
+                            @empty
+                                
+                            @endforelse
                             <a href="{{ route('articles') }}">Статьи</a>
                             <a href="{{ route('sales') }}" class="topmenu__left__red">Акции</a>
                         </div>
 
 
-                        <div>
+                        {{-- <div>
                             <li class="topmenu__work_today"><i class="fas fa-clock"></i> Сегодня работаем до 18:00</li>
                             <div>
                                 <ul>
@@ -53,7 +54,7 @@
                                     <li class="redtext">ВС: ВЫХОДНОЙ</li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
                         {{-- <div class="topmenu__right">
                             <a href="#"><i class="fas fa-sign-in-alt"></i>  Вход</a>
                             <a href="#"><i class="fas fa-user-plus"></i>  Регистрация</a>

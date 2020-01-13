@@ -91,7 +91,14 @@ class Discount extends Model
             return 'руб.';
         } else {
             return $this->type;
+        }        
+    }
+
+    public function getShortDescriptionAttribute() {
+        if (strlen($this->description) > 80) {
+            return Str::limit($this->description, 80);
+        } else {
+            return $this->description;
         }
-        
     }
 }

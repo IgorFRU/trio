@@ -36,11 +36,11 @@ class UploadImagesController extends Controller
         $filename = $base_name .'.' . $file->getClientOriginalExtension() ?: 'png';
         $filename_thumbnail = $base_name .'_thumbnail.' . $file->getClientOriginalExtension() ?: 'png';
         $img = ImageManagerStatic::make($file);
-        $img->resize(600, null, function ($constraint) {
+        $img->resize(800, null, function ($constraint) {
                 $constraint->aspectRatio();
             })
             ->save($path . $filename);
-        $thumbnail = $img->resize(250, null, function ($constraint) {
+        $thumbnail = $img->resize(350, null, function ($constraint) {
                 $constraint->aspectRatio();
             })
             ->save($path_thumbnail . $filename_thumbnail);

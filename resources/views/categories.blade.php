@@ -11,22 +11,58 @@
 @endcomponent 
 </section>
 
-    <section class="category_cards row wrap">
-    @foreach ($categories as $category)
-        <div class="category_card white_box w23per">
-            <div class="category_card__img">
-                <img  class="img-fluid"
-                @if(isset($category->image))
-                    src="{{ asset('imgs/categories/')}}/{{ $category->image }}"
-                @else 
-                    src="{{ asset('imgs/nopic.png')}}"
-                @endif >
-            </div> 
-            <div class="category_card__title p10">
-                <h4><a href="{{ route('category', $category->slug) }}">{{ $category->category }}</a></h4>
+<section class="categories">
+    <div class="wrap">
+    @forelse ($menus as $menu)
+    <section>
+    <div class="recomended_products white_card_global">
+            <div class="white_card_global__header">
+                <h2>{{ $menu->menu }}</h2>    
             </div>
+            <div class="categories__boxes">                    
+                    @forelse ($categories as $category)
+                {{-- @php
+                    dd($category);
+                @endphp --}}
+                        @if ($category->menu_id == $menu->id && count($category->products) > 0)
+                        <div class="categories__boxes__category">
+                            <a href="/catalog/{{ $category->slug }}">
+                                @if ($category->image)
+                                    <img src="{{ asset('imgs/categories')}}/{{ $category->image  }}" alt="">
+                                @else
+                                    <img src="{{ asset('imgs/nopic.png') }}" alt="">
+                                @endif
+                                
+                            <p>{{ $category->category }}</p>
+                            {{-- <div class="categories__boxes__category__price">
+                                от <span class="price">1571,00</span> <i class="fas fa-ruble-sign"></i>
+                            </div> --}}
+                            <div class="category__info">
+                                
+                                @if($category->description != '')
+                                    <div class="info">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                    <div class="categories__boxes__category__info">
+                                        <span>{!! $category->description !!}</span>
+                                    </div>
+                                @endif
+                                
+                             </div>
+                            </a>
+                        </div>
+                        @endif
+                    
+                    @empty                        
+                    @endforelse      
+                
         </div>
-    @endforeach
+    </div>  
+</section>              
+    @empty   
+                 
+    @endforelse
+    </div>
 </section>
       
 @endsection

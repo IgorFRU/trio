@@ -136,11 +136,13 @@ class MainController extends Controller
             // dd($prop);
         }
 
+        $itemsPerPage = 40;
+
         $category = Category::where('slug', $slug)->with('property')->firstOrFail();
         if (isset($category)) {
             $category->increment('views', 1);
         }
-        $products = Product::orderBy('id', 'DESC')->where('category_id', $category->id)->get();
+        $products = Product::orderBy('id', 'DESC')->where('category_id', $category->id)->where('published', 1)->paginate($itemsPerPage);
 
         if ($prop) {
 
@@ -199,6 +201,11 @@ class MainController extends Controller
 
         $local_title = $category->category;
         // dd($products_array, $property_values, $unique_property_values, $properties);
+        if (isset($request->page) && $request->page > 1) {
+            $main_page = 0;
+        } else {
+            $main_page = 1;
+        }
         $data = array (
             'title' => $category->category . '. Купить товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
             'products' => $products,
@@ -207,9 +214,11 @@ class MainController extends Controller
             'checked_properties' => $new_array,
             'local_title' => $local_title,
             'currencyrates' => Cbr::getAssociate(),
+            'main_page' => $main_page,
             // 'subcategories' => Category::where('slug', $slug)->firstOrFail()
         );
         // dd($data['properties']);
+        // dd($request->all());
         return view('category', $data);
     }
 
@@ -221,6 +230,7 @@ class MainController extends Controller
         $data = array (
             'categories' => $categories,
             'local_title' => 'Категории товаров',
+            'menus' => Menu::orderBy('sortpriority', 'ASC')->get(),
             // 'subcategories' => Category::where('slug', $slug)->firstOrFail()
         );
         // dd($data['products']);
@@ -293,7 +303,7 @@ class MainController extends Controller
     }
 
     public function product($category_slug = NULL, $slug) {
-        $product = Product::where('slug', $slug)->firstOrFail();
+        $product = Product::where('slug', $slug)->where('published', 1)->firstOrFail();
         if (isset($product)) {
             $product->increment('views', 1);
         }

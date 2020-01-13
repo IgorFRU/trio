@@ -38,4 +38,12 @@ class Article extends Model
     public function getStartDateAttribute($value) {
         return Carbon::parse($this->created_at)->locale('ru')->isoFormat('DD MMMM YYYY', 'Do MMMM');
     }
+
+    public function getShortDescriptionAttribute() {
+        if (strlen($this->description) > 80) {
+            return Str::limit($this->description, 80);
+        } else {
+            return $this->description;
+        }
+    }
 }

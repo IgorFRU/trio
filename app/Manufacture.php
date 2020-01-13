@@ -37,4 +37,11 @@ class Manufacture extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function getShortDescriptionAttribute() {
+        if (strlen($this->description) > 80) {
+            return Str::limit($this->description, 80);
+        } else {
+            return $this->description;
+        }
+    }
 }

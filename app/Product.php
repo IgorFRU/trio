@@ -184,14 +184,14 @@ class Product extends Model
         if ($this->discount) {
             if ($this->discount->type == '%') {
                 if ($price * $this->discount->numeral <= 0) {
-                    return 0.01;
+                    return 0;
                 } else {
                     return round($price * $this->discount->numeral, 2);
                 }            
             }
             else if ($this->discount->type == 'rub') {
                 if ($price - $this->discount->value <= 0) {
-                    return 0.01;
+                    return 0;
                 } else {
                     return round($price - $this->discount->value, 2);
                 }
