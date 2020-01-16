@@ -13,4 +13,8 @@ class Menu extends Model
     public function category() {
         return $this->hasMany(Category::class);
     }
+
+    public function getParentCategoriesAttribute() {
+        return $this->category->where('category_id', '0');
+    }
 }

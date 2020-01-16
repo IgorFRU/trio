@@ -11,57 +11,63 @@
 @endcomponent 
 </section>
 
-<section class="categories">
-    <div class="wrap">
-    @forelse ($menus as $menu)
-    <section>
-    <div class="recomended_products white_card_global">
-            <div class="white_card_global__header">
-                <h2>{{ $menu->menu }}</h2>    
+<section class="products bg-light-grey">
+    <div class="wrap">        
+        <div class="col-lg-12 row">            
+            <div class="col-lg-3">
+                @include('components.categories-sidebar')
             </div>
-            <div class="categories__boxes">                    
-                    @forelse ($categories as $category)
-                {{-- @php
-                    dd($category);
-                @endphp --}}
-                        @if ($category->menu_id == $menu->id && count($category->products) > 0)
-                        <div class="categories__boxes__category">
-                            <a href="/catalog/{{ $category->slug }}">
-                                @if ($category->image)
-                                    <img src="{{ asset('imgs/categories')}}/{{ $category->image  }}" alt="">
-                                @else
-                                    <img src="{{ asset('imgs/nopic.png') }}" alt="">
-                                @endif
-                                
-                            <p>{{ $category->category }}</p>
-                            {{-- <div class="categories__boxes__category__price">
-                                от <span class="price">1571,00</span> <i class="fas fa-ruble-sign"></i>
-                            </div> --}}
-                            <div class="category__info">
-                                
-                                @if($category->description != '')
-                                    <div class="info">
-                                        <i class="fas fa-info-circle"></i>
+            <div class="col-lg-9">
+                <div class="col-lg-12 d-flex flex-column">
+                    @forelse ($menus as $menu)
+                        <section class="white_card_global mb-5">
+                            <div class="white_card_global__header">
+                                <h2>{{ $menu->menu }}</h2>    
+                            </div>
+                            <div class="categories__boxes">                    
+                                @forelse ($categories as $category)
+                                    @if ($category->menu_id == $menu->id && count($category->products) > 0)
+                                    <div class="categories__boxes__category">
+                                        <a href="/catalog/{{ $category->slug }}">
+                                            @if ($category->image)
+                                                <img src="{{ asset('imgs/categories')}}/{{ $category->image  }}" alt="">
+                                            @else
+                                                <img src="{{ asset('imgs/nopic.png') }}" alt="">
+                                            @endif
+                                            
+                                        <p>{{ $category->category }}</p>
+                                        {{-- <div class="categories__boxes__category__price">
+                                            от <span class="price">1571,00</span> <i class="fas fa-ruble-sign"></i>
+                                        </div> --}}
+                                        <div class="category__info">
+                                            
+                                            @if($category->description != '')
+                                                <div class="info">
+                                                    <i class="fas fa-info-circle"></i>
+                                                </div>
+                                                <div class="categories__boxes__category__info">
+                                                    <span>{!! $category->description !!}</span>
+                                                </div>
+                                            @endif
+                                            
+                                        </div>
+                                        </a>
                                     </div>
-                                    <div class="categories__boxes__category__info">
-                                        <span>{!! $category->description !!}</span>
-                                    </div>
-                                @endif
+                                    @endif
                                 
-                             </div>
-                            </a>
-                        </div>
-                        @endif
-                    
-                    @empty                        
-                    @endforelse      
-                
+                                @empty  
+
+                                @endforelse      
+                            
+                            </div> 
+                        </section> 
+                        
+                    @empty   
+                                
+                    @endforelse
+                </div>
+            </div>
         </div>
-    </div>  
-</section>              
-    @empty   
-                 
-    @endforelse
     </div>
 </section>
       

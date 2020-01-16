@@ -65,4 +65,5 @@
             <div id="modal_oneclick_btn">Отправить</div>
         </form>
     </div>
+
 </footer>

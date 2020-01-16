@@ -46,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('Europe/Moscow');
 
         self::globalData();
+        self::sidebarMenu();
         self::adminMenu();
         self::footerData();
 
@@ -185,6 +186,18 @@ class AppServiceProvider extends ServiceProvider
                 
         //     }
         // });
+    }
+
+    public function sidebarMenu() {
+        View::composer('components.categories-sidebar', function ($view){
+
+            $hour = 60;
+            $data = array ( 
+                'menus' => Menu::orderBy('sortpriority', 'ASC')->with('category')->get(),
+            );
+            
+            $view->with($data);
+        });
     }
 
     public function globalData()

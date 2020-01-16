@@ -27,7 +27,7 @@ li {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .bg-light-grey {
@@ -993,16 +993,16 @@ section.categories {
     padding-left: 10px;
 } */
 
-section.categories .categories__boxes,
-section.sub_categories .categories__boxes {
+.categories__boxes,
+.categories__boxes {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
 }
 
-section.categories .categories__boxes .categories__boxes__category,
-section.sub_categories .categories__boxes .categories__boxes__category {
+.categories__boxes .categories__boxes__category,
+.categories__boxes .categories__boxes__category {
     width: 250px;
     height: 200px;
     overflow: hidden;
@@ -1013,16 +1013,16 @@ section.sub_categories .categories__boxes .categories__boxes__category {
     background: #434959;
 }
 
-section.categories .categories__boxes .categories__boxes__category img,
-section.sub_categories .categories__boxes .categories__boxes__category img {
+.categories__boxes .categories__boxes__category img,
+.categories__boxes .categories__boxes__category img {
     max-height: 150%;
     transform: scale(1);
     transition: 0.5s;
     min-width: 100%;
 }
 
-section.categories .categories__boxes .categories__boxes__category>a>p,
-section.sub_categories .categories__boxes .categories__boxes__category>a>p {
+.categories__boxes .categories__boxes__category>a>p,
+.categories__boxes .categories__boxes__category>a>p {
     display: block;
     position: absolute;
     bottom: 0;
@@ -1195,7 +1195,7 @@ section.products .products__cards .products__card:hover {
 
 section.products .products__cards .products__card .products__card__image {
     width: 100%;
-    max-height: 230px;
+    height: 160px;
     overflow: hidden;
     position: relative;
     /*border-radius: 0.25rem 0.25rem 0 0;*/
@@ -1234,7 +1234,8 @@ section.products .products__cards .products__card .products__card__info .product
 section.products .products__cards .products__card .products__card__info .products__card__title h3 {
     font-weight: normal;
     font-size: 1.05rem;
-    max-height: 62px;;
+    max-height: 62px;
+    ;
     overflow: hidden;
 }
 
@@ -1267,11 +1268,9 @@ section.products .products__cards .products__card .products__card__info .product
     margin: 5px 0;
 }
 
-.product__price {
-    
-}
+.product__price {}
 
-.properties_prices  {
+.properties_prices {
     background: var(--light-grey);
     padding-bottom: 10px;
 }
@@ -1644,7 +1643,7 @@ footer .footer_content a {
     padding: 10px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     position: relative;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 .white_card_global {
@@ -1994,4 +1993,52 @@ section.product .product__images .product__mainimage {
 
 .pagination li {
     z-index: 0;
+}
+
+.categories_sidebar .card {
+    border-radius: 0;
+    border: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    ;
+}
+
+.categories_sidebar .card ul ul {
+    margin-left: 10px;
+}
+
+.categories_sidebar .card .card-body>ul {
+    margin-bottom: 20px;
+}
+
+.categories_sidebar .card ul a,
+.categories_sidebar .card h5 {
+    text-transform: uppercase;
+}
+
+.categories_sidebar .card li {
+    position: relative;
+    padding: 2px 0px;
+}
+
+.categories_sidebar .card ul a {
+    padding-right: 30px;
+}
+
+.categories_sidebar .card ul a.active {
+    font-weight: bold;
+}
+
+.product_count {
+    background: var(--main-blue);
+    padding: 0 8px;
+    display: inline-block;
+    text-align: center;
+    height: 23px;
+    margin-left: 5px;
+    border-radius: 3px;
+    line-height: 23px;
+    box-sizing: content-box;
+    color: #fff;
+    position: absolute;
+    right: 0;
 }
