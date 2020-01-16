@@ -86,7 +86,7 @@ class MainController extends Controller
             'lastProducts' => Product::orderBy('id', 'DESC')->limit(4)->get(),
             'recomended_products' => Product::where([
                 ['recomended', '1']
-            ])->get(),
+            ])->limit(7)->get(),
             'articles' => Article::orderby('id')->limit(3)->get(),
             'about' => $about,
         ];

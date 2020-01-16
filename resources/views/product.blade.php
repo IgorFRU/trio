@@ -45,11 +45,11 @@
                                     @endphp
                                     @if ($image->main)
                                     @php $main_img = 1; @endphp
-                                        <img src="{{ asset('imgs/products/thumbnails')}}/{{ $image->thumbnail}}" alt="{{ $image->alt ?? '' }}">
+                                        <img src="{{ asset('imgs/products')}}/{{ $image->image}}" alt="{{ $image->alt ?? '' }}">
                                     @endif
                                 @endforeach
                                 @if ($main_img == 0)
-                                    <img src="{{ asset('imgs/products/thumbnails')}}/{{ $product->images['0']->thumbnail}}" alt="{{ $product->images['0']->alt ?? '' }}">
+                                    <img src="{{ asset('imgs/products')}}/{{ $product->images['0']->image}}" alt="{{ $product->images['0']->alt ?? '' }}">
                                 @endif
                             </div>
                             <div class="images__container">
@@ -60,7 +60,7 @@
                                 <div class="column">
                                     @forelse ($product->images as $image)
                                     <div class="images__container__item">
-                                        <img @if($image->main) class="main" @elseif($main_img == 0 && $loop->first) class="main" @endif src="{{ asset('imgs/products/thumbnails')}}/{{ $image->thumbnail}}" alt="{{ $image->alt ?? '' }}">
+                                        <img @if($image->main) class="main" @elseif($main_img == 0 && $loop->first) class="main" @endif src="{{ asset('imgs/products')}}/{{ $image->image}}" alt="{{ $image->alt ?? '' }}">
                                     </div>                                        
                                     @empty
                                         
@@ -75,7 +75,7 @@
                         </div>
                     @else
                         <div class="product__images__one">
-                            <img src="{{ asset('imgs/products/thumbnails')}}/{{ $product->images['0']->thumbnail}}" alt="{{ $product->images['0']->alt ?? '' }}">
+                            <img src="{{ asset('imgs/products')}}/{{ $product->images['0']->image}}" alt="{{ $product->images['0']->alt ?? '' }}">
                         </div>                    
                     @endif
                 @else
@@ -115,7 +115,7 @@
                     
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3 product__price">
                 <div class="properties_prices col-lg-12"> 
                         <div class="product__price__value price">
                             <div class="price_top">
@@ -181,7 +181,7 @@
                 </div>
             </div>
             
-        <div class="col-lg-3 product_properties">
+        <div class="col-lg-4 product_properties">
                 @isset($product->delivery_time)
                     <div class="italic product_properties__delivery" style="display: block;"><i class="far fa-calendar-alt"></i> срок поставки: {{ $product->delivery_time }}</div>
                 @endisset

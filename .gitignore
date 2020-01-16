@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/google759cf65f9db8fbc0.html
+/public/yandex_66925e64043d49b5.html
 /storage/*.key
 /vendor
 .env

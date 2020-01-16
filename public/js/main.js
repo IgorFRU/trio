@@ -97,9 +97,9 @@ $(document).ready(function() {
     var salePackage2 = document.querySelectorAll('.products__card__price__new__package');
     salePackage2.forEach(function(btn, i) {
         const priceValue = btn.parentNode.parentNode.querySelector('.price_value').innerText;
-        if (btn.querySelectorAll('div').length < 2) {
-            btn.parentNode.parentNode.parentNode.querySelector('.products__card__buttons').remove();
-        }
+        // if (btn.querySelectorAll('div').length < 2) {
+        //     btn.parentNode.parentNode.parentNode.querySelector('.products__card__buttons').remove();
+        // }
         if (priceValue <= 0) {
             btn.parentNode.parentNode.parentNode.querySelector('.products__card__buttons').remove();
             if (priceValue < 0) {
