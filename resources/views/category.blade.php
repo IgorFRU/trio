@@ -43,6 +43,25 @@
             
         @if(isset($products) && count($products) > 0)
                 <div class="products__cards col-lg-12">
+                    <div class="col-lg-12 row product_sort_bar">
+                        <div class="col-lg-7">
+                            <div class="form-group row">
+                                <label for="product_sort col-lg-7">Сортировать</label>
+                                <div class="col-lg-5">
+                                  <select class="custom-select custom-select-sm col-lg-5" id="product_sort">
+                                    <option selected value="default">По умолчанию</option>
+                                    <option value="popular">По популярности</option>
+                                    <option value="price_up">По цене (сначала дешевле)</option>
+                                    <option value="price_down">По цене (сначала дороже)</option>
+                                    <option value="new_up">Сначала новые</option>
+                                    <option value="new_down">Сначала старые</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                        
+                        
+                    </div>
                     @foreach ($products as $product)
                         @if ($product->published)                
                         {{-- @if (isset($checked_properties) && $product->property_active_product($checked_properties) ) --}}
