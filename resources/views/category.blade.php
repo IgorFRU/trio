@@ -43,19 +43,36 @@
             
         @if(isset($products) && count($products) > 0)
                 <div class="products__cards col-lg-12">
+                    <div class="col-lg-12 row justify-content-end products_top_bar">
+                        <div class="col-lg-6">
+                            <div class="row">                            
+                                <div class="col">
+                                    <div class="form-group row">
+                                        <label for="products_sort" class="col-lg-4">Сортировать</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control custom-select custom-select-sm" id="products_sort">
+                                                <option @if ($sort == "default" || $sort == NULL) selected @endif value="default">По умолчанию</option>
+                                                {{-- <option value="discount">Сначала со скидкой</option> --}}
+                                                <option @if ($sort == "name") selected @endif value="name">По названию</option>
+                                                <option @if ($sort == "popular") selected @endif value="popular">По популярности</option>
+                                                <option value="price_up">По цене (сначала дешевле)</option>
+                                                <option value="price_down">По цене (сначала дороже)</option>
+                                                <option @if ($sort == "new_up") selected @endif value="new_up">Сначала новые</option>
+                                                <option @if ($sort == "new_down") selected @endif value="new_down">Сначала старые</option>
+                                              </select>
+                                        </div> 
+                                    </div> 
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+
                     <div class="col-lg-12 row product_sort_bar">
                         <div class="col-lg-7">
                             <div class="form-group row">
-                                <label for="product_sort col-lg-7">Сортировать</label>
+                                
                                 <div class="col-lg-5">
-                                  <select class="custom-select custom-select-sm col-lg-5" id="product_sort">
-                                    <option selected value="default">По умолчанию</option>
-                                    <option value="popular">По популярности</option>
-                                    <option value="price_up">По цене (сначала дешевле)</option>
-                                    <option value="price_down">По цене (сначала дороже)</option>
-                                    <option value="new_up">Сначала новые</option>
-                                    <option value="new_down">Сначала старые</option>
-                                  </select>
+                                  
                                 </div>
                               </div>
                             </div>

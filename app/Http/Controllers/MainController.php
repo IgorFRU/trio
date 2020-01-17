@@ -15,11 +15,14 @@ use App\Setting;
 use App\Topmenu;
 use Carbon\Carbon;
 
+use Route;
+
 use App\MyClasses\Cbr;
 
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 
 class MainController extends Controller
 {
@@ -79,7 +82,7 @@ class MainController extends Controller
         }
 
         $data = [
-            'title' => 'Паркетный мир - Симферополь',
+            'title' => 'Паркетный мир - Симферополь. Продажа, укладка, ремонт паркета, ламината, паркетной доски, массивной и инженерной доски. Всё для паркета: клеи, лаки, масла и воски. Доставка паркета по Крыму и Симферополю.',
             'description' => 'Все виды паркета в Крыму по лучшим ценам',
             'menus' => Menu::orderBy('sortpriority', 'ASC')->get(),
             'categories' => Category::orderBy('category', 'ASC')->get(),
@@ -116,23 +119,14 @@ class MainController extends Controller
 
     public function category($slug, Request $request) {
         // dd($slug);
+        // $today = Carbon::now();
+
         if (isset($request->prop)) {
             $prop = $request->prop;
         } else {
             $prop = 0;
         }
-        
-
-        // $products = Product::
-        // when($category, function ($query, $category) {
-        //     return $query->where('category_id', $category);
-        // })
-        // ->when($manufacture, function ($query, $manufacture) {
-        //     return $query->where('manufacture_id', $manufacture);
-        // })->orderBy('id', 'desc')->with('category')->whereIn('published', $published)->with('manufacture')->paginate($itemsPerPage);
-
-        // dd($request->all());
-
+    
         if ($prop != 0) {
             // dd($prop);
         }
@@ -143,10 +137,65 @@ class MainController extends Controller
         if (isset($category)) {
             $category->increment('views', 1);
         }
-        $products = Product::orderBy('id', 'DESC')->where('category_id', $category->id)->where('published', 1)->paginate($itemsPerPage);
+
+        // $sort = $_COOKIE['productsort'];
+        
+        // switch ($sort) {
+        //     case 'default':
+        //         $sort_column = 'id';
+        //         $sort_order = 'ASC';
+        //         break;
+        //     case 'discount':
+        //         $sort_column = 'discount';
+        //         break;
+        //     case 'name':
+        //         $sort_column = 'product';
+        //         $sort_order = 'ASC';
+        //         break;
+        //     case 'popular':
+        //         $sort_column = 'views';
+        //         $sort_order = 'DESC';
+        //         break;
+        //     case 'price_up':
+        //         $sort_column = 'price';
+        //         $sort_order = 'ASC';
+        //         break;
+        //     case 'price_down':
+        //         // $sort_column = $this->discount_price;
+        //         $sort_column = 'price';
+        //         $sort_order = 'DESC';
+        //         break;
+        //     case 'new_up':
+        //         $sort_column = 'id';
+        //         $sort_order = 'DESC';
+        //         break;                
+        //     case 'new_down':
+        //         $sort_column = 'id';
+        //         $sort_order = 'ASC';
+        //         break;
+        //     default:
+        //         $sort_column = 'id';
+        //         $sort_order = 'ASC';
+        //         break;
+        // }
+
+        // dd(Product::where('category_id', $category->id)->where('discount_end_day', '>=', $today)->published()->get());
+
+        // if ($sort_column == 'discount') {
+        //     $discount_products = Product::actually_discount()->published()->get();
+        // } else {
+        //     # code...
+        // }
+        
+
+        // $products = Product::where('category_id', $category->id)->published()->get()->sortBy($sort_column);
+        // $products = $products->paginate($itemsPerPage);
+        // dd($products);
+        $products = Product::where('category_id', $category->id)->published()->order()->paginate($itemsPerPage);
+        // dd(Product::where('category_id', $category->id)->published()->order());
+        // $products = Product::orderBy('id', 'DESC')->where('category_id', $category->id)->where('published', 1)->paginate($itemsPerPage);
 
         if ($prop) {
-
             $prop_products_array = [];
             $prop_array = [];
 
@@ -207,6 +256,7 @@ class MainController extends Controller
         } else {
             $main_page = 1;
         }
+
         $data = array (
             'title' => $category->category . '. Купить товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
             'products' => $products,
@@ -216,6 +266,7 @@ class MainController extends Controller
             'local_title' => $local_title,
             'currencyrates' => Cbr::getAssociate(),
             'main_page' => $main_page,
+            'sort' => $_COOKIE['productsort'],
             'meta_description' => $category->category . '. Каталог товаров. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
             // 'subcategories' => Category::where('slug', $slug)->firstOrFail()
         );
@@ -312,7 +363,7 @@ class MainController extends Controller
     }
 
     public function product($category_slug = NULL, $slug) {
-        $product = Product::where('slug', $slug)->where('published', 1)->firstOrFail();
+        $product = Product::where('slug', $slug)->published()->with('currencyrate')->firstOrFail();
         if (isset($product)) {
             $product->increment('views', 1);
         }
@@ -325,7 +376,12 @@ class MainController extends Controller
             $propertyvalues = array();
         }
 
-        $local_title = $product->product . ' - ' . $product->category->category;
+        if (isset($product->category->category)) {
+            $local_title = $product->product . ' ' . $product->scu . ' - ' . $product->category->category;
+        } else {
+            $local_title = $product->product . ' ' . $product->scu;
+        }
+        
         if (isset($product->manufacture->manufacture)) {
             $full_title = $local_title . ' ' . $product->manufacture->manufacture;
         } else {
@@ -333,7 +389,7 @@ class MainController extends Controller
         }
         
         $data = array (
-            'title' => $product->product . ' ' . $product->scu . ' - Паркетный мир - Симферополь',
+            'title' => $local_title . ' - Паркетный мир - Симферополь',
             'product' => $product,
             'propertyvalues' => $propertyvalues,
             'local_title' => $local_title,
@@ -379,5 +435,22 @@ class MainController extends Controller
         );
         // dd($set);
         return view('set', $data);
+    }
+
+    public function productSort(Request $request) {
+        // Cookie::forever('productsort', $request->productsort);
+        setcookie('productsort', $request->productsort);        
+
+        // $name = $request->cookie('productsort');
+        // $name = Cookie::get('productsort');
+        // $name = $request->productsort;
+        // echo json_encode(array('productsort' => $name));
+        // echo json_encode($name);
+    }
+
+    public function paginate($items, $perPage = 15, $page = null, $options = []) {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }

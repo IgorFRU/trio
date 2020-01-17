@@ -6,10 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ $title ?? "Паркетный мир - Симферополь"}}</title>
+    <title>{{ $title ?? "Паркетный мир - Симферополь. Продажа, укладка, ремонт паркета, ламината, паркетной доски, массивной и инженерной доски. Всё для паркета: клеи, лаки, масла и воски. Доставка паркета по Крыму и Симферополю."}}</title>
 
     <meta description="{{ $meta_description ?? "Паркетный мир - Симферополь. Купить все виды паркета в Крыму по лучшим ценам! Укладка, ремонт и реставрация паркета. Ламинат, паркетная доска, массивная и инженерная доска, клей и лак для паркета, масла и воски" }}">
     <meta keywords="{{ $meta_keywords ?? "" }}">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ asset('/imgs/favicon/apple-touch-icon-57x57.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ asset('/imgs/favicon/apple-touch-icon-114x114.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ asset('/imgs/favicon/apple-touch-icon-72x72.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ asset('/imgs/favicon/apple-touch-icon-144x144.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ asset('/imgs/favicon/apple-touch-icon-120x120.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ asset('/imgs/favicon/apple-touch-icon-152x152.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('/imgs/favicon/favicon-196x196.png') }}" sizes="196x196" />
+    <link rel="icon" type="image/png" href="{{ asset('/imgs/favicon/favicon-32x32.png') }}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ asset('/imgs/favicon/favicon-16x16.png') }}" sizes="16x16" />
+    <meta name="application-name" content="Паркетный Мир"/>
+    <meta name="msapplication-TileColor" content="#254E94" />
+    <meta name="msapplication-TileImage" content="{{ asset('/imgs/favicon/mstile-144x144.png') }}" />
+    <meta name="msapplication-square310x310logo" content="{{ asset('/imgs/favicon/mstile-310x310.png') }}" />
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400&amp;subset=cyrillic-ext" rel="stylesheet">
@@ -20,7 +36,6 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
-    <script src="{{ asset('js/sendmail.ajax.js') }}" defer></script>
     
     <script src="https://use.fontawesome.com/564e0d687f.js"></script>
 

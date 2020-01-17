@@ -6,6 +6,8 @@ use \Carbon\Carbon;
 use App\Currency;
 use App\Currencyrate;
 
+use Illuminate\Support\Facades\Cache;
+
 class Cbr
 {
     static $days = [];
@@ -16,14 +18,22 @@ class Cbr
     static $valute_values_array = [];
     static $count_valutes;
     static $file;
+    static $hour = 60;
 
     public static function configurate() {
         self::$today = Carbon::now()->format('d.m.Y');
         self::$tomorrow = Carbon::now()->addDay()->format('d.m.Y');
 
         //выбор валют, которые нуждаются в обновлении курса. Основная валюта только одна и это обычно рубль. Относительно нее все курсы
-        self::$valute_names = Currency::currenciesListToUpdate(); //добавить вызов метода, проверяющего, обновлять ли курс для валюты
+
+        //добавить вызов метода, проверяющего, обновлять ли курс для валюты
+        self::$valute_names = Cache::remember('valute_names', self::$hour, function() {
+            return Currency::currenciesListToUpdate();
+        });
+        
         self::$count_valutes = sizeof(self::$valute_names);
+
+        // dd(self::$valute_names);
 
         if (self::$valute_names) {
             self::getCourses(self::$today);

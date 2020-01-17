@@ -1,6 +1,6 @@
 <?php
 
-namespace app;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,7 @@ class Currencyrate extends Model
     }
 
     public function product() {
-        return $this->hasMany("app\Product");
+        return $this->hasMany(Product::class, 'currency_id');
     }
 
 }

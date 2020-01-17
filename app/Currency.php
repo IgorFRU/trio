@@ -1,6 +1,6 @@
 <?php
 
-namespace app;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +10,7 @@ class Currency extends Model
     protected $fillable = ['currency', 'currency_rus', 'to_update', 'css_style'];
 
     public function products() {
-        return $this->hasMany("app\Product");
+        return $this->hasMany(Product::class);
     }
 
     // public static function count() {
@@ -25,6 +25,6 @@ class Currency extends Model
     }
 
     public function currencyrate() {
-        return $this->hasMany(Currencyrate::class);
+        return $this->hasMany(Currencyrate::class)->whereDate('ondate', date('Y-m-d'));
     }
 }

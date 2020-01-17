@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Cookie;
 
 use App\MyClasses\Cbr;
 
@@ -143,8 +144,24 @@ class Product extends Model
         return $this->hasMany(Propertyvalue::class);
     }
 
+    // public function currencyraterate()
+    // {
+    //     return $this->hasManyThrough(Currency::class, Currencyrate::class, 'currency_id', 'id');
+    // }
+
     public function currencyrate() {
+        // return $this->belongsTo(Currencyrate::class, 'currency_id')->where('ondate', date("Y-m-d", strtotime(Carbon::now()->format('d.m.Y'))));
+        // dd(date('Y-m-d'));
+        // return $this->belongsTo(Currencyrate::class, 'currency_id')->where('ondate', $date);
         return $this->belongsTo(Currencyrate::class, 'currency_id');
+        
+    }
+
+    public function getPriceRubAttribute() {
+        if ($this->currency->to_update) {
+            $currencyrate = $this->currencyrate;
+            return $currencyrate;
+        }
     }
 
     //проверяет, отмечен ли товар в боковом меню фильтра товаров
@@ -172,6 +189,15 @@ class Product extends Model
             return false;
         }        
     }
+
+    public function getDiscountEndDayAttribute($value) {
+        return $this->discount->discount_end;
+    }
+
+    // public function scopeDiscount($query) {
+    //     $today = Carbon::now();
+    //     return $query->where('discount_end_day' , '>=', $today);       
+    // }
 
     public function getDiscountPriceAttribute($value) {        
         if ($this->currency->to_update) {
@@ -222,6 +248,57 @@ class Product extends Model
 
     public function getNumberAttribute() {
         return number_format($this, 2, ',', ' ');
+    }
+
+    public function scopeOrder($query)
+    {
+        $sort = $_COOKIE['productsort'];
+        
+        switch ($sort) {
+            case 'default':
+                $sort_column = 'id';
+                $sort_order = 'ASC';
+                break;
+            // case 'discount':
+            //     $sort_column = $this->actually_discount;
+            //     $sort_order = 'DESC';
+            //     break;
+            case 'name':
+                $sort_column = 'product';
+                $sort_order = 'ASC';
+                break;
+            case 'popular':
+                $sort_column = 'views';
+                $sort_order = 'DESC';
+                break;
+            case 'price_up':
+                $sort_column = 'price';
+                $sort_order = 'ASC';
+                break;
+            case 'price_down':
+                // $sort_column = $this->discount_price;
+                $sort_column = 'price';
+                $sort_order = 'DESC';
+                break;
+            case 'new_up':
+                $sort_column = 'id';
+                $sort_order = 'DESC';
+                break;                
+            case 'new_down':
+                $sort_column = 'id';
+                $sort_order = 'ASC';
+                break;
+            default:
+                $sort_column = 'id';
+                $sort_order = 'ASC';
+                break;
+        }
+        return $query->orderBy($sort_column, $sort_order);
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('published', 1);
     }
 
     public function floatToInt($number) { 
