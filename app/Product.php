@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Cache;
 
 use App\MyClasses\Cbr;
 
@@ -144,23 +145,21 @@ class Product extends Model
         return $this->hasMany(Propertyvalue::class);
     }
 
-    // public function currencyraterate()
-    // {
-    //     return $this->hasManyThrough(Currency::class, Currencyrate::class, 'currency_id', 'id');
-    // }
-
     public function currencyrate() {
-        // return $this->belongsTo(Currencyrate::class, 'currency_id')->where('ondate', date("Y-m-d", strtotime(Carbon::now()->format('d.m.Y'))));
-        // dd(date('Y-m-d'));
-        // return $this->belongsTo(Currencyrate::class, 'currency_id')->where('ondate', $date);
         return $this->belongsTo(Currencyrate::class, 'currency_id');
         
     }
 
     public function getPriceRubAttribute() {
         if ($this->currency->to_update) {
-            $currencyrate = $this->currencyrate;
-            return $currencyrate;
+            $hour = 60;
+            // dd($this->currency->currency);
+            return Cache::remember($this->currency->currency . date('Y-m-d'), $hour, function() {
+                return $this->currency->currencyrate->first()->value;
+            });
+            
+        } else {
+            return $this->price;
         }
     }
 
@@ -200,13 +199,7 @@ class Product extends Model
     // }
 
     public function getDiscountPriceAttribute($value) {        
-        if ($this->currency->to_update) {
-            $currencyrates = Cbr::getAssociate();
-            $price = self::floatToInt($this->price * $currencyrates[$this->currency->id]);
-        }
-        else {
-            $price = self::floatToInt($this->price);
-        }
+        $price = self::floatToInt($this->price * $this->price_rub);        
         if ($this->discount) {
             if ($this->discount->type == '%') {
                 if ($price * $this->discount->numeral <= 0) {
@@ -226,6 +219,35 @@ class Product extends Model
             return $price;
         }
     }
+
+    // public function getDiscountPriceAttribute($value) {        
+    //     if ($this->currency->to_update) {
+    //         $currencyrates = Cbr::getAssociate();
+    //         $price = self::floatToInt($this->price * $currencyrates[$this->currency->id]);
+    //     }
+    //     else {
+    //         $price = self::floatToInt($this->price);
+    //     }
+    //     if ($this->discount) {
+    //         if ($this->discount->type == '%') {
+    //             if ($price * $this->discount->numeral <= 0) {
+    //                 return 0;
+    //             } else {
+    //                 return round($price * $this->discount->numeral, 2);
+    //             }            
+    //         }
+    //         else if ($this->discount->type == 'rub') {
+    //             if ($price - $this->discount->value <= 0) {
+    //                 return 0;
+    //             } else {
+    //                 return round($price - $this->discount->value, 2);
+    //             }
+    //         }
+    //     } else {
+    //         return $price;
+    //     }
+    // }
+
 
     public function getOldPriceAttribute($value) {        
         if ($this->currency->to_update) {
@@ -252,20 +274,16 @@ class Product extends Model
 
     public function scopeOrder($query)
     {
-        $sort = $_COOKIE['productsort'];
+        $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';        
         
         switch ($sort) {
-            case 'default':
-                $sort_column = 'id';
-                $sort_order = 'ASC';
-                break;
-            // case 'discount':
-            //     $sort_column = $this->actually_discount;
-            //     $sort_order = 'DESC';
-            //     break;
-            case 'name':
+            case 'nameAZ':
                 $sort_column = 'product';
                 $sort_order = 'ASC';
+                break;
+            case 'nameZA':
+                $sort_column = 'product';
+                $sort_order = 'DESC';
                 break;
             case 'popular':
                 $sort_column = 'views';
@@ -289,7 +307,7 @@ class Product extends Model
                 $sort_order = 'ASC';
                 break;
             default:
-                $sort_column = 'id';
+                $sort_column = 'product';
                 $sort_order = 'ASC';
                 break;
         }

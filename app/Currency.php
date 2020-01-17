@@ -20,7 +20,6 @@ class Currency extends Model
     //список курсов валют для вывода на страницах админки и для отправки по этим валютам запросов в ЦБ
     public static function currenciesListToUpdate() {
         // return Currency::lists('currency');
-
         return Currency::where('to_update', '1')->pluck('currency');
     }
 

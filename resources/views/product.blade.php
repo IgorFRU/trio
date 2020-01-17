@@ -22,7 +22,6 @@
     <div class="wrap">
     <div class="white_card_global p10">
         <div class="col-lg-12 row">
-            {{ $product->currency->currencyrate ?? 'jklhkjhjk' }}
                 <h1>{{ $product->product }} @isset($product->scu) (арт.: {{$product->scu}}) @endisset @isset($product->category->category)  - {{ $product->category->category }} @endisset @isset($product->manufacture->manufacture)  {{ $product->manufacture->manufacture }} @endisset</h1>
                 <div class="col-lg-12 row product__subtitle">
                     @isset($product->autoscu)

@@ -302,12 +302,33 @@ $(document).ready(function() {
     });
 
     $('#products_sort').change(function() {
-        console.log($(this).val());
         $.ajax({
             type: "POST",
             url: "/productsort",
             data: {
                 productsort: $(this).val()
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                // var response = $.parseJSON(data);
+                // console.log(response);
+                location.reload(true);
+            },
+            error: function(msg) {
+                console.log(msg);
+            }
+        });
+
+    });
+
+    $('#products_per_page').change(function() {
+        $.ajax({
+            type: "POST",
+            url: "/productsort",
+            data: {
+                products_per_page: $(this).val()
             },
             headers: {
                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')

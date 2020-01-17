@@ -26,6 +26,44 @@
             
                 @if(isset($products) && count($products) > 0)    
                     <div class="products__cards col-lg-12">
+                        <div class="col-lg-12 row justify-content-end products_top_bar">
+                            <div class="col-lg-6">
+                                <div class="row">                            
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <label for="products_sort" class="col-lg-4">Сортировать</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control custom-select custom-select-sm" id="products_sort">
+                                                    {{-- <option value="discount">Сначала со скидкой</option> --}}
+                                                    <option @if ($sort == "nameAZ" || $sort == NULL) selected @endif value="nameAZ">По названию (А-Я)</option>
+                                                    <option @if ($sort == "nameZA") selected @endif value="nameZA">По названию (Я-А)</option>
+                                                    <option @if ($sort == "popular") selected @endif value="popular">По популярности</option>
+                                                    <option @if ($sort == "new_up") selected @endif value="new_up">Сначала новые</option>
+                                                    <option @if ($sort == "new_down") selected @endif value="new_down">Сначала старые</option>
+                                                  </select>
+                                            </div> 
+                                        </div> 
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="row">                            
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <label for="products_per_page" class="col-lg-7">Товаров на странице</label>
+                                            <div class="col-lg-5">
+                                                <select class="form-control custom-select custom-select-sm" id="products_per_page">
+                                                    <option @if ($products_per_page == "12") selected @endif value="12">12</option>
+                                                    <option @if ($products_per_page == "24") selected @endif value="24">24</option>
+                                                    <option @if ($products_per_page == "48" || $products_per_page == NULL) selected @endif value="48">48</option>
+                                                    <option @if ($products_per_page == "96") selected @endif value="96">96</option>
+                                                  </select>
+                                            </div> 
+                                        </div> 
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
                         @foreach ($products as $product)
                             @if ($product->published)   
                                 <div class="col-lg-4">

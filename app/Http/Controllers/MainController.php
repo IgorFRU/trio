@@ -131,8 +131,6 @@ class MainController extends Controller
             // dd($prop);
         }
 
-        $itemsPerPage = 40;
-
         $category = Category::where('slug', $slug)->with('property')->firstOrFail();
         if (isset($category)) {
             $category->increment('views', 1);
@@ -181,17 +179,15 @@ class MainController extends Controller
 
         // dd(Product::where('category_id', $category->id)->where('discount_end_day', '>=', $today)->published()->get());
 
-        // if ($sort_column == 'discount') {
-        //     $discount_products = Product::actually_discount()->published()->get();
-        // } else {
-        //     # code...
-        // }
+        $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';
+
+        $itemsPerPage = (isset($_COOKIE['products_per_page'])) ? $itemsPerPage = $_COOKIE['products_per_page'] : $itemsPerPage = 48;
         
 
         // $products = Product::where('category_id', $category->id)->published()->get()->sortBy($sort_column);
         // $products = $products->paginate($itemsPerPage);
         // dd($products);
-        $products = Product::where('category_id', $category->id)->published()->order()->paginate($itemsPerPage);
+        $products = Product::where('category_id', $category->id)->published()->order()->with('manufacture', 'images', 'unit', 'currency')->paginate($itemsPerPage);
         // dd(Product::where('category_id', $category->id)->published()->order());
         // $products = Product::orderBy('id', 'DESC')->where('category_id', $category->id)->where('published', 1)->paginate($itemsPerPage);
 
@@ -264,9 +260,10 @@ class MainController extends Controller
             'properties' => $properties,
             'checked_properties' => $new_array,
             'local_title' => $local_title,
-            'currencyrates' => Cbr::getAssociate(),
+            // 'currencyrates' => Cbr::getAssociate(),
             'main_page' => $main_page,
-            'sort' => $_COOKIE['productsort'],
+            'sort' => $sort,
+            'products_per_page' => $itemsPerPage,
             'meta_description' => $category->category . '. Каталог товаров. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
             // 'subcategories' => Category::where('slug', $slug)->firstOrFail()
         );
@@ -350,12 +347,20 @@ class MainController extends Controller
 
     public function manufacture($slug) {
         // dd($slug);
+        $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';
+
+        $itemsPerPage = (isset($_COOKIE['products_per_page'])) ? $itemsPerPage = $_COOKIE['products_per_page'] : $itemsPerPage = 48;
+
         $manufacture = Manufacture::where('slug', $slug)->firstOrFail();
+        
+        $products = Product::whereManufactureId($manufacture->id)->published()->order()->with('manufacture', 'category', 'images', 'unit', 'currency')->paginate($itemsPerPage);
         // dd($category);
         $data = array (
             'title' => $manufacture->manufacture . '. Купить товары производителя ' . $manufacture->manufacture . ' - Паркетный мир (Симферополь)',
-            'products' => Product::orderBy('id', 'DESC')->where('manufacture_id', $manufacture->id)->get(),
+            'products' => $products,
             'manufacture' => $manufacture,
+            'sort' => $sort,
+            'products_per_page' => $itemsPerPage,
             'meta_description' => $manufacture->manufacture . '. Список товаров производителя ' . $manufacture . ' в Паркетном мире. Акции и скидки в Паркетном мире. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
         );
         // dd($data['products']);
@@ -439,18 +444,17 @@ class MainController extends Controller
 
     public function productSort(Request $request) {
         // Cookie::forever('productsort', $request->productsort);
-        setcookie('productsort', $request->productsort);        
+        if (isset($request->productsort) && $request->productsort != '') {
+            setcookie('productsort', $request->productsort, time()+60*60*24*365);
+        }
+        if (isset($request->products_per_page) && $request->products_per_page != '') {
+            setcookie('products_per_page', $request->products_per_page, time()+60*60*24*365); 
+        }
 
         // $name = $request->cookie('productsort');
         // $name = Cookie::get('productsort');
         // $name = $request->productsort;
-        // echo json_encode(array('productsort' => $name));
+        // echo json_encode(array('productsort' => $_COOKIE['productsort'], 'products_per_page' => $_COOKIE['products_per_page']));
         // echo json_encode($name);
-    }
-
-    public function paginate($items, $perPage = 15, $page = null, $options = []) {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }
