@@ -4,8 +4,6 @@ $(function() {
     var navItems = $('.nav-item.dropdown').find('a.active');
     navItems.parent().parent().addClass('active');
 
-    console.log(navItems);
-
     $('nav.tabs > span').on('click', function() {
         var currentTabData = $('nav.tabs > span.active').data('tab');
 
@@ -465,5 +463,13 @@ $(function() {
             $('#unit_in_package').prop('required', false);
         }
 
+    });
+
+    $('#unit_in_package').change(function() {
+        if (this.value == 1 || this.value == '') {
+            $('#packaging').prop('disabled', true);
+        } else {
+            $('#packaging').prop('disabled', false);
+        }
     });
 });

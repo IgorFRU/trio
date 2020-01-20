@@ -17,13 +17,13 @@
             <label for="to_update" class="col-lg-10 col-form-label">Запрашивать курс обмена?</label>  
             <div class="col-md-2">      
                 @if(isset($currency->id))
-                    <input type="checkbox" name="to_update" id="" class="js_oneclick form-control" value="{{ $currency->to_update }}" @if($currency->to_update) checked @endif>
+                    <input type="checkbox" name="to_update" id="to_update" class="js_oneclick form-control" value="{{ $currency->to_update }}" @if($currency->to_update) checked @endif>
                     {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
-                    <input type="hidden" name="to_update" id="" class="js_oneclick_hidden form-control" value="{{ $currency->to_update }}" >  
+                    <input type="hidden" name="to_update" id="to_update" class="js_oneclick_hidden form-control" value="{{ $currency->to_update }}" >  
                 @else
-                    <input type="checkbox" name="to_update" id="" class="js_oneclick form-control" value="1"  checked >
+                    <input type="checkbox" name="to_update" id="to_update" class="js_oneclick form-control" value="1"  checked >
                     {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
-                    <input type="hidden" name="to_update" id="" class="js_oneclick_hidden form-control" value="1" > 
+                    <input type="hidden" name="to_update" id="to_update" class="js_oneclick_hidden form-control" value="1" > 
                 @endif
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class='col-lg-12 row'>
             <label for="css_style" class="col-lg-1 col-form-label">CSS</label>
             <div class="col-lg-11">
-                <input type="text" name="css_style" class="form-control" id="css_style" value="{!! $currency->css_style ?? '' !!}" required maxlength="127">
+                <input type="text" name="css_style" class="form-control" id="css_style" value="{{ $currency->css_style ?? '' }}" required maxlength="127">
             </div>
         </div>
     </div>    

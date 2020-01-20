@@ -198,8 +198,14 @@ class Product extends Model
     //     return $query->where('discount_end_day' , '>=', $today);       
     // }
 
-    public function getDiscountPriceAttribute($value) {        
-        $price = self::floatToInt($this->price * $this->price_rub);        
+    public function getDiscountPriceAttribute($value) {   
+        if ($this->currency->to_update) {
+            $price = self::floatToInt($this->price * $this->price_rub);
+        } else {
+            $price = self::floatToInt($this->price);
+        }
+             
+                
         if ($this->discount) {
             if ($this->discount->type == '%') {
                 if ($price * $this->discount->numeral <= 0) {

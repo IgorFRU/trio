@@ -40,12 +40,14 @@
                     <div class="form-group">
                         <div class="form-check">
                             @if(isset($product->id))
-                                <input class="form-check-input js_oneclick" type="checkbox" id="sample" name="sample" value="{{ $product->sample }}" @if($product->sample) checked @endif>
-                            @else
-                                <input class="form-check-input js_oneclick" type="checkbox" name="sample" id="sample" value="1"  checked >
+                                <input class="form-check-input js_oneclick" type="checkbox" id="sample" name="sample" value="{{ $product->sample }}" @if($product->sample) checked @endif>                                
+                                {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
+                                <input class="js_oneclick_hidden form-control" type="hidden" name="sample" id="sample" value="{{ $product->sample }}" >
+                            @else                            
+                                <input class="form-check-input js_oneclick" type="checkbox" id="sample" name="sample" value="1" checked>                                
+                                {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
+                                <input class="js_oneclick_hidden form-control" type="hidden" name="sample" id="sample" value="1" >
                             @endif
-                            {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
-                            <input type="hidden" name="sample" id="sample" class="form-check-input js_oneclick_hidden" value="1" >
                             <label class="form-check-label" for="sample">
                                 Образец
                             </label>
@@ -57,11 +59,11 @@
                         <div class="form-check">
                             @if(isset($product->id))
                                 <input class="form-check-input js_oneclick" type="checkbox" id="recomended" name="recomended" value="{{ $product->recomended }}" @if($product->recomended) checked @endif>
+                                <input class="js_oneclick_hidden form-control" type="hidden" id="recomended" name="recomended" value="{{ $product->recomended }}">
                             @else
-                                <input class="form-check-input js_oneclick" type="checkbox" name="recomended" id="recomended" value="1"  checked >
+                                <input class="form-check-input js_oneclick" type="checkbox" name="recomended" id="recomended" value="0"  checked >
+                                <input class="js_oneclick_hidden form-control" type="hidden" id="recomended" name="recomended" value="0">
                             @endif
-                            {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
-                            <input type="hidden" name="recomended" id="recomended" class="form-check-input js_oneclick_hidden" value="1" >
                             <label class="form-check-label" for="recomended">
                                 Реком.
                             </label>
@@ -73,11 +75,11 @@
                         <div class="form-check">
                             @if(isset($product->id))
                                 <input class="form-check-input js_oneclick" type="checkbox" id="published" name="published" value="{{ $product->published }}" @if($product->published) checked @endif>
+                                <input class="js_oneclick_hidden form-control" type="hidden" id="published" name="published" value="{{ $product->published }}">
                             @else
                                 <input class="form-check-input js_oneclick" type="checkbox" name="published" id="published" value="1"  checked >
+                                <input class="js_oneclick_hidden form-control" type="hidden" name="published" id="published" value="1">
                             @endif
-                            {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
-                            <input type="hidden" name="published" id="published" class="form-check-input js_oneclick_hidden" value="1" >
                             <label class="form-check-label" for="published">
                                 Опубликован
                             </label>
@@ -89,11 +91,11 @@
                         <div class="form-check">
                             @if(isset($product->id))
                                 <input class="form-check-input js_oneclick" type="checkbox" id="pay_online" name="pay_online" value="{{ $product->pay_online }}" @if($product->pay_online) checked @endif>
+                                <input class="js_oneclick_hidden form-control" type="hidden" id="pay_online" name="pay_online" value="{{ $product->pay_online }}">
                             @else
-                                <input class="form-check-input js_oneclick" type="checkbox" name="pay_online" id="pay_online" value="1"  checked >
+                                <input class="form-check-input js_oneclick" type="checkbox" name="pay_online" id="pay_online" value="0"  checked>
+                                <input type="hidden" name="pay_online" id="pay_online" class="js_oneclick_hidden form-control" value="0" >
                             @endif
-                            {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
-                            <input type="hidden" name="pay_online" id="pay_online" class="form-check-input js_oneclick_hidden" value="1" >
                             <label class="form-check-label" for="pay_online">
                                 Оплата онлайн
                             </label>
@@ -276,11 +278,11 @@
                         <div class="form-check">
                             @if(isset($product->id))
                                 <input class="form-check-input js_oneclick" type="checkbox" id="packaging" name="packaging" value="{{ $product->packaging }}" @if($product->packaging) checked @endif>
+                                <input class="js_oneclick_hidden form-control" type="hidden" id="packaging" name="packaging" value="{{ $product->packaging }}">
                             @else
-                                <input class="form-check-input js_oneclick" type="checkbox" name="packaging" id="packaging" value="1" >
+                                <input class="form-check-input js_oneclick" type="checkbox" name="packaging" id="packaging" value="0" >
+                                <input type="hidden" name="packaging" id="packaging" class="js_oneclick_hidden form-control" value="0" >
                             @endif
-                            {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
-                            <input type="hidden" name="packaging" id="packaging" class="form-check-input js_oneclick_hidden" value="1" >
                             <label class="form-check-label" for="packaging">
                                 Продажа упаковками
                             </label>
