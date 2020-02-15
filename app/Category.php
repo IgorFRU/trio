@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -50,5 +51,13 @@ class Category extends Model
 
     public function menu() {
         return $this->belongsTo(Menu::class);
+    }
+
+    public function getShortDescriptionAttribute() {
+        if (strlen($this->description) > 220) {
+            return Str::limit($this->description, 220);
+        } else {
+            return $this->description;
+        }
     }
 }

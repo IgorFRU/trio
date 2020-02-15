@@ -11,8 +11,8 @@
                     <div class="headsection__body__left">
                         <h1>Продажа, укладка и ремонт паркета в Крыму</h1>
                         <h2 class="headsection__body__left__text">
-                            Огромный опыт работы со всеми видами паркета даёт нам право называться чуть ли не единственной в Крыму командой профессионалов, которая умеет и любит работать с настоящим деревом. А это в современном мире ламината, пвх и линолеума стоит многого! 
-                            Мы подберм для вас оптимально решение согласно вашим пожеланиям и бюджету.                        </h2>
+                            Самый большой опыт в паркетном деле на территории Крыма даёт нам уверенность в работе как с традиционными видами паркета, так и с авангардными материалами.
+                        </h2>
                         <div class="headsection__btn">
                             {{-- <div class="btn main_btn">
                                 <div class="main_btn__left">
@@ -138,7 +138,7 @@
                                                 <i class="fas fa-info-circle"></i>
                                             </div>
                                             <div class="categories__boxes__category__info">
-                                                <span>{!! $category->short_description !!}</span>
+                                                <span>{!! $category->description !!}</span>
                                             </div>
                                         @endif
                                         
@@ -158,12 +158,10 @@
             @endforelse
             </div>
         </section>
-        {{-- <section class="about_main">
-            <div class="wrap">
-                {!! $about->main_text ?? '' !!}
-            </div>
+        <section class="about_main">
             
-        </section> --}}
+            
+        </section>
         <section>
             <div class="wrap content">
                 

@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
 
             if($model->image) {
                 // dd($model);
-                $path = public_path().'\imgs\categories\\';
+                $path = public_path().'/imgs/categories/';
                 $file = $model->image;
                 $img = new WorkWithImage($file, $path);
                 $model->image = $img->saveImage();
@@ -75,11 +75,11 @@ class AppServiceProvider extends ServiceProvider
                 // dd($old_image->image);
                 if($model->image != $old_image->image) {
 
-                    if (file_exists(public_path().'\imgs\categories\\' . $old_image->image)) {                        
+                    if (file_exists(public_path().'/imgs/categories/' . $old_image->image)) {                        
                         $file = new Filesystem;
-                        $file->delete(public_path().'\imgs\categories\\' . $old_image->image);
+                        $file->delete(public_path().'/imgs/categories/' . $old_image->image);
                     }
-                    $path = public_path().'\imgs\categories\\';
+                    $path = public_path().'/imgs/categories/';
                     $file = $model->image;
                     $img = new WorkWithImage($file, $path);
                     $model->image = $img->saveImage();
@@ -91,7 +91,7 @@ class AppServiceProvider extends ServiceProvider
         Article::creating(function(Article $model){
             if($model->image) {
                 // dd($model);
-                $path = public_path().'\imgs\articles\\';
+                $path = public_path().'/imgs/articles/';
                 if (!file_exists($path)) {
                     mkdir($path, 0777);
                 }
@@ -105,11 +105,11 @@ class AppServiceProvider extends ServiceProvider
             if($model->image) {
                 $old_image = Article::select('image')->find($model->id);
                 if($model->image != $old_image->image) {
-                    if (file_exists(public_path().'\imgs\articles\\' . $old_image->image)) {                        
+                    if (file_exists(public_path().'/imgs/articles/' . $old_image->image)) {                        
                         $file = new Filesystem;
-                        $file->delete(public_path().'\imgs\articles\\' . $old_image->image);
+                        $file->delete(public_path().'/imgs/articles/' . $old_image->image);
                     }
-                    $path = public_path().'\imgs\articles\\';
+                    $path = public_path().'/imgs/articles/';
                     $file = $model->image;
                     $img = new WorkWithImage($file, $path);
                     $model->image = $img->saveImage();
@@ -121,7 +121,7 @@ class AppServiceProvider extends ServiceProvider
         Set::creating(function(Set $model){
             if($model->image) {
                 // dd($model);
-                $path = public_path().'\imgs\sets\\';
+                $path = public_path().'/imgs/sets/';
                 if (!file_exists($path)) {
                     mkdir($path, 0777);
                 }
@@ -135,11 +135,11 @@ class AppServiceProvider extends ServiceProvider
             if($model->image) {
                 $old_image = Set::select('image')->find($model->id);
                 if($model->image != $old_image->image) {
-                    if (file_exists(public_path().'\imgs\sets\\' . $old_image->image)) {                        
+                    if (file_exists(public_path().'/imgs/sets/' . $old_image->image)) {                        
                         $file = new Filesystem;
-                        $file->delete(public_path().'\imgs\sets\\' . $old_image->image);
+                        $file->delete(public_path().'/imgs/sets/' . $old_image->image);
                     }
-                    $path = public_path().'\imgs\sets\\';
+                    $path = public_path().'/imgs/sets/';
                     $file = $model->image;
                     $img = new WorkWithImage($file, $path);
                     $model->image = $img->saveImage();
@@ -258,7 +258,9 @@ class AppServiceProvider extends ServiceProvider
 
             $hour = 60;
             
-            $top_categories = Category::orderBy('views', 'ASC')->limit(4)->get();
+            $top_categories = Cache::remember('top_categories', $hour*3, function() {
+                return Category::orderBy('views', 'DESC')->limit(4)->get();
+            });
 
             $data = array (
                 'top_categories' => $top_categories,
