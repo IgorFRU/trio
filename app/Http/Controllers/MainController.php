@@ -75,11 +75,16 @@ class MainController extends Controller
                 'email'            => 'info@parketpro.com',
                 'viber'            => '9788160166',
                 'whatsapp'         => '9788160166',
-                'address'          => 'Симферополь, пр. Победы, 129/2',
                 'main_text'        => 'Паркет со всего мира по лучшим ценам!',
                 'orderstatus_id'   => '1']
             );
         }
+
+        $articles = Article::orderby('id')->get();
+        if (count($articles) > 5) {
+            $articles = $articles->random(5);
+        }
+        
 
         $data = [
             'title' => 'Паркетный мир - Симферополь. Продажа, укладка, ремонт паркета, ламината, паркетной доски, массивной и инженерной доски. Всё для паркета: клеи, лаки, масла и воски. Доставка паркета по Крыму и Симферополю.',
@@ -89,8 +94,8 @@ class MainController extends Controller
             'lastProducts' => Product::orderBy('id', 'DESC')->limit(4)->get(),
             'recomended_products' => Product::where([
                 ['recomended', '1']
-            ])->limit(7)->get(),
-            'articles' => Article::orderby('id')->limit(3)->get(),
+            ])->get()->random(5),
+            'articles' => $articles,
             'about' => $about,
             'meta_description' => 'Продажа паркета, паркетной доски, ламината, пробкового пола, инженерной и массивной доски, террасной доски из экзотических пород дерева. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
         ];
@@ -254,7 +259,7 @@ class MainController extends Controller
         }
 
         $data = array (
-            'title' => $category->category . '. Купить товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
+            'title' => $category->category . '. Купить по лучшей цене в Симферополе с доставкой товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
             'products' => $products,
             'category' => $category,
             'properties' => $properties,
@@ -264,7 +269,7 @@ class MainController extends Controller
             'main_page' => $main_page,
             'sort' => $sort,
             'products_per_page' => $itemsPerPage,
-            'meta_description' => $category->category . '. Каталог товаров. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
+            'meta_description' => $category->category . '. Купить с доставкой по Симферполю и Крыму. Каталог товаров. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
             // 'subcategories' => Category::where('slug', $slug)->firstOrFail()
         );
         // dd($data['properties']);
@@ -278,6 +283,7 @@ class MainController extends Controller
             return Category::orderBy('category', 'ASC')->where('category_id', 0)->get();
         });
         $data = array (
+            'title' => 'Паркет, паркетная доска, ламинат, натуральный штучный паркет и массивная доска. Пробковые полы и стеновые панели ламинированные, шпонированные и пробковые. Паркетная химия: клей для паркета, лак, шпаклёвка, имасла и воски от лучших мировых заводов: OSMO, Loba, Bona, Lechner, Berger, Uzin, Sika И других. Паркетный мир (Симферополь)',
             'categories' => $categories,
             'local_title' => 'Категории товаров',
             'menus' => Menu::orderBy('sortpriority', 'ASC')->get(),
@@ -290,6 +296,7 @@ class MainController extends Controller
 
     public function articles() {
         $data = array (
+            'title' => 'Статьи о паркете, ламинате, паркетной химии и других вопросах, касающихся напольных покрытий. Паркетный мир (Симферополь)',
             'articles' => Article::orderBy('id', 'DESC')->paginate(20),
             'local_title' => 'Статьи',
             'meta_description' => 'Статьи о паркете, ламинате, пробклвом паркете. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
@@ -304,6 +311,7 @@ class MainController extends Controller
         }
         $local_title = $article->article;
         $data = array (
+            'title' => $article->article . '. Статьи в Паркетном мире (Симферополь)',
             'article' => $article,
             'local_title' => $local_title,
             'meta_description' => $article->article . '. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
@@ -314,6 +322,7 @@ class MainController extends Controller
     public function sales() {
         $today = Carbon::now()->toDateString();
         $data = array (
+            'title' => 'Скидки, акции и уникальные предложения в Паркетном мире (Симферополь)',
             // 'sales' => Discount::orderBy('discount_end', 'ASC')->where('discount_end', '>=', $today)->get(),
             'sales' => Discount::orderBy('discount_end', 'DESC')->get(),
             'local_title' => 'Акции',
@@ -329,6 +338,7 @@ class MainController extends Controller
         }
         $local_title = $sale->discount . ' ' . $sale->value . $sale->rus_type;
         $data = array (
+            'title' => $local_title . '. Скидки и акции в Паркетном мире (Симферополь)',
             'sale' => $sale,
             'local_title' => $local_title,
             'meta_description' => $local_title . '. Акции и скидки в Паркетном мире. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
@@ -339,6 +349,7 @@ class MainController extends Controller
     public function manufactures() {
         $manufactures = Manufacture::all();
         $data = array (
+            'title' => 'Производители, представленные в Паркетном мире (Симферополь)',
             'manufactures' => $manufactures,
             'meta_description' => 'Список производителей, представленных в Паркетном мире. Акции и скидки в Паркетном мире. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
         );
@@ -356,7 +367,7 @@ class MainController extends Controller
         $products = Product::whereManufactureId($manufacture->id)->published()->order()->with('manufacture', 'category', 'images', 'unit', 'currency')->paginate($itemsPerPage);
         // dd($category);
         $data = array (
-            'title' => $manufacture->manufacture . '. Купить товары производителя ' . $manufacture->manufacture . ' - Паркетный мир (Симферополь)',
+            'title' => $manufacture->manufacture . '. Купить товары производителя ' . $manufacture->manufacture . ' с доставкой по Симферополю и Крыму - Паркетный мир (Симферополь)',
             'products' => $products,
             'manufacture' => $manufacture,
             'sort' => $sort,
@@ -394,7 +405,7 @@ class MainController extends Controller
         }
         
         $data = array (
-            'title' => $local_title . ' - Паркетный мир - Симферополь',
+            'title' => $local_title . ' - купить в Симферополе по лучшей цене с доставкой по Симферополю и Крыму. Паркетный мир - Симферополь',
             'product' => $product,
             'propertyvalues' => $propertyvalues,
             'local_title' => $local_title,
