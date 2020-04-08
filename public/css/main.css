@@ -1164,7 +1164,7 @@ section.products .wrap {
 }
 
 .breadcrumbs li a {
-    border-bottom: 1px solid;
+    /* border-bottom: 1px solid; */
     color: #636b6f;
 }
 
