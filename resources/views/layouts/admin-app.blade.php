@@ -28,6 +28,14 @@
     <link href="{{ asset('css/style-admin.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/[uikit-version]/css/uikit.min.css" />
+
+    <!-- UIkit JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit-icons.min.js"></script>
+    
 </head>
 <body>
     <div id="app">
@@ -53,6 +61,7 @@
                                 <a class="dropdown-item {{ (Request::is('*manufactures*') ? 'active' : '') }}" href="{{ route('admin.manufactures.index') }}"><i class="fas fa-industry"></i> производители</a>
                                 <a class="dropdown-item {{ (Request::is('*vendors*') ? 'active' : '') }}" href="{{ route('admin.vendors.index') }}"><i class="fas fa-store-alt"></i>  Поставщики</a>
                                 <a class="dropdown-item {{ (Request::is('*sets*') ? 'active' : '') }}" href="{{ route('admin.sets.index') }}"><i class="fas fa-tasks"></i> Группы товаров</a>
+                                <a class="dropdown-item {{ (Request::is('*options*') ? 'active' : '') }}" href="{{ route('admin.options.index') }}">Опции товаров</a>
                                 <a class="dropdown-item {{ (Request::is('*units*') ? 'active' : '') }}" href="{{ route('admin.units.index') }}"><i class="fas fa-tape"></i>  Ед. измерения</a>
                                 <a class="dropdown-item {{ (Request::is('*currencies*') ? 'active' : '') }}" href="{{ route('admin.currencies.index') }}"><i class="fas fa-money-bill-alt"></i> валюты</a>
                                 <a class="dropdown-item {{ (Request::is('*menus*') ? 'active' : '') }}" href="{{ route('admin.menus.index') }}"><i class="fas fa-bars"></i> пункты меню</a>
@@ -66,6 +75,8 @@
                                 <a class="dropdown-item {{ (Request::is('*discounts*') ? 'active' : '') }}" href="{{ route('admin.discounts.index') }}"><i class="fas fa-percentage"></i>  Акции</a>
                                 <a class="dropdown-item {{ (Request::is('*articles*') ? 'active' : '') }}" href="{{ route('admin.articles.index') }}"><i class="fas fa-newspaper"></i>  Статьи</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-images"></i>  Баннеры</a>
+                                <hr>
+                                <a class="dropdown-item {{ (Request::is('*parser*') ? 'active' : '') }}" href="{{ route('admin.parser') }}"><i class="fas fa-images"></i>  Парсер</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">

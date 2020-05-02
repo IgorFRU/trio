@@ -1,51 +1,79 @@
 <footer>
-    <div class="wrap">
-        <div class="footer_content">
-            {{-- <div class="footer_content__card footer_content__about">
-                <div class="footer_content__title">
-                    О нас
+    <section class="uk-section uk-section-secondary uk-section-small uk-light">
+        <div class="uk-container">
+            <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-3@m uk-grid uk-grid-stack" uk-grid="">
+                <div class="uk-first-column">
+                    <a class="uk-logo uk-text-primary uk-text-left" href="{{ route('index') }}">
+                        <div>
+                            <span class="uk-text-bold uk-text-uppercase">Паркетный мир</span>
+                        </div>
+                    </a>
+                    {{-- <a class="uk-logo" href="index.html"><img src="images/logo-inverse.svg" alt="Logo" width="90" height="32"></a> --}}
+                    <p class="uk-text-small">Продажа напольных покрытий в Крыму. Профессиональная укладка с использованием только профессиональных материалов. Доставка паркета по Симферополю и Крыму.</p>
                 </div>
-                <div>
-                    <ul>
-                        <li><a href="#">О нас</a></li>
-                        <li><a href="#">Доставка</a></li>
-                        <li><a href="#">Оплата</a></li>
-                        <li><a href="#">Статьи</a></li>
-                    </ul>    
-                </div>                
-            </div> --}}
-            <div class="footer_content__card footer_content__contacts">
-                <div class="footer_content__title">
-                    Контакты
-                </div>
-                <div>
-                    <span class="footer_content__card__phone"><a href="tel:+79788160166">8(978) 816 01 66</a></span>
-                    <p>Республика Крым</p>
-                    <p>г. Симферополь</p>
-                    <p>проспект Победы, 129/2</p>
-                </div>
-            </div>
-            <div class="footer_content__card footer_content__items">
-                <div class="footer_content__title">
-                    Популярные категрии
-                </div>
-                <div>
-                    <ul>
-                        @forelse ($top_categories as $item)
-                            <li><a href="/catalog/{{ $item->slug }}">{{ $item->category }}</a></li>
-                        @empty
-                            
-                        @endforelse
+
+                <nav class="uk-grid-small uk-child-width-1-2 uk-grid" uk-grid="">
+                    <div class="uk-first-column">
+                        <ul class="uk-nav uk-nav-default">
+                            @forelse ($categories as $category)
+                                @if ($loop->iteration > 10)
+                                    @break
+                                @endif
+                                <li><a href="{{ route('category', $category->slug) }}">{{ $category->category }}</a></li>
+                            @empty
+                                
+                            @endforelse
+                            <li><a href="{{ route('categories') }}" class="uk-text-bold uk-text-uppercase">Все категории товаров</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="uk-nav uk-nav-default">
+                            @forelse ($manufactures as $manufacture)
+                                @if ($loop->iteration > 10)
+                                    @break
+                                @endif
+                                <li><a href="{{ route('manufacture', $manufacture->slug) }}">{{ $manufacture->manufacture }}</a></li>
+                            @empty
+                                
+                            @endforelse
+                            <li><a href="{{ route('manufactures') }}" class="uk-text-bold uk-text-uppercase">Все производители</a></li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <div class="">
+                    <ul class="uk-list uk-text-small">
+                        <li>
+                            <a href="tel:+79788160166" class="uk-link-muted">
+                                <span class="uk-margin-small-right uk-icon" uk-icon="receiver"></span>
+                                <span>8(978) 816 01 66</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="uk-link-muted" href="#">
+                                <span class="uk-margin-small-right uk-icon" uk-icon="mail"></span>
+                                <span class="tm-pseudo">info@parketpro.com</span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="uk-text-muted">
+                                <span class="uk-margin-small-right uk-icon" uk-icon="location"></span>
+                                <span>пр.&nbsp;Победы,&nbsp;129, Симферополь,&nbsp;Крым</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="uk-text-muted">
+                                <span class="uk-margin-small-right uk-icon" uk-icon="clock"></span>
+                                <span class="uk-display-inline-block">ПН-ПТ 09:00–18:00</span>
+                                <span class="uk-display-block">СБ 09:00–16:00</span>
+                                <span class="uk-display-block">ВС выходной</span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
-            {{-- <div class="footer_content__card footer_content__socials">
-                <div class="footer_content__title">
-                    Мы в соцсетях
-                </div>
-            </div> --}}
         </div>
-    </div>
+    </section>
     <div class="modal_oneclick">
         <div class="modal_oneclick__header">
             Быстрый заказ
@@ -65,5 +93,10 @@
             <div id="modal_oneclick_btn">Отправить</div>
         </form>
     </div>
-
+<div class="alerts">
+    <div class="alert_clone shadow hide" role="">
+        
+    </div>
+</div>
+<a href="" uk-totop uk-scroll class="to_up"></a>
 </footer>

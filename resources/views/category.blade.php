@@ -3,186 +3,111 @@
     @parent
     <!-- <script src="{{ asset('js/discount_countdown.js') }}" defer></script> -->
 @endsection
+
 @section('content')
-<section id="firstsection">
-@component('components.breadcrumb')
-    @slot('main') <i class="fas fa-home"></i> @endslot
-    @slot('parent') Категории товаров @endslot
-        @slot('parent_route') {{ route('categories') }} @endslot 
-    @isset($category->parents)
-        @slot('parent2') {{ $category->parents->category }} @endslot
-            @slot('parent2_route') {{ route('category', $category->parents->slug) }} @endslot        
-    @endisset    
-    @slot('active') {{ $category->category }} @endslot
-@endcomponent 
-</section>
-<section class="bg-light-grey products">
-<div class="wrap">
-    <div class="col-lg-12 row">
-        <div class="col-lg-3">
-            @include('components.categories-sidebar')
-        </div>
-        <div class="col-lg-9">
-            <section class="white_card_global">   
-                <h1>{{ $category->category }}</h1>        
-            @if(count($category->children) > 0)
-            <div class="col-lg-12 row">
-                @forelse ($category->children as $subcategory)
-                    <div class="col lg-3">
-                        <h3><a href="{{ route('category', $subcategory->slug) }}">{{ $subcategory->category }}</a></h3>
-                    </div>
-                @empty
-                    
-                @endforelse
-            </div>
-            @endif
-            
-            
-        @if(isset($products) && count($products) > 0)
-                <div class="products__cards col-lg-12">
-                    <div class="col-lg-12 row justify-content-end products_top_bar">
-                        <div class="col-lg-6">
-                            <div class="row">                            
-                                <div class="col">
-                                    <div class="form-group row">
-                                        <label for="products_sort" class="col-lg-4">Сортировать</label>
-                                        <div class="col-md-8">
-                                            <select class="form-control custom-select custom-select-sm" id="products_sort">
-                                                {{-- <option value="discount">Сначала со скидкой</option> --}}
-                                                <option @if ($sort == "nameAZ" || $sort == NULL) selected @endif value="nameAZ">По названию (А-Я)</option>
-                                                <option @if ($sort == "nameZA") selected @endif value="nameZA">По названию (Я-А)</option>
-                                                <option @if ($sort == "popular") selected @endif value="popular">По популярности</option>
-                                                <option @if ($sort == "new_up") selected @endif value="new_up">Сначала новые</option>
-                                                <option @if ($sort == "new_down") selected @endif value="new_down">Сначала старые</option>
-                                              </select>
-                                        </div> 
-                                    </div> 
-                                </div>
-                            </div> 
+<section class="uk-section uk-section-small">
+    <div class="uk-container">
+        <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid=''>
+            <div class="uk-text-center uk-first-column">
+                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove">
+                    @component('components.breadcrumb')
+                        @slot('main') <i class="fas fa-home"></i> @endslot
+                        @slot('parent') Категории товаров @endslot
+                            @slot('parent_route') {{ route('categories') }} @endslot 
+                        @isset($category->parents)
+                            @slot('parent2') {{ $category->parents->category }} @endslot
+                                @slot('parent2_route') {{ route('category', $category->parents->slug) }} @endslot        
+                        @endisset    
+                        @slot('active') {{ $category->category }} @endslot
+                    @endcomponent 
+                </ul>
+                <h1 class="uk-margin-small-top uk-margin-remove-bottom">{{ $category->category }}</h1>
+                
+                <ul uk-accordion="multiple: true">
+                    <li>
+                        <a class="uk-accordion-title" href="#">Описание категории</a>
+                        <div class="uk-accordion-content">
+                            {!! $category->description !!}
                         </div>
-                        <div class="col-lg-5">
-                            <div class="row">                            
-                                <div class="col">
-                                    <div class="form-group row">
-                                        <label for="products_per_page" class="col-lg-7">Товаров на странице</label>
-                                        <div class="col-lg-5">
-                                            <select class="form-control custom-select custom-select-sm" id="products_per_page">
-                                                <option @if ($products_per_page == "12") selected @endif value="12">12</option>
-                                                <option @if ($products_per_page == "24") selected @endif value="24">24</option>
-                                                <option @if ($products_per_page == "48" || $products_per_page == NULL) selected @endif value="48">48</option>
-                                                <option @if ($products_per_page == "96") selected @endif value="96">96</option>
-                                              </select>
-                                        </div> 
-                                    </div> 
-                                </div>
-                            </div> 
-                        </div>
-                    </div>
-                    @foreach ($products as $product)
-                        @if ($product->published)                
-                        {{-- @if (isset($checked_properties) && $product->property_active_product($checked_properties) ) --}}
-                            <div class="col-lg-4">
-                                <div class="products__card">
-                                    <div class="products__card__image">
-                                        @if (count($product->images) > 0)
-                                            <img class="normal_product_image img-fluid" src="{{ asset('imgs/products/thumbnails/')}}/{{ $product->main_or_first_image->thumbnail}}" alt="">
-                                            
-                                        @else
-                                            <img src="{{ asset('imgs/nopic.png')}}" alt="">
-                                        @endif
-                                    </div>                    
-                                    <div class="products__card__info">
-                                        <div class="products__card__scu">
-                                            <span class="scu">
-                                                арт.: {{ $product->scu ?? ' - '}}
-                                            </span>   
-                                            @if ($product->manufacture != '' || $product->manufacture != NULL)
-                                                <span class="manufacture">
-                                                    <a href="{{ route('manufacture', $product->manufacture->slug) }}"><span class="c-black">{{ $product->manufacture->manufacture ?? '' }}</span></a>
-                                                </span>
-                                            @endif                                
-                                        </div>
-                                        <div class="products__card__maininfo">
-                                            <div class="products__card__title">
-                                                @if($category->parent_id)
-                                                <h3><a href="{{ route('product.subcategory', ['category' => $category->slug, 'subcategory' => $category->parent_id, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a></h3>
+                    </li>
+                    @if (count($category->children) > 0)
+                        <li>
+                            <a class="uk-accordion-title" href="#">Дочерние категории</a>
+                            <div class="uk-accordion-content">
+                                <div class="uk-child-width-1-3@s uk-child-width-1-4@m" ui-grid  uk-grid="masonry:true">
+                                    @forelse ($category->children as $children)
+                                        <div>
+                                            <div class="uk-inline">
+                                                @if ($children->image)
+                                                    <img src="{{ asset('imgs/categories')}}/{{ $children->image  }}" alt="{{ $children->category }}">
                                                 @else
-                                                <h3><a href="{{ route('product', ['category' => $category->slug, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a></h3>
+                                                    <img src="{{ asset('imgs/nopic.png') }}" alt="{{ $children->category }}">
                                                 @endif
-                                            </div>
-                
-                                        </div>
-                                    </div>
-                                    <div class="products__card__price">                            
-                                        @if ($product->actually_discount)
-                                            <span class="products__card__price__old price_value">
-                                                {{ $product->old_price }} 
-                                            </span>
-                                            <i class="fa fa-rub"></i>
-                                            <span class="old_price_tooltip text-light bg-danger btn-sm disabled" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ $product->discount->d_m_y ?? '' }}">
-                                                - <span class="price_value" >{{ $product->discount->value ?? '--' }}</span> {{ $product->discount->rus_type ?? '--' }}
-                                            </span>
-                                        @endif
-                                        <div class="products__card__price__new">
-                                            <div>
-                                                <span class="price_value">
-                                                    @if ($product->actually_discount)
-                                                        {{ $product->discount_price }}
-                                                    @else
-                                                        {{ $product->old_price }}
-                                                    @endif
-                                                </span>
-                                                <i class="fa fa-rub"></i>
-                                            </div>
-                
-                                            <div class="products__card__price__new__package">
-                                                <div class="active" data-price="{{ $product->discount_price ?? $product->old_price }}"> за 1 {{ $product->unit->unit ?? 'ед.' }}</div>
-                                                @if ($product->packaging)
-                                                <div data-price="{{ $product->package_price }}"> за 1 уп. ({{ round($product->unit_in_package, 3) }} {{ $product->unit->unit  ?? 'ед.'}})</div>
-                                                @endif
+                                                <div class="uk-overlay uk-overlay-default uk-position-center uk-text-large uk-text-bolder">
+                                                    <p>
+                                                        <a href="/catalog/{{ $children->slug }}">{{ $children->category }}</a>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="products__card__buttons">
-                                        <div class="products__card__buttons__input">
-                                            <input type="text" name="count" id="count" 
-                                            data-price="{{ $product->package_price }}" 
-                                            data-count="{{ round($product->unit_in_package, 2) }}"
-                                            data-countpackage="1"
-                                            @if($product->packaging) value="{{ round($product->unit_in_package, 2) }} {{ $product->unit->unit ?? 'ед.' }}" @endif >
-                                            <span class="plus"><i class="fa fa-plus"></i></span>
-                                            <span class="minus"><i class="fa fa-minus"></i></span>
-                                        </div>
-                                        <div class="for_payment">
-                                            к оплате: <span class="price_value" data-unit="{{ $product->unit->unit ?? 'ед.' }}"> {{ $product->package_price }}</span> <i class="fa fa-rub"></i>
-                                        </div>
-                                        <div class="buttons">
-                                            <div class="buy">В корзину</div>
-                                            <div class="one_click">Купить в 1 клик</div>
-                                        </div>
-                                    </div>
+                                    @empty
+                                    @endforelse
                                 </div>
                             </div>
-                        {{-- @endif --}}
-                        @endif
-                    @endforeach
-                </div>
-            
-            @else 
-                <div class="wrap">
-                    В данной категории нет товаров
-                </div>
-            @endif
-            @if ($main_page)
-                {!! $category->description !!}
-            @endif
-            <div class="paginate">
-                {{ $products->appends(request()->input())->links('layouts.pagination') }}
+                        </li>
+                    @endif
+                    
+                </ul>
+
+                <div class="uk-text-meta uk-margin-xsmall-top">{{ $category->products_count }} товаров</div>
             </div>
-            </section>
+            <div class="uk-grid-margin uk-first-column">
+                <div class="uk-grid-medium uk-grid" uk-grid="">
+                    <div class="uk-width-expand">
+                        <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid="">
+                            <div class="uk-first-column">
+                                <div class="uk-card uk-card-default uk-card-small tm-ignore-container">
+                                    <div class="uk-grid-collapse uk-child-width-1-1 uk-grid uk-grid-stack" id="products" uk-grid="">
+                                        <div class="uk-card-header uk-first-column">
+                                            <div class="uk-grid-small uk-flex-middle uk-grid" uk-grid="">
+                                                <div class="uk-width-1-1 uk-width-expand@s uk-flex uk-flex-center uk-flex-left@s uk-text-small uk-first-column">
+                                                    <span class="uk-margin-small-right uk-text-muted">Sort by:</span>
+                                                    <ul class="uk-subnav uk-margin-remove">
+                                                        <li class="uk-active uk-padding-remove">
+                                                            <a class="uk-text-lowercase" href="#">relevant<span class="uk-margin-xsmall-left uk-icon" uk-icon="icon: chevron-down; ratio: .5;"></span>
+                                                            </a>
+                                                        </li>
+                                                        <li><a class="uk-text-lowercase" href="#">price</a></li>
+                                                        <li><a class="uk-text-lowercase" href="#">newest</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="uk-width-1-1 uk-width-auto@s uk-flex uk-flex-center uk-flex-middle">
+                                                    <button class="uk-button uk-button-default uk-button-small uk-hidden@m" uk-toggle="target: #filters"><span class="uk-margin-xsmall-right uk-icon" uk-icon="icon: settings; ratio: .75;"></span>Фильтр</button>
+                                                    <div class="tm-change-view uk-margin-small-left">
+                                                        <ul class="uk-subnav uk-iconnav js-change-view" uk-switcher="">
+                                                            <li aria-expanded="true" class="uk-active"><a class="uk-active uk-icon" data-view="grid" uk-icon="grid" uk-tooltip="Grid" title="" aria-expanded="false"></a></li>
+                                                            <li aria-expanded="false"><a data-view="list" uk-icon="list" uk-tooltip="List" class="uk-icon" title="" aria-expanded="false"></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+
         </div>
     </div>
-</div>
-
-</section>    
+</section>
+      
 @endsection
+
+

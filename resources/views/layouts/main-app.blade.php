@@ -11,6 +11,8 @@
     <meta description="{{ $meta_description ?? "Паркетный мир - Симферополь. Купить все виды паркета в Крыму по лучшим ценам! Укладка, ремонт и реставрация паркета. Ламинат, паркетная доска, массивная и инженерная доска, клей и лак для паркета, масла и воски" }}">
     <meta keywords="{{ $meta_keywords ?? "" }}">
 
+    {{-- <script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(20781085, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); </script> <noscript><div><img src="https://mc.yandex.ru/watch/20781085" style="position:absolute; left:-9999px;" alt="" /></div></noscript> --}}
+    
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ asset('/imgs/favicon/apple-touch-icon-57x57.png') }}" />
@@ -33,6 +35,14 @@
     <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
     
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/css/uikit.min.css" />
+
+    <!-- UIkit JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit-icons.min.js"></script>
+
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
@@ -41,137 +51,222 @@
 
 </head>
 
-<body>
+<body>    
+    <div class="small_menu uk-text-small">
+        <div class="uk-container">
+            @forelse ($topmenu as $topmenu_item)
+                <a href="{{ route('staticpage', $topmenu_item->slug) }}" class="uk-padding uk-padding-remove-vertical">{{ $topmenu_item->title }}</a>
+            @empty
+                
+            @endforelse
+            <a href="{{ route('articles') }}" class="uk-padding uk-padding-remove-vertical">Статьи</a>
+            <a href="{{ route('sales') }}" class="topmenu__left__red uk-padding uk-padding-remove-vertical">Акции</a>
+        </div>
+    </div>
+    <nav class="uk-navbar-container uk-box-shadow-small" uk-navbar  uk-sticky="animation: uk-animation-slide-top">
+        <div class="uk-navbar-left">    
+            <ul class="uk-navbar-nav">
+                <a class="uk-navbar-item uk-logo uk-text-primary uk-text-center uk-visible@s" href="{{ route('index') }}">
+                    <div>
+                        <span class="uk-text-bold uk-text-uppercase">Паркетный мир</span>
+                        
+                        <div class="uk-navbar-subtitle uk-text-lowercase uk-text-small">все виды паркета в Крыму по лучшим ценам</div>
+                    </div>
+                </a>
 
-    <!-- MENU START -->
-    <header>
-        <div class="menu">
-            <div class="topmenu">
-                <div class="wrap">
-                    <div class="topmenu__body">
-                        <div class="topmenu__left">
-                            @forelse ($topmenu as $topmenu_item)
-                                <a href="{{ route('staticpage', $topmenu_item->slug) }}">{{ $topmenu_item->title }}</a>
+                <div class="uk-navbar-container uk-hidden@m" uk-navbar>
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-toggle" href="" uk-toggle="target: #offcanvas-nav">
+                            <span uk-navbar-toggle-icon class="uk-text-bold"></span> <span class="uk-margin-small-left uk-text-bold uk-visible@s">Меню</span>
+                        </a>
+                    </div>
+                </div>                
+                
+                <li class="uk-visible@m">
+                    <a href="#" class="uk-text-large">
+                        <span class="uk-text-bold"><span uk-icon="icon: chevron-down"></span> Каталог</span></a>
+                    <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" uk-overflow-auto>                        
+                        <div class="uk-navbar-dropdown-grid {{ 'uk-child-width-1-3' }}" uk-grid>
+                            @forelse ($menus as $menu)
+                                <div>
+                                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                                        <li class="uk-nav-header uk-text-bold">{{ $menu->menu }}</li>
+                                        @forelse ($menu->category as $category)
+                                            <li class="uk-active"><a class="" href="/catalog/{{ $category->slug }}">{{ $category->category }}</a></li>
+                                            
+                                            @forelse ($category->children as $children)
+                                                <li><a href="/catalog/{{ $children->slug }}">{{ $children->category }}</a>
+                                            @empty                                                
+                                            @endforelse
+                                            <li class="uk-nav-divider"></li>
+                                        @empty                                    
+                                        @endforelse
+                                        
+                                    </ul>
+                                </div>                                
                             @empty
                                 
                             @endforelse
-                            <a href="{{ route('articles') }}">Статьи</a>
-                            <a href="{{ route('sales') }}" class="topmenu__left__red">Акции</a>
                         </div>
-
-
-                        {{-- <div>
-                            <li class="topmenu__work_today"><i class="fas fa-clock"></i> Сегодня работаем до 18:00</li>
-                            <div>
-                                <ul>
-                                    <li>ПН-ПТ: 09:00 - 18:00</li>
-                                    <li>СБ: 09:00 - 16:00</li>
-                                    <li class="redtext">ВС: ВЫХОДНОЙ</li>
-                                </ul>
-                            </div>
-                        </div> --}}
-                        {{-- <div class="topmenu__right">
-                            <a href="#"><i class="fas fa-sign-in-alt"></i>  Вход</a>
-                            <a href="#"><i class="fas fa-user-plus"></i>  Регистрация</a>
-                        </div> --}}
                     </div>
-                </div>
-            </div>
-            <div class="fastmenu">
-                <div class="wrap">
-                    <div class="fastmenu__body">
-                        <div class="logo">
-                            <div class="logo__body">
-                                <a href="{{ route('index') }}">
-                                    <h1>Паркетный Мир</h1>
-                                </a>
-                            </div>
-                            <div class="logo__tagline">все виды паркета в Крыму по лучшим ценам</div>
-                        </div>
-                        <div class="fastmenu__location">
-                            <ul>
-                                <li><i class="fas fa-map-marker-alt"></i> Симферополь</li>
-                                <li>пр. Победы, 129/2</li>
+                </li>                
+           </ul>
+    
+        </div>
+        <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav nav-overlay">
+                <li>
+                    <a href="#">
+                        <span class="uk-icon uk-margin-small-right" uk-icon="icon: location"></span>
+                        <span class="uk-visible@l">пр. Победы, 129/2, Симферополь</span>                        
+                    </a>
+                    <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;">   
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af4cc3b8a1534db3bd226df3963ccc096015a2a811264e967efbacb43c7e2b450&amp;width=100%25&amp;height=280&amp;lang=ru_RU&amp;scroll=true"></script>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-overlay">
+                    @if ($settings->phone_1 != NULL && $settings->phone_1 != '')
+                        <a href="tel:{{ $settings->full_main_phone }}" class="uk-text-primary">
+                            <span class="uk-icon uk-margin-small-right" uk-icon="icon: phone"></span>
+                            <span class="uk-visible@m">{{ $settings->main_phone }}</span>
+                        </a>
+                    @else
+                        <a href="tel:+79788160166" class="uk-text-primary">
+                            <span class="uk-icon uk-margin-small-right" uk-icon="icon: phone"></span>
+                            <span class="uk-visible@m">8(978) 816 01 66</span>
+                        </a>
+                    @endif
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                @if ($settings->phone_1 != NULL && $settings->phone_1 != '')
+                                    <li class="uk-active uk-text-normal">
+                                        <a href="tel:{{ $settings->full_main_phone }}" class="uk-text-primary">{{ $settings->main_phone }}</a>
+                                        <ul class="uk-text-small">
+                                            <li>Информация о товарах</li>
+                                            <li>Заказ продукции</li>
+                                        </ul>
+                                    </li>
+                                @else
+                                    <li class="uk-active uk-text-normal">
+                                        <a href="tel:+79788160166" class="uk-text-primary">8(978) 816 01 66</a>
+                                        <ul class="uk-text-small">
+                                            <li>Информация о товарах</li>
+                                            <li>Заказ продукции</li>
+                                        </ul>
+                                    </li>
+                                @endif
+                                <li class="uk-nav-divider"></li>
+                                <li class="uk-active uk-text-normal">
+                                    <a href="tel:+79788808206" class="uk-text-primary">+7 (978) 880 82 06</a>
+                                    <ul class="uk-text-small">
+                                        <li>Паркетные работы</li>
+                                    </ul>
+                                </li>
+                                <li class="uk-nav-divider"></li>
+                                <li class="uk-nav-header">Режим работы:</li>
+                                <li class="uk-text-success uk-flex uk-flex-between">
+                                    <div>ПН-ПТ</div>
+                                    <div>09:00 - 18:00</div>
+                                </li>
+                                <li class="uk-text-success uk-flex uk-flex-between">
+                                    <div>СБ</div>
+                                    <div>09:00 - 16:00</div>
+                                </li>
+                                <li class="uk-text-danger uk-flex uk-flex-between">
+                                    <div>ВС</div>
+                                    <div>Выходной</div>
+                                </li>
                             </ul>
                         </div>
-                        <ul class="fastmenu__body__tel">
-
-                            
-                            @if ($settings->phone_1 != NULL && $settings->phone_1 != '')
-                                <li><a href="tel:{{ $settings->full_main_phone }}">{{ $settings->main_phone }}</a></li>
-                            @else
-                                <li><a href="tel:+79788160166">8(978) 816 01 66</a></li>
-                            @endif
-                            {{-- <li class="fastmenu__body__tel__hide"><a href="tel:+79788808206">8(978) 880 82 06</a></li> --}}
-
-                            {{-- <li><a href="#" class="callme">Обратный звонок</a></li> --}}
-                        </ul>
-                        {{-- <div class="fastmenu__body__right">
-                            <div class="fastmenu__body__right__search">
-                                <i class="fas fa-search"></i>
-                                <div class="search__form">
-                                    <form action="">
-                                        <input type="search" placeholder="Поиск..." name="search">
-                                    </form>
-                                </div>
-
-                            </div>
-                            <div class="fastmenu__body__right__shopping_cart">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span>5</span>
-                            </div>
-                        </div> --}}
-                    </div>
-                </div>
-
-            </div>
-            <div class="fastmenu__tosmall">
-                <span></span>
-                <span></span>
-                <p>Паркетный мир</p>
-            </div>
-        </div>
-    </header>
-    <menu class="mainmenu">
-        {{-- <div class="mainmenu__burger">
-            <div class="burger">Меню
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div> --}}
-        <ul class="mainmenu__ul">
-            <li class="mainmenu__li"><a href="{{ route('index') }}" class="mainmenu__a"><i class="fas fa-home"></i></a></li>
-            
-            @forelse ($menus as $menu)
-                <li class="mainmenu__li"><a href="#" class="mainmenu__a">{{ $menu->menu }}</a>
-                    <ul>
-                    @forelse ($categories as $category)
-                        
-                            @if ($category->menu_id == $menu->id)
-                                <li><a href="/catalog/{{ $category->slug }}">{{ $category->category }}</a>
-                                    <ul class="mainmenu__ul_to_right">
-                                    @forelse ($categories as $category_child)
-                                        @if ($category_child->parent_id == $category->id)                                            
-                                            <li><a href="/catalog/{{ $category_child->slug }}">{{ $category_child->category }}</a>                                            
-                                        @endif
-                                    @empty                                        
-                                    @endforelse
-                                    </ul>   
-                                </li>
-                            @endif
-                        
-                    @empty                        
-                    @endforelse
-                    </ul>
                 </li>
-            @empty                
-            @endforelse
-        </ul>
-    </menu>
+                <li>                    
+                    <a href="#question-modal" class="uk-text-primary" uk-toggle="target: #question-modal">
+                        <span class="uk-icon uk-margin-small-right" uk-icon="icon: mail"></span>
+                        <span class="uk-visible@l">Обратная связь</span>
+                    </a>
+                    
+                </li>
+                <a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
+            </ul>
+        </div>
+        <div class="nav-overlay uk-navbar-left uk-flex-1" hidden>
 
-    <!-- MENU END -->
+            <div class="uk-navbar-item uk-width-expand">
+                <form class="uk-search uk-search-navbar uk-width-1-1">
+                    <input class="uk-search-input" type="search" placeholder="Search..." autofocus>
+                </form>
+            </div>
+    
+            <a class="uk-navbar-toggle" uk-close uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
+    
+        </div>
+        
+    </nav>
 
+    <div id="offcanvas-nav" uk-offcanvas="overlay: true">
+        <div class="uk-offcanvas-bar">
+    
+            <ul class="uk-nav uk-nav-default">
+                <a class="uk-navbar-item uk-logo uk-text-primary uk-text-center uk-background-primary uk-hidden@s" href="{{ route('index') }}">
+                    <div>
+                        <span class="uk-text-bold uk-text-uppercase">Паркетный мир</span>
+                        
+                        <div class="uk-navbar-subtitle uk-text-lowercase uk-text-small uk-visible@m">все виды паркета в Крыму по лучшим ценам</div>
+                    </div>
+                </a>
+                @forelse ($menus as $menu)
+                    <li class="uk-nav-header">{{ $menu->menu }}</li>
+                    @forelse ($menu->category as $category)
+                        <li class="uk-active"></li>
+                        <li class="uk-parent">
+                            <a class="" href="/catalog/{{ $category->slug }}">{{ $category->category }}</a>
+                            <ul class="uk-nav-sub">
+                                @forelse ($category->children as $children)
+                                    <li><a href="/catalog/{{ $children->slug }}">{{ $children->category }}</a></li>
+                                @empty                                                
+                                @endforelse
+                            </ul>
+                        </li>
+                        <li class="uk-nav-divider"></li>
+                    @empty                                    
+                    @endforelse
+                                                           
+                @empty                    
+                @endforelse
+            </ul>    
+        </div>
+    </div>
+
+    <div id="question-modal" class="uk-modal-full" uk-modal>
+        <div class="uk-modal-dialog">    
+            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>    
+            <div data-uk-img="" data-src="/images/photo2.jpg" class="uk-flex uk-flex-center uk-flex-middle uk-background-cover" uk-height-viewport>    
+                <div class="uk-overlay-primary uk-position-cover"></div>    
+                <div class="uk-overlay uk-position-center uk-light">    
+                    <form id="send_question">
+                        <div class="uk-margin">
+                            <div class="uk-inline">    
+                                <span class="uk-form-icon" uk-icon="icon: phone"></span>    
+                                <input class="uk-input" type="tel" id="question_phone" name="phone" placeholder="Номер телефона" required>    
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                            <div class="uk-inline">    
+                                <span class="uk-form-icon" uk-icon="icon: user"></span>    
+                                <input class="uk-input" type="text" id="question_name" name="name" placeholder="Имя" required>    
+                            </div>
+                        </div>
+                        <textarea class="uk-textarea" id="question_question" name="question" placeholder="Ваш вопрос" required maxlength="500" rows="5"></textarea>
+                        <div class="uk-margin">    
+                            <button class="uk-button uk-button-default" id="question">Отправить</button>    
+                        </div>    
+                    </form>    
+                </div>    
+            </div>    
+        </div>    
+    </div>
     <main>
 
         @yield('content')

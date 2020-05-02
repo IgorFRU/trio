@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Property;
 use App\Currency;
+use App\Choise;
 use App\Propertyvalue;
 use App\Image;
 use App\ImageProduct;
@@ -112,6 +113,8 @@ class ProductController extends Controller
         $today = Carbon::now();
         $data = array (
             'product' => [],
+            // 'choises_children' => Choise::children()->get(),
+            'choises_parent' => Choise::parent()->get(),
             //коллекция вложенных подкатегорий
             'categories' => Category::with('children')->where('category_id', '0')->get(),
             'manufactures' => Manufacture::get(),
@@ -123,7 +126,7 @@ class ProductController extends Controller
             //символ, обозначающий вложенность категорий
             'delimiter' => ''
         );
-        // dd($data['categories']);
+        // dd($data['choises_parent']);
         
         return view('admin.products.create', $data);
     }
@@ -207,6 +210,8 @@ class ProductController extends Controller
         
         $data = array (
             'product' => $product,
+            'choises_children' => Choise::children()->get(),
+            'choises_parent' => Choise::parent()->get(),
             'categories' => Category::with('children')->where('category_id', '0')->get(),
             'manufactures' => Manufacture::get(),
             'currencies' => Currency::get(),
@@ -218,7 +223,8 @@ class ProductController extends Controller
             'typeRequest' => 'edit',
             'delimiter' => ''
         );
-        // dd($data['propertyvalues']);
+        // dd(Choise::get());
+        // dd($data['choises_children']);
         
         // dd($rr->category->first()->id);
         

@@ -4,69 +4,51 @@
     <!-- <script src="{{ asset('js/discount_countdown.js') }}" defer></script> -->
 @endsection
 @section('content')
-<section id="firstsection">
-@component('components.breadcrumb')
-    @slot('main') <i class="fas fa-home"></i> @endslot     
-    @slot('active') Категории товаров @endslot
-@endcomponent 
-</section>
 
-<section class="products bg-light-grey">
-    <div class="wrap">        
-        <div class="col-lg-12 row">            
-            <div class="col-lg-3">
-                @include('components.categories-sidebar')
+<section class="uk-section uk-section-small">
+    <div class="uk-container">
+        <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid=''>
+            <div class="uk-text-center uk-first-column">
+                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove">
+                    @component('components.breadcrumb')
+                        @slot('main') <i class="fas fa-home"></i> @endslot     
+                        @slot('active') Категории товаров @endslot
+                    @endcomponent 
+                </ul>
+                <h1 class="uk-margin-small-top uk-margin-remove-bottom">Категории товаров</h1>
             </div>
-            <div class="col-lg-9">
-                <div class="col-lg-12 d-flex flex-column">
-                    @forelse ($menus as $menu)
-                        <section class="white_card_global mb-5">
-                            <div class="white_card_global__header">
-                                <h2>{{ $menu->menu }}</h2>    
-                            </div>
-                            <div class="categories__boxes">                    
-                                @forelse ($categories as $category)
-                                    @if ($category->menu_id == $menu->id && count($category->products) > 0)
-                                    <div class="categories__boxes__category">
-                                        <a href="/catalog/{{ $category->slug }}">
-                                            @if ($category->image)
-                                                <img src="{{ asset('imgs/categories')}}/{{ $category->image  }}" alt="">
-                                            @else
-                                                <img src="{{ asset('imgs/nopic.png') }}" alt="">
-                                            @endif
-                                            
-                                        <p>{{ $category->category }}</p>
-                                        {{-- <div class="categories__boxes__category__price">
-                                            от <span class="price">1571,00</span> <i class="fas fa-ruble-sign"></i>
-                                        </div> --}}
-                                        <div class="category__info">
-                                            
-                                            @if($category->description != '')
-                                                <div class="info">
-                                                    <i class="fas fa-info-circle"></i>
-                                                </div>
-                                                <div class="categories__boxes__category__info">
-                                                    <span>{!! $category->description !!}</span>
-                                                </div>
-                                            @endif
-                                            
+            <div class="uk-card uk-card-default uk-card-small uk-padding">
+                <div uk-filter="target: .js-filter" class="">
+                    <ul class="uk-tab">
+                        <li class="uk-active" uk-filter-control><a href="#">Все</a></li>
+                        @foreach ($menus as $menu)
+                            <li uk-filter-control="[data-style='{{ $menu->menu }}']"><a href="#">{{ $menu->menu }}</a></li>
+                        @endforeach
+                    </ul>
+                    <ul class="js-filter uk-child-width-1-3@s uk-child-width-1-4@m" uk-grid="masonry:true" ui-grid>                    
+                        @forelse ($menus as $menu)
+                            @forelse ($menu->category as $category)
+                                <li data-style="{{ $menu->menu }}">
+                                    <div class="uk-inline">
+                                        @if ($category->image)
+                                            <img src="{{ asset('imgs/categories')}}/{{ $category->image  }}" alt="{{ $category->category }}">
+                                        @else
+                                            <img src="{{ asset('imgs/nopic.png') }}" alt="{{ $category->category }}">
+                                        @endif
+                                        <div class="uk-overlay uk-overlay-default uk-position-center uk-text-large uk-text-bolder">
+                                            <p>
+                                                <a href="/catalog/{{ $category->slug }}">{{ $category->category }}</a>
+                                            </p>
                                         </div>
-                                        </a>
                                     </div>
-                                    @endif
-                                
-                                @empty  
-
-                                @endforelse      
-                            
-                            </div> 
-                        </section> 
-                        
-                    @empty   
-                                
-                    @endforelse
+                                </li>
+                            @empty
+                            @endforelse
+                        @empty
+                        @endforelse
+                    </ul>
                 </div>
-            </div>
+
         </div>
     </div>
 </section>

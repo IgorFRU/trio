@@ -53,11 +53,19 @@ class Category extends Model
         return $this->belongsTo(Menu::class);
     }
 
+    public function options() {
+        return $this->belongsToMany(Option::class);
+    }
+
     public function getShortDescriptionAttribute() {
         if (strlen($this->description) > 220) {
             return Str::limit($this->description, 220);
         } else {
             return $this->description;
         }
+    }
+
+    public function getProductsCountAttribute() {
+        return $this->products->where('published', 1)->count();
     }
 }

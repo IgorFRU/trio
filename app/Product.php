@@ -145,6 +145,10 @@ class Product extends Model
         return $this->hasMany(Propertyvalue::class);
     }
 
+    public function choisevalue() {
+        return $this->hasMany(Choisevalue::class);
+    }
+
     public function currencyrate() {
         return $this->belongsTo(Currencyrate::class, 'currency_id');
         

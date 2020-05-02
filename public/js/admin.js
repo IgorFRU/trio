@@ -472,4 +472,47 @@ $(function() {
             $('#packaging').prop('disabled', false);
         }
     });
+
+    $('input[name="product_child_choises_value"]').on('keyup', function() {
+        if ($(this).val() != '') {
+            $('.product_child_choises_add_button').removeClass('disabled');
+            $('.product_child_choises_add_button').removeAttr('disabled');
+        } else {
+            $('.product_child_choises_add_button').addClass('disabled');
+            $('.product_child_choises_add_button').attr('disabled', true);
+        }
+    });
+
+    $('.product_child_choises_add_button').on('click', function(e) {
+        e.preventDefault();
+        let parent = $(this).parent().parent().parent();
+        let choises = parent.find('#product_child_choises').val();
+        let choises_value = parent.find('#product_child_choises_value').val();
+        let choises_scu = parent.find('#product_child_choises_scu').val();
+        let choises_color = parent.find('#product_child_choises_color').val();
+        let choises_image = parent.find('#product_child_choises_image').val();
+        let choises_thumbnail = parent.find('#product_child_choises_thumbnail').val();
+        let choises_price_type = parent.find('#product_child_choises_price_type').val();
+        let choises_price = parent.find('#product_child_choises_price').val();
+        console.log(choises, choises_scu, choises_value, choises_color, choises_image, choises_thumbnail, choises_price_type, choises_price);
+        
+        let data = {
+            '_token': $('meta[name="csrf-token"]').attr('content'), 
+            'choises': choises,
+            'choises_value': choises_value, 
+            'choises_scu': choises_scu, 
+            'choises_color': choises_color, 
+            'choises_image': choises_image, 
+            'choises_thumbnail': choises_thumbnail, 
+            'choises_price_type': choises_price_type, 
+            'choises_price': choises_price
+        };
+        // data(
+        //     'choises','choises_value', 'choises_scu', 'choises_color', 'choises_image', 'choises_thumbnail', 'choises_price_type', 'choises_price'
+        // );
+        // data['choises'] = choises;
+        $.post('/admin/choises/savevalue', data, function(response) {
+            console.log(response.choises);
+        });
+    });
 });

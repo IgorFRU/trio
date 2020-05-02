@@ -94,7 +94,7 @@ class MainController extends Controller
             'lastProducts' => Product::orderBy('id', 'DESC')->limit(4)->get(),
             'recomended_products' => Product::where([
                 ['recomended', '1']
-            ])->get()->random(5),
+            ])->get()->random(3),
             'articles' => $articles,
             'about' => $about,
             'meta_description' => 'Продажа паркета, паркетной доски, ламината, пробкового пола, инженерной и массивной доски, террасной доски из экзотических пород дерева. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',

@@ -240,7 +240,8 @@ class AppServiceProvider extends ServiceProvider
         
 
             $data = array (
-                'categories'      => $categories,
+                'categories' => $categories,
+                'manufactures' => Manufacture::get(),
                 'sets'        => $sets,
                 'carts' => $carts1,
                 'cart_products' => $products,

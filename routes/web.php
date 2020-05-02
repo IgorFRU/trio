@@ -78,11 +78,15 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::post('/products/search/ajax', 'ProductController@ajaxSearch'); // поиск товара для добавления к статье
   Route::get('/products/addImages/{product}', 'ProductController@addImages')->name('products.addImages');
   Route::resource('/units', 'UnitController');
+  Route::resource('/options', 'OptionController');
+  Route::resource('/choises', 'ChoiseController');
+  Route::post('/choises/savevalue', 'ChoisevalueController@store');
   Route::resource('/vendors', 'VendorController');
   Route::get('/discounts/archive', 'DiscountController@archive')->name('discounts.archive');
   Route::resource('/discounts', 'DiscountController');
   Route::any('/productimg', 'UploadImagesController@product')->name('product.image.upload');
   Route::resource('/topmenu', 'TopmenuController');
+  Route::match(['get', 'post'], 'parser', 'ParserController@index')->name('parser');
 });
 
 
