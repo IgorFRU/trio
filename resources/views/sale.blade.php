@@ -55,9 +55,9 @@
                                         <div class="products__card__maininfo">
                                             <div class="products__card__title">
                                                 @if($product->category->parent_id)
-                                                <h3><a href="{{ route('product.subcategory', ['category' => $product->category->category, 'subcategory' => $product->category->parent_id, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a></h3>
+                                                <h3><a href="{{ route('product.subcategory', ['category' => $product->category->category, 'subcategory' => $product->category->parent_id, 'product' => $product->slug]) }}">{{ $product->product }}</a></h3>
                                                 @else
-                                                <h3><a href="{{ route('product', ['category' => $product->category->category, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a></h3>
+                                                <h3><a href="{{ route('product', ['category' => $product->category->category, 'product' => $product->slug]) }}">{{ $product->product }}</a></h3>
                                                 @endif
                                             </div>
                 

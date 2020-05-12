@@ -292,29 +292,112 @@
             </div>                      
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="row">
-                <div class="col col-lg-4">
-                    <div class="p-3 mb-2 bg-success text-white">
-                        <span>Итоговая цена: </span>
-                        
-                        <span></span>/
-                        <span>уп.</span>
-
-                    </div>
-                </div>
-                
-            </div>
-                      
-        </div>
-    </div>
-
-
+    
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".product_choises_modal">Опции</button>
 
     <input type="hidden" name="autoscu" class="form-control" id="autoscu" value="{{ $product->autoscu ?? '' }}">
     
-    
+    <div class="modal fade product_choises_modal " tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Опции товара</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="product_child_choises_parent">
+                        <div class="product_child_choises_row">
+                            <div class="d-flex w-100 row col-12">
+                                <div class="col col-4">
+                                    <div class="form-group row">
+                                        <label for="product_child_choises" class="col-sm-6 col-form-label">Доч. вариант:</label>
+                                        <div class="col-md-6">
+                                            <select class="form-control" id="product_child_choises" name="product_child_choises">
+                                                @forelse ($choises_children as $choise)
+                                                    <option value="{{ $choise->id }}">{{ $choise->choise }}</option>
+                                                @empty
+                                                    
+                                                @endforelse
+                                            </select>
+                                        </div>                                    
+                                    </div>    
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group row">
+                                        {{-- <label for="product_child_choises_value" class="col-sm-5 col-form-label">Значение</label> --}}
+                                        <div class="col-md-12">
+                                            <input type="text" name="product_child_choises_value" class="form-control" id="product_child_choises_value" value="" maxlength="250" placeholder="значение">
+                                        </div>                                    
+                                    </div>    
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group row">
+                                        {{-- <label for="product_child_choises_value" class="col-sm-5 col-form-label">Значение</label> --}}
+                                        <div class="col-md-12">
+                                            <input type="text" name="product_child_choises_scu" class="form-control" id="product_child_choises_scu" value="" maxlength="250" placeholder="артикул">
+                                        </div>                                    
+                                    </div>    
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group row">
+                                        <label for="product_child_choises_color" class="col-sm-6 col-form-label">Цвет</label>
+                                        <div class="col-md-6">
+                                            <input type="color" name="product_child_choises_color" class="form-control" id="product_child_choises_color" value="#012345" maxlength="250">
+                                        </div>                                    
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 row col-12">
+                                <div class="col-lg-3">
+                                    <div class="form-group row">
+                                        {{-- <label for="product_child_choises_image" class="col-md-6 col-form-label">Изображение</label> --}}
+                                        <div class="col-md-12">
+                                            <input type="file" class="custom-file-input" id="product_child_choises_image" name="product_child_choises_image">
+                                            <label class="custom-file-label" for="product_child_choises_image">Изображение</label>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group row">
+                                        {{-- <label for="product_child_choises_thumbnail" class="col-md-6 col-form-label">Миниатюра</label> --}}
+                                        <div class="col-md-12">
+                                            <input type="file" class="custom-file-input" id="product_child_choises_thumbnail" name="product_child_choises_thumbnail">
+                                            <label class="custom-file-label" for="product_child_choises_thumbnail">Миниатюра</label>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col col-2">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <select class="form-control" id="product_child_choises_price_type" name="product_child_choises_price_type">                        
+                                                <option value="original">Новая цена</option>
+                                                <option value="+">+ к цене</option>
+                                                <option value="-">- от цены</option>
+                                            </select>
+                                        </div>                                    
+                                    </div>    
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group row">
+                                        {{-- <label for="product_child_choises_price_type" class="col-sm-7 col-form-label">Цена</label> --}}
+                                        <div class="col-md-12">
+                                            <input type="text" name="product_child_choises_price" class="form-control" id="product_child_choises_price" value="" placeholder="цена">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="product_child_choises_hidden[]" value="">
+                                <div class="col-2">
+                                    <div class="btn btn-sm btn-success mr-2 ml-2 product_child_choises_add_button disabled" disabled><i class="fas fa-plus"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
 </div>
 <div id="description1" class="tab_item">
     <div class="row">
@@ -563,8 +646,7 @@
                 </div>
             </div>
         </div> 
-    </form>   
-
+    </form>
 </div>
 
 

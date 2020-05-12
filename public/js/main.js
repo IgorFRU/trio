@@ -265,9 +265,11 @@ $(document).ready(function() {
                 //$('.table > tbody:last').append(str);
                 $('.modal_send_question').removeClass("active");
                 $('.modal_send_question').removeClass("active");
+
+                UIkit.modal('#question-modal').hide();
             },
             error: function(msg) {
-                alert('Ошибка');
+                UIkit.modal('#question-modal').hide();
             }
         });
         return false;
@@ -279,7 +281,17 @@ $(document).ready(function() {
         var quantity = $('#modal_oneclick_quantity').val();
         var price = $('#modal_oneclick_price').val();
         var product = $('#modal_oneclick_product').val();
+        $('.modal_oneclick').removeClass('active');
 
+        let alert = $('.alert_clone').clone();
+        alert.addClass('alert');
+        $('.alerts').append(alert);
+        alert.html('Ваше письмо отправляется...');
+        alert.removeClass('alert_clone');
+        alert.addClass('alert-secondary');
+        setTimeout(() => {
+            alert.fadeIn();
+        }, 500);
         $.ajax({
             type: 'get',
             url: '/oneclick-purcache',
@@ -291,10 +303,38 @@ $(document).ready(function() {
                 product: product,
             },
             success: function(data) {
-                $('.modal_oneclick').removeClass('active');
+                 setTimeout(() => {
+                    alert.fadeOut();
+                }, 500);
+                let success_alert = $('.alert_clone').clone();
+                success_alert.addClass('alert');
+                $('.alerts').append(success_alert);
+                success_alert.html('Благодарим вас за заказ! Ваше письмо успешно отправлено! Скоро мы с вами свяжемся.');
+                success_alert.removeClass('alert_clone');
+                success_alert.addClass('alert-success');
+                setTimeout(() => {
+                    success_alert.fadeIn();
+                }, 500);
+                setTimeout(() => {
+                    success_alert.fadeOut(800);
+                }, 5500);
             },
             error: function(msg) {
-                alert(msg);
+                setTimeout(() => {
+                    alert.fadeOut();
+                }, 500);
+                let error_alert = $('.alert_clone').clone();
+                error_alert.addClass('alert');
+                $('.alerts').append(error_alert);
+                error_alert.html('Письмо не было отправлено. Попробуйте связаться с нами другим способом. Например, по телефону. Приносим извинения за неудобства.');
+                error_alert.removeClass('alert_clone');
+                error_alert.addClass('alert-danger');
+                setTimeout(() => {
+                    error_alert.fadeIn();
+                }, 500);
+                setTimeout(() => {
+                    error_alert.fadeOut("slow");
+                }, 5500);
                 console.log(msg);
             }
         });
