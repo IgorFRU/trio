@@ -170,10 +170,9 @@ $(document).ready(function() {
     /** Formatting price */
     (function() {
         let priceValues = document.querySelectorAll('.price_value');
+        console.log(priceValues);
         priceValues.forEach(element => {
             element.innerText = (Math.round(element.innerText * 100) / 100).toLocaleString('ru');
-
-
         });
     }());
 
@@ -303,7 +302,7 @@ $(document).ready(function() {
                 product: product,
             },
             success: function(data) {
-                 setTimeout(() => {
+                setTimeout(() => {
                     alert.fadeOut();
                 }, 500);
                 let success_alert = $('.alert_clone').clone();

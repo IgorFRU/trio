@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     @foreach ($products as $product)
-                        @if ($product->published)                
+                        @if ($product->published)
                         {{-- @if (isset($checked_properties) && $product->property_active_product($checked_properties) ) --}}
                             <div class="col-lg-4">
                                 <div class="products__card">

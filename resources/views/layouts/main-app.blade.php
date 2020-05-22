@@ -66,7 +66,7 @@
     <nav class="uk-navbar-container uk-box-shadow-small" uk-navbar  uk-sticky="animation: uk-animation-slide-top">
         <div class="uk-navbar-left">    
             <ul class="uk-navbar-nav">
-                <a class="uk-navbar-item uk-logo uk-text-primary uk-text-center uk-visible@s" href="{{ route('index') }}">
+                <a class="uk-navbar-item uk-logo uk-text-center uk-visible@s" href="{{ route('index') }}">
                     <div>
                         <span class="uk-text-bold uk-text-uppercase">Паркетный мир</span>
                         
@@ -188,7 +188,7 @@
                     </a>
                     
                 </li>
-                <a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a>
+                {{-- <a class="uk-navbar-toggle" uk-search-icon uk-toggle="target: .nav-overlay; animation: uk-animation-fade" href="#"></a> --}}
             </ul>
         </div>
         <div class="nav-overlay uk-navbar-left uk-flex-1" hidden>
