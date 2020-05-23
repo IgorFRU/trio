@@ -53,6 +53,10 @@ class User extends Authenticatable
         return $this->hasMany(Firm::class);
     }
 
+    public function questions() {
+        return $this->hasMany(Question::class);
+    }
+
     public function getFullNameAttribute() {
         if (isset($this->surname)) {
             return (ucfirst($this->surname) . ' ' . ucfirst($this->name));

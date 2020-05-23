@@ -11,6 +11,7 @@ use App\Manufacture;
 use App\Category;
 use App\Set;
 use App\Menu;
+use App\Question;
 use App\Setting;
 use App\Topmenu;
 use Carbon\Carbon;
@@ -451,6 +452,16 @@ class MainController extends Controller
         );
         // dd($set);
         return view('set', $data);
+    }
+
+    public function questions() {
+        $questions = Question::orderBy('created_at')->published()->paginate(20);
+        $data = array (
+            'title' => 'Вопросы о паркете и ответы на них',
+            'questions' => $questions,
+            'meta_description' => 'Здесь вы можете задать любые интересующие вас вопросы о напольных покрытиях: какой паркет лучше выбрать, на что приклеить, чем покрыть и т.д.',
+        );
+        return view('questions', $data);
     }
 
     public function productSort(Request $request) {

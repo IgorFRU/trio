@@ -26,7 +26,7 @@
                 <ul uk-accordion="multiple: true">
                     <li>
                         <a class="uk-accordion-title" href="#">Описание категории</a>
-                        <div class="uk-accordion-content">
+                        <div class="uk-accordion-content uk-text-left">
                             {!! $category->description !!}
                         </div>
                     </li>
@@ -173,7 +173,7 @@
                                                                             <span class="uk-text-muted uk-text-small uk-margin-left-small">за 1 {{ $product->unit->unit ?? 'ед.' }}</span>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="tm-product-card-add">
+                                                                    {{-- <div class="tm-product-card-add">
                                                                         <div class="uk-text-meta tm-product-card-actions">
                                                                             <a class="tm-product-card-action js-add-to js-add-to-favorites tm-action-button-active js-added-to" title="Add to favorites">
                                                                                 <span uk-icon="icon: heart; ratio: .75;" class="uk-icon"></span>
@@ -188,7 +188,7 @@
                                                                             <span class="tm-product-card-add-button-icon uk-icon" uk-icon="cart"></span>
                                                                             <span class="tm-product-card-add-button-text">в корзину</span>
                                                                         </button>
-                                                                    </div>
+                                                                    </div> --}}
                                                                 </div>
                                                             </div>
                                                         </article>

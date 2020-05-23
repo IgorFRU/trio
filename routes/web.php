@@ -30,6 +30,9 @@ Route::get('/sales/{sale}', 'MainController@sale')->name('sale');
 Route::get('/manufacture', 'MainController@manufactures')->name('manufactures');
 Route::get('/manufacture/{manufacture}', 'MainController@manufacture')->name('manufacture');
 
+Route::get('/questions', 'MainController@questions')->name('questions');
+Route::post('/questions/send', 'QuestionController@store')->name('send.question')->middleware('throttle:10,1');
+
 Route::post('/productsort', 'MainController@productSort');
 
 Route::post('/cart', 'CartController@addItems');
