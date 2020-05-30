@@ -464,6 +464,12 @@ class MainController extends Controller
         return view('questions', $data);
     }
 
+    public function questionsStore(Request $request) {
+        $question = Question::create($request->all());
+
+        return redirect()->back();
+    }
+
     public function productSort(Request $request) {
         // Cookie::forever('productsort', $request->productsort);
         if (isset($request->productsort) && $request->productsort != '') {

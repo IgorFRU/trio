@@ -495,16 +495,16 @@ $(function() {
         let choises_price_type = parent.find('#product_child_choises_price_type').val();
         let choises_price = parent.find('#product_child_choises_price').val();
         console.log(choises, choises_scu, choises_value, choises_color, choises_image, choises_thumbnail, choises_price_type, choises_price);
-        
+
         let data = {
-            '_token': $('meta[name="csrf-token"]').attr('content'), 
+            '_token': $('meta[name="csrf-token"]').attr('content'),
             'choises': choises,
-            'choises_value': choises_value, 
-            'choises_scu': choises_scu, 
-            'choises_color': choises_color, 
-            'choises_image': choises_image, 
-            'choises_thumbnail': choises_thumbnail, 
-            'choises_price_type': choises_price_type, 
+            'choises_value': choises_value,
+            'choises_scu': choises_scu,
+            'choises_color': choises_color,
+            'choises_image': choises_image,
+            'choises_thumbnail': choises_thumbnail,
+            'choises_price_type': choises_price_type,
             'choises_price': choises_price
         };
         // data(
@@ -513,6 +513,128 @@ $(function() {
         // data['choises'] = choises;
         $.post('/admin/choises/savevalue', data, function(response) {
             console.log(response.choises);
+        });
+    });
+
+    $('.questionModal').on('click', function() {
+        let id = $(this).parent().data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/questions/ajax_get",
+            data: {
+                id: id,
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                let modal = $('#questionModal');
+                let title = modal.find('.modal-title span');
+                let name = modal.find('input[name="name"]');
+                let id = modal.find('input[name="id"]');
+                let question = modal.find('textarea');
+
+                title.text(data.name + ' (' + data.created_at + ')');
+                name.val(data.name);
+                id.val(data.id);
+                question.val(data.question);
+
+            },
+            error: function(errResponse) {
+                console.log(errResponse);
+            }
+        });
+    });
+
+    $('.questionModalSave').on('click', function() {
+        let id = $(this).parent().parent().find('input[name="id"]').val();
+        let name = $(this).parent().parent().find('input[name="name"]').val();
+        let question = $(this).parent().parent().find('textarea').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/questions/ajax_update",
+            data: {
+                id: id,
+                name: name,
+                question: question,
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                location.reload();
+            },
+            error: function(errResponse) {
+                console.log(errResponse);
+            }
+        });
+    });
+
+    $('.questionAnswerModal').on('click', function() {
+        let id = $(this).parent().data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/questions/ajax_get",
+            data: {
+                id: id,
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                let modal = $('#questionAnswerModal');
+                let id = modal.find('input[name="id"]');
+                let answer = modal.find('textarea');
+                let published = modal.find('#published');
+
+                id.val(data.id);
+                answer.val(data.answer);
+
+                console.log(published);
+
+                if (data.published) {
+                    published.prop('checked', true);
+                } else {
+                    published.prop('checked', false);
+                }
+            },
+            error: function(errResponse) {
+                console.log(errResponse);
+            }
+        });
+    });
+
+    $('.questionAnswerModalSave').on('click', function() {
+        let id = $(this).parent().parent().find('input[name="id"]').val();
+        let published = $(this).parent().parent().find('#published').prop('checked');
+        let answer = $(this).parent().parent().find('textarea').val();
+
+        if (published) {
+            published = 1;
+        } else {
+            published = 0;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/questions/ajax_answer",
+            data: {
+                id: id,
+                published: published,
+                answer: answer,
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                location.reload();
+            },
+            error: function(errResponse) {
+                console.log(errResponse);
+            }
         });
     });
 });

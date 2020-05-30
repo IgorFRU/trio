@@ -31,7 +31,7 @@ Route::get('/manufacture', 'MainController@manufactures')->name('manufactures');
 Route::get('/manufacture/{manufacture}', 'MainController@manufacture')->name('manufacture');
 
 Route::get('/questions', 'MainController@questions')->name('questions');
-Route::post('/questions/send', 'QuestionController@store')->name('send.question')->middleware('throttle:10,1');
+Route::post('/questions/send', 'MainController@questionsStore')->name('send.question')->middleware('throttle:10,1');
 
 Route::post('/productsort', 'MainController@productSort');
 
@@ -88,7 +88,13 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::get('/discounts/archive', 'DiscountController@archive')->name('discounts.archive');
   Route::resource('/discounts', 'DiscountController');
   Route::any('/productimg', 'UploadImagesController@product')->name('product.image.upload');
-  Route::resource('/topmenu', 'TopmenuController');
+  Route::resource('/topmenu', 'TopmenuController');  
+
+  Route::resource('/questions', 'QuestionController');
+  Route::post('/questions/ajax_get', 'QuestionController@ajaxGet');
+  Route::post('/questions/ajax_update', 'QuestionController@ajaxUpdate');
+  Route::post('/questions/ajax_answer', 'QuestionController@ajaxAnswer');
+
   Route::match(['get', 'post'], 'parser', 'ParserController@index')->name('parser');
 });
 

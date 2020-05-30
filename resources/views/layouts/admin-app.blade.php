@@ -74,6 +74,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item {{ (Request::is('*discounts*') ? 'active' : '') }}" href="{{ route('admin.discounts.index') }}"><i class="fas fa-percentage"></i>  Акции</a>
                                 <a class="dropdown-item {{ (Request::is('*articles*') ? 'active' : '') }}" href="{{ route('admin.articles.index') }}"><i class="fas fa-newspaper"></i>  Статьи</a>
+                                <a class="dropdown-item {{ (Request::is('*questions*') ? 'active' : '') }}" href="{{ route('admin.questions.index') }}"><i class="fas fa-question"></i>  FAQ</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-images"></i>  Баннеры</a>
                                 <hr>
                                 <a class="dropdown-item {{ (Request::is('*parser*') ? 'active' : '') }}" href="{{ route('admin.parser') }}"><i class="fas fa-images"></i>  Парсер</a>
