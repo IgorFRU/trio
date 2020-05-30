@@ -464,6 +464,14 @@ class MainController extends Controller
         return view('questions', $data);
     }
 
+    public function sitemap() {
+        $categories = Cache::remember('categories', 10, function() {
+            return Category::orderBy('category', 'ASC')->where('category_id', 0)->get();
+        });
+
+        return view('sitemap', compact('categories'));
+    }
+
     public function productSort(Request $request) {
         // Cookie::forever('productsort', $request->productsort);
         if (isset($request->productsort) && $request->productsort != '') {

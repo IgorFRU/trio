@@ -51,6 +51,8 @@ Route::post('/firm/store', 'FirmController@firmStore');
 Route::get('/home', 'UserController@index')->name('home');
 
 Route::get('/send-question', 'SendmailController@question')->name('send_question');
+
+Route::get('sitemap.xml', 'MainController@sitemap')->name('sitemap');
 Route::get('/oneclick-purcache', 'SendmailController@oneclick')->name('oneclick_purcache');
 
 Route::prefix('admin')->name('admin.')->group(function(){
