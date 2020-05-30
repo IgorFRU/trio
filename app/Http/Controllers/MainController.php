@@ -464,10 +464,19 @@ class MainController extends Controller
         return view('questions', $data);
     }
 
+<<<<<<< HEAD
     public function questionsStore(Request $request) {
         $question = Question::create($request->all());
 
         return redirect()->back();
+=======
+    public function sitemap() {
+        $categories = Cache::remember('categories', 10, function() {
+            return Category::orderBy('category', 'ASC')->where('category_id', 0)->get();
+        });
+
+        return view('sitemap', compact('categories'));
+>>>>>>> fe6bf6bf3d46e5867fe05cb7dfc0902774bfa4b4
     }
 
     public function productSort(Request $request) {
