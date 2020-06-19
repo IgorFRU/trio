@@ -92,7 +92,7 @@ class MainController extends Controller
             'description' => 'Все виды паркета в Крыму по лучшим ценам',
             'menus' => Menu::orderBy('sortpriority', 'ASC')->get(),
             'categories' => Category::orderBy('category', 'ASC')->get(),
-            'lastProducts' => Product::orderBy('id', 'DESC')->limit(4)->get(),
+            'lastProducts' => Product::orderBy('id', 'DESC')->finaly()->limit(4)->get(),
             'recomended_products' => Product::where([
                 ['recomended', '1']
             ])->get()->random(3),
@@ -193,7 +193,7 @@ class MainController extends Controller
         // $products = Product::where('category_id', $category->id)->published()->get()->sortBy($sort_column);
         // $products = $products->paginate($itemsPerPage);
         // dd($products);
-        $products = Product::where('category_id', $category->id)->published()->order()->with('manufacture', 'images', 'unit', 'currency')->paginate($itemsPerPage);
+        $products = Product::where('category_id', $category->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->paginate($itemsPerPage);
         // dd(Product::where('category_id', $category->id)->published()->order());
         // $products = Product::orderBy('id', 'DESC')->where('category_id', $category->id)->where('published', 1)->paginate($itemsPerPage);
 

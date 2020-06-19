@@ -365,6 +365,157 @@ class ProductController extends Controller
         echo ($categoryId);
     }
 
+    public function published(Request $request) {
+        if (isset($request->product_group_ids) && count($request->product_group_ids) > 0) {
+            $products = Product::whereIn('id', $request->product_group_ids)->get();
+        
+            foreach ($products as $key => $product) {
+                $product->update(['published' => '1']);
+            }
+
+            return redirect()->back()->with('success', 'Товары успешно опубликованы');
+        } else {
+            redirect()->back()->with('warning', 'Вы не выбрали товары для публикования');
+        }   
+    }
+
+    public function unimported(Request $request) {
+        if (isset($request->product_group_ids) && count($request->product_group_ids) > 0) {
+            $products = Product::whereIn('id', $request->product_group_ids)->get();
+        
+            foreach ($products as $key => $product) {         
+                $product->update(['imported' => 0]);
+            }
+
+            return redirect()->back()->with('success', 'Товары успешно перенесены в основной раздел');
+        } else {
+            redirect()->back()->with('warning', 'Вы не выбрали товары для переноса в основной раздел');
+        }   
+    }
+
+    public function massDestroy(Request $request) {
+        if (isset($request->product_group_ids) && count($request->product_group_ids) > 0) {
+            $products = Product::whereIn('id', $request->product_group_ids)->with('propertyvalue')->get();
+        
+            foreach ($products as $key => $product) {
+                foreach ($product->images as $image) {
+                    // удаляем изображение только если оно не принадлежит больше ни одному продукту
+                    if ($image->products->count() === 1) {
+                        if (file_exists(public_path('imgs/products/'.$image->image))) {
+                            try {
+                                $file = new Filesystem;
+                                $file->delete(public_path('imgs/products/'. $image->image));
+                            } catch (\Throwable $th) {
+                                echo 'Сообщение: '   . $th->getMessage() . '<br />';
+                            }
+                        }
+                        if (file_exists(public_path() .'/imgs/products/thumbnails/' . $image->thumbnail)) {
+                            try {
+                                $file = new Filesystem;
+                                $file->delete(public_path().'/imgs/products/thumbnails/' . $image->thumbnail);
+                            } catch (\Throwable $th) {
+                                echo 'Сообщение: '   . $th->getMessage() . '<br />';
+                            }
+                        }
+        
+                        $product->images()->detach($image);
+                        Image::where('id', $image->id)->delete();
+                    }
+                }     
+                
+                $product->delete();
+            }            
+            return redirect()->back()->with('success', 'Товары успешно удалены');
+        } else {
+            redirect()->back()->with('warning', 'Вы не выбрали товары для удаления');
+        }
+    }
+
+    public function copy(Request $request) {
+
+        if (isset($request->product_group_ids) && count($request->product_group_ids) > 0) {
+            $products = Product::whereIn('id', $request->product_group_ids)->with('propertyvalue')->with('images')->get();
+        
+            $property_values = [];
+            foreach ($products as $key => $product) {
+                foreach ($product->propertyvalue as $key => $value) {
+                    $property_values[$value->property_id] = $value->value;
+                }
+
+                $count = 2;
+                while (Product::where('product', $product->product . ' (' . $count . ')')->count() > 0) {
+                    $count++;
+                }
+
+                $data_to_product = [
+                    'product' => $product->product . ' (' . $count . ')',
+                    'scu' => $product->scu,
+                    'category_id' => $product->category_id,
+                    'manufacture_id' => $product->manufacture_id,
+                    'vendor_id' => $product->vendor_id,
+                    'product_pricename' => $product->product_pricename,
+                    'unit_id' => $product->unit_id,
+                    'discount_id' => $product->discount_id,
+                    'size_l' => $product->size_l,
+                    'size_w' => $product->size_w,
+                    'size_t' => $product->size_t,
+                    'size_type' => $product->size_type,
+                    'mass' => $product->mass,
+                    'short_description' => $product->short_description,
+                    'description' => $product->description,
+                    'delivery_time' => $product->delivery_time,
+                    'meta_description' => $product->meta_description,
+                    'meta_keywords' => $product->meta_keywords,
+                    'published' => 0,
+                    // 'published' => $product->published,
+                    'pay_online' => $product->pay_online,
+                    'packaging' => $product->packaging,
+                    'unit_in_package' => $product->unit_in_package,
+                    'amount_in_package' => $product->amount_in_package,
+                    'currency_id' => $product->currency_id,
+                    'price' => $product->price,
+                    'quantity' => $product->quantity,
+                    'quantity_vendor' => $product->quantity_vendor,
+                    'profit' => $product->profit,
+                    'profit_type' => $product->profit_type,
+                    'incomin_price' => $product->incomin_price,
+                    'propertyvalue' => $property_values,
+                    'autoscu' => '',
+                    'slug' => '',
+                ];
+
+                $new_product = Product::create($data_to_product);
+                
+                foreach ($property_values as $key => $value) {
+                    if($value != null) {
+                        $propertyValue = new Propertyvalue;
+                        $propertyValue->product_id = $new_product->id;
+                        $propertyValue->property_id = $key;
+                        $propertyValue->value = $value;        
+                        $propertyValue->save();
+                    }
+                }
+                
+                if ($product->images->count() > 0) {
+                    foreach ($product->images as $key => $image) {
+                        // $product->images()->attach($image->id);
+                        $image->products()->attach($new_product->id);
+                    }
+                }                
+            }
+
+            return redirect()->back()->with('success', 'Товары успешно скопированы');
+        } else {
+            redirect()->back()->with('warning', 'Вы не выбрали товары для копирования');
+        }        
+    }
+
+    public function getCategoryProperties(Request $request) {
+
+        $category = Category::whereId($request->category_id)->with('property')->firstOrFail();
+        echo json_encode($category->property);
+    }
+    
     public function ajaxSearch(Request $request) {
         $json = array();
 

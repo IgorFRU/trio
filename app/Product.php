@@ -44,8 +44,21 @@ class Product extends Model
         'quantity',
         'quantity_vendor',
         'sample',
-        'recomended'
+        'recomended',
+        'imported'
     ];
+
+    protected $casts = [
+        'imported' => 'boolean',
+    ];
+
+    public function setImportedAttribute($value) {
+        if ($value == 1) {
+            $this->attributes['imported'] = true;
+        } else {
+            $this->attributes['imported'] = false;
+        }
+    }
 
     public function setSlugAttribute($value) {
         if (!isset($this->id)) {
@@ -152,6 +165,18 @@ class Product extends Model
     public function currencyrate() {
         return $this->belongsTo(Currencyrate::class, 'currency_id');
         
+    }
+
+    public function scopeFinaly($query) {
+        return $query->where('imported', false);
+    }
+
+    public function scopeCount($query) {
+        return $query->where('imported', false)->where('published', 1)->count();
+    }
+
+    public function scopeImported($query) {
+        return $query->where('imported', true);
     }
 
     public function getPriceRubAttribute() {

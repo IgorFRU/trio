@@ -66,6 +66,6 @@ class Category extends Model
     }
 
     public function getProductsCountAttribute() {
-        return $this->products->where('published', 1)->count();
+        return $this->products->where('imported', false)->where('published', 1)->count();
     }
 }

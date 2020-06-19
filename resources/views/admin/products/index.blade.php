@@ -15,7 +15,25 @@
                     @isset($parent_manufacture)
                         производителя "{{ $parent_manufacture }}"
                     @endisset</p>
-                    
+                    <div class="col-lg-2 d-flex">
+                        <div>
+                            <form action="{{ route('admin.products.copy') }}" method="post">
+                                @csrf
+                                <div class="hidden_inputs">
+                                    <input type="hidden" name="product_group_ids[]">
+                                </div>
+                                <button type="submit" class="btn btn-link product_group_copy disabled mr-1 bg-success text-white" href="#"><i class="fas fa-copy"></i></button>
+                            </form>
+                        </div>
+                        <form action="{{ route('admin.products.published') }}" method="post">
+                            @csrf
+                            <div class="hidden_inputs">
+                                <input type="hidden" name="product_group_ids[]">
+                            </div>
+                            <button type="submit" class="btn product_group_published disabled mr-1 bg-success text-white" href="#"><i class="fas fa-eye"></i></button>
+                        </form>
+                        <button type="button" class="btn bg-warning product_group_delete disabled" disabled data-toggle="modal" data-target=".modalDeleteProduct"><i class="fas fa-trash-alt"></i></button>
+                    </div>
                     <div class="row col-md-6">
                         <div class="col-md-5">
                             <select class="form-control" id="index_category_id" name="index_category_id">
@@ -57,6 +75,7 @@
                         <thead>
                             <tr>
                             <th scope="col">#</th>
+                            <th scope="col"></th>
                             <th scope="col">Арт.</th>
                             <th scope="col">Товар</th>
                             <th scope="col">Цена</th>
@@ -78,6 +97,9 @@
                         @endphp
                         <tr @if (!$product->published) class='bg-secondary'  @endif>
                             <th scope="row">{{ $count++ }}</th>
+                            <td>
+                                <input class="form-check-input product_id"  data-toggle="tooltip" data-placement="top" title="id: {{ $product->id }}" type="checkbox" value="{{ $product->id }}" id="product_id_{{ $product->id }}">
+                            </td>
                             <td>{{ $product->autoscu }}</td>
                             <td>{{ $product->product }}</td>
                             <td>
@@ -158,6 +180,28 @@
                 </div>                
             </div>
         </div>
+    </div>
+</div>
+<div class="modal fade modalDeleteProduct" tabindex="-1" role="dialog" aria-labelledby="modalDeleteProduct" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Удаление товаров</h4>
+                </div>
+                <div class="modal-body">
+                    Вы уверены, что хотите удалить выбранные товары? Отменить выбранное действие будет невозможно!
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ route('admin.products.massdestroy') }}" method="post">
+                        @csrf
+                        <div class="hidden_inputs">
+                            <input type="hidden" name="product_group_ids[]">
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-warning">Да</button>
+                    </form>
+                </div>
+        </div>      
     </div>
 </div>
 @endsection

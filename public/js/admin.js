@@ -637,4 +637,189 @@ $(function() {
             }
         });
     });
+
+    //при изменении категории в форме добавления/редактирования товара подгружаются характеристики из этой категории
+    $('#category_id').bind('input', function() {
+
+        let import_flag = false;
+        if ($(this).data('import') == true) {
+            import_flag = true;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/products/getcategoryproperties",
+            data: {
+                category_id: $(this).val()
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+
+                var data = $.parseJSON(data);
+                if (import_flag) {
+                    // copy()
+                    let to_insert = $('.import_products_properties');
+                    to_insert.empty();
+                    if (data.length > 0) {
+                        data.forEach(element => {
+                            to_insert.append("<div class='col-md-3 mb-3'><label for='" + element.id + "'>" + element.property + "</label><input type='text' class='form-control check_numeric' data-success_check='success_check' id='" + element.property + "' name='property_values[" + element.id + "]' pattern='^[ 0-9]+$'><div class='invalid-feedback'>Тут должно быть число!</div></div>");
+                        });
+                    } else {
+                        to_insert.append("<div class='alert alert-warning'>Вы еще не добавили ни одной характеристики для данной категории!</div>");
+                    }
+                } else {
+                    let to_insert = $('#properties div');
+                    to_insert.empty();
+                    if (data.length > 0) {
+                        data.forEach(element => {
+                            to_insert.append("<div class='form-group row'><label for='" + element.id + "' class='col-sm-2 col-form-label'>" + element.property + "</label><div class='col-md-4'><input type='text' name='property_values[" + element.id + "]' class='form-control' id='" + element.property + "' value=''></div></div>");
+                        });
+                    } else {
+                        to_insert.append("<div class='alert alert-warning'>Вы еще не добавили ни одной характеристики для данной категории!</div>");
+                    }
+                }
+            },
+            error: function(msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $('.js_date_today').text(formatDate(new Date()));
+
+    function formatDate(date) {
+        var monthNames = [
+            "01", "02", "03",
+            "04", "05", "06", "07",
+            "08", "09", "10",
+            "11", "12"
+        ];
+
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+
+        return day + '.' + monthNames[monthIndex] + '.' + year;
+    }
+
+    $('.product_id').bind('input', function() {
+        let product_checked = $('.product_id');
+
+        let product_checked_ids = [];
+        product_checked.each(function(i, elem) {
+            if ($(elem).prop('checked')) {
+                product_checked_ids.push($(elem).val());
+            }
+        });
+        if (product_checked_ids.length > 0) {
+            $('.product_group_copy').removeClass('disabled');
+            $('.product_group_published').removeClass('disabled');
+            $('.product_group_unimported').removeClass('disabled');
+            $('.product_group_delete').removeClass('disabled');
+            $('.product_group_delete').prop('disabled', false);
+        } else {
+            if (!$('.product_group_copy').hasClass('disabled')) {
+                $('.product_group_copy').addClass('disabled');
+                $('.product_group_published').addClass('disabled');
+                $('.product_group_unimported').addClass('disabled');
+                $('.product_group_delete').addClass('disabled');
+                $('.product_group_delete').prop('disabled', true);
+            }
+        }
+        $('.hidden_inputs').empty();
+        for (let i = 0; i < product_checked_ids.length; i++) {
+            $(".hidden_inputs").append("<input type='hidden' name='product_group_ids[]' value=" + product_checked_ids[i] + ">");
+        }
+    });
+
+    // import - check numeric
+
+    $('.check_numeric').on('keyup', function() {
+        let button = $(this).data('success_check');
+        if ($.isNumeric($(this).val()) || $(this).val() == '') {
+            $('.' + button).attr('disabled', false);
+            $(this).parent().find('.invalid-feedback').hide();
+            $(this).addClass(' is-valid').removeClass('is-invalid');
+        } else {
+            $('.' + button).attr('disabled', true);
+            $(this).parent().find('.invalid-feedback').show();
+            $(this).addClass(' is-invalid').removeClass('is-valid');
+        }
+    });
+
+    $('.check_not_empty').on('keyup', function() {
+        let button = $(this).data('success_check');
+        if ($(this).val() != '') {
+            $('.' + button).attr('disabled', false).removeClass('disabled');
+            $(this).parent().find('.invalid-feedback').hide();
+            $(this).addClass(' is-valid').removeClass('is-invalid');
+        } else {
+            $('.' + button).attr('disabled', true);
+            $(this).parent().find('.invalid-feedback').show();
+            $(this).addClass(' is-invalid').removeClass('is-valid');
+        }
+    });
+
+    $('.step_button').on('click', function() {
+        let parent_block = $(this).parent();
+        if ($(this).data('next')) {
+            $('.product_options_steps_title span').text('(шаг ' + parent_block.next().data('step') + ')')
+            parent_block.removeClass('active');
+            parent_block.next().addClass('active');
+        } else if ($(this).data('next') == 0) {
+            $('.product_options_steps_title span').text('(шаг ' + parent_block.prev().data('step') + ')')
+            parent_block.removeClass('active');
+            parent_block.prev().addClass('active');
+        }
+    });
+
+    $('.options_step #typeoption_id').on('change', function() {
+        if ($(this).val() == 'new') {
+            $('#typeoption_id_new').show();
+        } else {
+            $('#typeoption_id_new').hide();
+        }
+    });
+
+    $('input[id="typeoption_id_add"]').on('keyup', function() {
+        let data = $(this);
+        let unique = false;
+        let currents = $('select[name="typeoption_id"] option');
+        currents.each(function() {
+            if (($(this).val() != 0 || $(this).val() != 'new') && data.val().toLowerCase() == $(this).text().toLowerCase()) {
+                unique = false;
+                return false;
+            }
+            unique = true;
+        });
+        if (unique) {
+            $('button.typeoption_id_new_button').removeClass('disabled').attr('disabled', false);
+        } else {
+            $('button.typeoption_id_new_button').addClass('disabled').attr('disabled', true);
+        }
+    });
+
+    $('button.typeoption_id_new_button').on('click', function() {
+        $.ajax({
+            type: "POST",
+            url: "/admin/typeoptions",
+            data: {
+                type: $(this).parent().find('input[id="typeoption_id_add"]').val(),
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                let select = $('select[name="typeoption_id"]');
+                select.append('<option value="' + data.id + '">' + data.name + '</option>');
+                select.val(data.id);
+                $('#typeoption_id_new').hide();
+            },
+            error: function(msg) {
+                console.log(msg);
+            }
+        });
+    });
 });

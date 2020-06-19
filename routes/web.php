@@ -79,9 +79,14 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::post('/articles/addProducts', 'ArticleController@addProducts');
   Route::resource('/manufactures', 'ManufactureController');
   Route::resource('/products', 'ProductController');
+  Route::post('/products/massdestroy', 'ProductController@massDestroy')->name('products.massdestroy');
+  Route::post('/products/published', 'ProductController@published')->name('products.published');
+  Route::post('/products/copy', 'ProductController@copy')->name('products.copy');
+  Route::post('/products/unimported', 'ProductController@unimported')->name('products.unimported');
   Route::post('/products/store/ajax', 'ProductController@storeAjax')->name('products.storeAjax');
   Route::post('/products/search/ajax', 'ProductController@ajaxSearch'); // поиск товара для добавления к статье
   Route::get('/products/addImages/{product}', 'ProductController@addImages')->name('products.addImages');
+  Route::post('/products/getcategoryproperties', 'ProductController@getCategoryProperties'); // во время создания товара при изменении категории подтягиваются параметры
   Route::resource('/units', 'UnitController');
   Route::resource('/options', 'OptionController');
   Route::resource('/choises', 'ChoiseController');
@@ -96,6 +101,10 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::post('/questions/ajax_get', 'QuestionController@ajaxGet');
   Route::post('/questions/ajax_update', 'QuestionController@ajaxUpdate');
   Route::post('/questions/ajax_answer', 'QuestionController@ajaxAnswer');
+
+  Route::get('/import-export', 'ImportexportController@index')->name('import-export.index');
+  Route::any('/import-export/import', 'ImportexportController@import')->name('import-export.import');
+  Route::get('/export/products', 'ProductController@export')->name('product.export');
 
   Route::match(['get', 'post'], 'parser', 'ParserController@index')->name('parser');
 });
