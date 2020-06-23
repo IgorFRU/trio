@@ -171,10 +171,6 @@ class Product extends Model
         return $query->where('imported', false);
     }
 
-    public function scopeCount($query) {
-        return $query->where('imported', false)->where('published', 1)->count();
-    }
-
     public function scopeImported($query) {
         return $query->where('imported', true);
     }

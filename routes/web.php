@@ -61,6 +61,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::get('/login/{token?}', 'Auth\AdminLoginController@showLoginForm')->name('login')->middleware('check.url.login.token');
   Route::post('/login', 'Auth\AdminLoginController@login')->name('login.submit');
   Route::post('/logout', 'Auth\AdminLoginController@adminLogout')->name('logout');
+
+  Route::get('/settings/clearcache', 'SettingController@clearCache')->name('clearcache'); // очистка всего кеша
+  Route::get('/settings/migrate', 'SettingController@migrate')->name('migrate');
     
   Route::post('/password/email', 'Auth\AdminForgotPasswordController@sendResetLinkEmail')->name('password.email');    
   Route::get('/password/reset', 'Auth\AdminForgotPasswordController@showLinkRequestForm')->name('password.request');    

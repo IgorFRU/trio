@@ -86,7 +86,7 @@ class ProductController extends Controller
         })
         ->when($manufacture, function ($query, $manufacture) {
             return $query->where('manufacture_id', $manufacture);
-        })->orderBy('id', 'desc')->with('category')->whereIn('published', $published)->with('manufacture')->paginate($itemsPerPage);
+        })->orderBy('id', 'desc')->finaly()->with('category')->whereIn('published', $published)->with('manufacture')->paginate($itemsPerPage);
 
         $data = array (
             'products' => $products,
@@ -113,7 +113,7 @@ class ProductController extends Controller
         $today = Carbon::now();
         $data = array (
             'product' => [],
-            // 'choises_children' => Choise::children()->get(),
+            'choises_children' => Choise::children()->get(),
             'choises_parent' => Choise::parent()->get(),
             //коллекция вложенных подкатегорий
             'categories' => Category::with('children')->where('category_id', '0')->get(),
