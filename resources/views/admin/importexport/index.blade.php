@@ -23,7 +23,7 @@
                             <a href="{{ route('admin.import-export.import') }}" class="card-link">Начать <i class="fas fa-angle-right"></i></a>
                         </div>
                     </div>
-                </div>                
+                </div>
             </div>
             <div class="w-100">
                 <div class="h5">Ранее импортированные товары (они не отображаются на сайте и в основном разделе товаров в админке)</div>
@@ -160,7 +160,121 @@
             </div>
         </div>
         <div class="tab-pane fade mt-4 mb-4" id="nav-export" role="tabpanel" aria-labelledby="nav-export-tab">
-                            
+            <form class="row mb-1 w-100" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-row w-100 mb-3">
+        
+                    <div class="col-md-4">
+                        <label for="vendor">Поставщик</label>
+                        <select class="form-control" id="vendor" name="vendor" multiple>
+                            <option value="0">Все</option>
+                            @forelse ($vendors as $vendor)
+                                <option value="{{ $vendor->id }}"
+                                    @isset($product->vendor_id)
+                                        @if ($vendor->id == $product->vendor_id)
+                                        selected = "selected"
+                                        @endif
+                                    @endisset>
+                                    {{ $vendor->vendor }} 
+                                </option>
+                            @empty
+                                
+                            @endforelse
+                        </select>
+                        @if ($vendors->count())
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="vendor_not" name="vendor_not">
+                            <label class="custom-control-label text-secondary" for="vendor_not">Кроме выбранных</label>
+                        </div>
+                        @endif
+                    </div>
+        
+                    <div class="col-md-4">
+                        <label for="category_id">Категория</label>
+                        <select class="form-control" id="category_id" data-import='true' name="category" multiple>
+                            <option value="0">Все</option>
+                            @include('admin.categories.partials.child-categories', ['categories' => $categories])
+                        </select>
+                    </select>
+                    @if ($categories->count())
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="category_not" name="category_not">
+                        <label class="custom-control-label text-secondary" for="category_not">Кроме выбранных</label>
+                    </div>
+                    @endif
+                    
+                    </div>
+        
+                    <div class="col-md-4">
+                        <label for="manufacture">Производитель</label>
+                        <select class="form-control" id="manufacture" name="manufacture" multiple>
+                            <option value="0">Все</option>
+                            @forelse ($manufactures as $manufacture)
+                                <option value="{{ $manufacture->id }}">
+                                    {{ $manufacture->manufacture }} 
+                                </option>
+                            @empty
+                                
+                            @endforelse
+                        </select>
+                        @if ($manufactures->count())
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="manufacture_not" name="manufacture_not">
+                            <label class="custom-control-label text-secondary" for="manufacture_not">Кроме выбранных</label>
+                        </div>
+                        @endif
+                    </div>
+                    
+                </div>
+                <div class="h4 mt-3">Укажите соответствие колонок</div>
+                <div class="form-row w-100">
+                    <div class="col-md-2 mb-2">
+                        <fieldset disabled>
+                            <label for="export_column_1">1 столбец</label>
+                            <select class="form-control export_column_number disabled" id="export_column_1" name="export_column_1">
+                                <option value="id">№</option>
+                            </select>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <fieldset disabled>
+                            <label for="export_column_2">2 столбец</label>
+                            <select class="form-control export_column_number disabled" id="export_column_2" name="export_column_2">
+                                <option value="autoscu">Внутренний артикул</option>
+                            </select>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <label for="export_column_3">3 столбец</label>
+                        <select class="form-control export_column_number disabled" id="export_column_3" name="export_column_3">
+                            <option value="0">Пусто</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <label for="export_column_4">4 столбец</label>
+                        <select class="form-control export_column_number disabled" id="export_column_4" name="export_column_4">
+                            <option value="0">Пусто</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <label for="export_column_3">5 столбец</label>
+                        <select class="form-control export_column_number disabled" id="export_column_5" name="export_column_3">
+                            <option value="0">Пусто</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <label for="export_column_6">6 столбец</label>
+                        <select class="form-control export_column_number disabled" id="export_column_6" name="export_column_6">
+                            <option value="0">Пусто</option>
+                        </select>
+                    </div>
+                </div>               
+            </form>
         </div>
     </div>
 </div>

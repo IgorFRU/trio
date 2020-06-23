@@ -10,6 +10,7 @@ use App\Currency;
 use Excel;
 use Illuminate\Http\Request;
 use App\Imports\ProductsImport;
+use App\Exports\ProductsExport;
 use App\Manufacture;
 
 class ImportexportController extends Controller
@@ -24,6 +25,12 @@ class ImportexportController extends Controller
 
         $data = array (
             'title' => 'Импорт/Экспорт',
+            'delimiter' => '',
+            'vendors' => Vendor::get(),
+            'units' => Unit::get(),
+            'manufactures' => Manufacture::get(),
+            'currencies' => Currency::get(),
+            'categories' => Category::with('children')->where('category_id', '0')->get(),
             'products' => $products,
         ); 
 
@@ -55,5 +62,25 @@ class ImportexportController extends Controller
         ); 
 
         return view('admin.import.index', $data);    
-    }    
+    }
+
+    public function export(Request $request) {
+        $categories = (isset($request->category)) ? $request->category : 0;
+        $vendors = (isset($request->vendor)) ? $request->vendor : 0;
+        $manufactures = (isset($request->manufacture)) ? $request->manufacture : 0;
+
+        $products = Product::
+        when($categories, function ($query, $categories) {
+            return $query->whereIn('category_id', $categories);
+        })
+        ->when($manufactures, function ($query, $manufactures) {
+            return $query->whereIn('manufacture_id', $manufactures);
+        })
+        ->when($vendors, function ($query, $vendors) {
+            return $query->whereIn('vendor_id', $vendors);
+        })->orderBy('category_id', 'desc')->orderBy('id', 'desc')->with(['category, manufacture'])->get();
+
+        dd($products, $request->all());
+        ProductsExport::export($products);
+    }
 }

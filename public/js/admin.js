@@ -822,4 +822,36 @@ $(function() {
             }
         });
     });
+
+    // export to excel
+    (function() {
+        let selects = $('.export_column_number');
+        if (selects.length) {
+            let arr = {
+                'scu': 'артикул',
+                'product': 'Название товара',
+                'category_id': 'Категория',
+                'manufacture_id': 'Производитель',
+                'vendor_id': 'Поставщик',
+                'price': 'Цена',
+                'description': 'Описание товара',
+                'slug': 'Ссылка',
+                'size_l': 'Длина',
+                'size_w': 'Ширина',
+                'size_t': 'Толщина',
+                'mass': 'Масса',
+                'properties': 'Характеристики',
+            };
+
+            let selected = Array;
+
+            selects.each(function(i, elem) {
+                arr.each(function(i2, elem2) {
+                    $(elem).append('<option value="' + i2 + '">' + elem2 + '</option>');
+                });
+            });
+
+            console.log(arr);
+        }
+    })();
 });
