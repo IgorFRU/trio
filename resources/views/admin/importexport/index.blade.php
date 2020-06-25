@@ -195,7 +195,6 @@
                             <option value="0">Все</option>
                             @include('admin.categories.partials.child-categories', ['categories' => $categories])
                         </select>
-                    </select>
                     @if ($categories->count())
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="category_not" name="category_not">
@@ -246,10 +245,42 @@
                         </fieldset>
                     </div>
 
+                    <div class="hide">
+                        <select data-count='3' class="form-control template">
+                            <option value="0">Пусто</option>
+                            <option value="scu">Артикул</option>
+                            <option value="product">Название товара</option>
+                            <option value="category_id">Категория</option>
+                            <option value="manufacture_id">Производитель</option>
+                            <option value="vendor_id">Поставщик</option>
+                            <option value="price">Цена</option>
+                            <option value="description">Описание товара</option>
+                            <option value="slug">Ссылка</option>
+                            <option value="size_l">Длина</option>
+                            <option value="size_w">Ширина</option>
+                            <option value="size_t">Толщина</option>
+                            <option value="mass">Масса</option>
+                            <option value="properties">Характеристики</option>
+                        </select>
+                    </div>
+
                     <div class="col-md-2 mb-2">
                         <label for="export_column_3">3 столбец</label>
-                        <select class="form-control export_column_number disabled" id="export_column_3" name="export_column_3">
+                        <select data-count='3' class="form-control export_column_number last" id="export_column_3" name="export_column_3">
                             <option value="0">Пусто</option>
+                            <option value="scu">Артикул</option>
+                            <option value="product">Название товара</option>
+                            <option value="category_id">Категория</option>
+                            <option value="manufacture_id">Производитель</option>
+                            <option value="vendor_id">Поставщик</option>
+                            <option value="price">Цена</option>
+                            <option value="description">Описание товара</option>
+                            <option value="slug">Ссылка</option>
+                            <option value="size_l">Длина</option>
+                            <option value="size_w">Ширина</option>
+                            <option value="size_t">Толщина</option>
+                            <option value="mass">Масса</option>
+                            <option value="properties">Характеристики</option>
                         </select>
                     </div>
 
@@ -257,20 +288,140 @@
                         <label for="export_column_4">4 столбец</label>
                         <select class="form-control export_column_number disabled" id="export_column_4" name="export_column_4">
                             <option value="0">Пусто</option>
+                            <option value="scu">Артикул</option>
+                            <option value="product">Название товара</option>
+                            <option value="category_id">Категория</option>
+                            <option value="manufacture_id">Производитель</option>
+                            <option value="vendor_id">Поставщик</option>
+                            <option value="price">Цена</option>
+                            <option value="description">Описание товара</option>
+                            <option value="slug">Ссылка</option>
+                            <option value="size_l">Длина</option>
+                            <option value="size_w">Ширина</option>
+                            <option value="size_t">Толщина</option>
+                            <option value="mass">Масса</option>
+                            <option value="properties">Характеристики</option>
                         </select>
                     </div>
 
                     <div class="col-md-2 mb-2">
-                        <label for="export_column_3">5 столбец</label>
-                        <select class="form-control export_column_number disabled" id="export_column_5" name="export_column_3">
+                        <label for="export_column_5">5 столбец</label>
+                        <select class="form-control export_column_number disabled" id="export_column_5" name="export_column_5">
                             <option value="0">Пусто</option>
+                            <option value="scu">Артикул</option>
+                            <option value="product">Название товара</option>
+                            <option value="category_id">Категория</option>
+                            <option value="manufacture_id">Производитель</option>
+                            <option value="vendor_id">Поставщик</option>
+                            <option value="price">Цена</option>
+                            <option value="description">Описание товара</option>
+                            <option value="slug">Ссылка</option>
+                            <option value="size_l">Длина</option>
+                            <option value="size_w">Ширина</option>
+                            <option value="size_t">Толщина</option>
+                            <option value="mass">Масса</option>
+                            <option value="properties">Характеристики</option>
                         </select>
                     </div>
 
+                    
                     <div class="col-md-2 mb-2">
                         <label for="export_column_6">6 столбец</label>
                         <select class="form-control export_column_number disabled" id="export_column_6" name="export_column_6">
                             <option value="0">Пусто</option>
+                            <option value="scu">Артикул</option>
+                            <option value="product">Название товара</option>
+                            <option value="category_id">Категория</option>
+                            <option value="manufacture_id">Производитель</option>
+                            <option value="vendor_id">Поставщик</option>
+                            <option value="price">Цена</option>
+                            <option value="description">Описание товара</option>
+                            <option value="slug">Ссылка</option>
+                            <option value="size_l">Длина</option>
+                            <option value="size_w">Ширина</option>
+                            <option value="size_t">Толщина</option>
+                            <option value="mass">Масса</option>
+                            <option value="properties">Характеристики</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-2">
+                        <label for="export_column_7">7 столбец</label>
+                        <select class="form-control export_column_number disabled" id="export_column_7" name="export_column_7">
+                            <option value="0">Пусто</option>
+                            <option value="scu">Артикул</option>
+                            <option value="product">Название товара</option>
+                            <option value="category_id">Категория</option>
+                            <option value="manufacture_id">Производитель</option>
+                            <option value="vendor_id">Поставщик</option>
+                            <option value="price">Цена</option>
+                            <option value="description">Описание товара</option>
+                            <option value="slug">Ссылка</option>
+                            <option value="size_l">Длина</option>
+                            <option value="size_w">Ширина</option>
+                            <option value="size_t">Толщина</option>
+                            <option value="mass">Масса</option>
+                            <option value="properties">Характеристики</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2 mb-2">
+                        <label for="export_column_8">8 столбец</label>
+                        <select class="form-control export_column_number disabled" id="export_column_8" name="export_column_8">
+                            <option value="0">Пусто</option>
+                            <option value="scu">Артикул</option>
+                            <option value="product">Название товара</option>
+                            <option value="category_id">Категория</option>
+                            <option value="manufacture_id">Производитель</option>
+                            <option value="vendor_id">Поставщик</option>
+                            <option value="price">Цена</option>
+                            <option value="description">Описание товара</option>
+                            <option value="slug">Ссылка</option>
+                            <option value="size_l">Длина</option>
+                            <option value="size_w">Ширина</option>
+                            <option value="size_t">Толщина</option>
+                            <option value="mass">Масса</option>
+                            <option value="properties">Характеристики</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2 mb-2">
+                        <label for="export_column_9">9 столбец</label>
+                        <select class="form-control export_column_number disabled" id="export_column_9" name="export_column_9">
+                            <option value="0">Пусто</option>
+                            <option value="scu">Артикул</option>
+                            <option value="product">Название товара</option>
+                            <option value="category_id">Категория</option>
+                            <option value="manufacture_id">Производитель</option>
+                            <option value="vendor_id">Поставщик</option>
+                            <option value="price">Цена</option>
+                            <option value="description">Описание товара</option>
+                            <option value="slug">Ссылка</option>
+                            <option value="size_l">Длина</option>
+                            <option value="size_w">Ширина</option>
+                            <option value="size_t">Толщина</option>
+                            <option value="mass">Масса</option>
+                            <option value="properties">Характеристики</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2 mb-2">
+                        <label for="export_column_10">10 столбец</label>
+                        <select class="form-control export_column_number disabled" id="export_column_10" name="export_column_10">
+                            <option value="0">Пусто</option>
+                            <option value="scu">Артикул</option>
+                            <option value="product">Название товара</option>
+                            <option value="category_id">Категория</option>
+                            <option value="manufacture_id">Производитель</option>
+                            <option value="vendor_id">Поставщик</option>
+                            <option value="price">Цена</option>
+                            <option value="description">Описание товара</option>
+                            <option value="slug">Ссылка</option>
+                            <option value="size_l">Длина</option>
+                            <option value="size_w">Ширина</option>
+                            <option value="size_t">Толщина</option>
+                            <option value="mass">Масса</option>
+                            <option value="properties">Характеристики</option>
                         </select>
                     </div>
                 </div>               

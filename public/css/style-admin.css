@@ -125,6 +125,10 @@ nav {
     margin: 10px 0;
 }
 
+.hide {
+    display: none;
+}
+
 
 /* 
 #ajaxUploadedImages .img_with_footer {

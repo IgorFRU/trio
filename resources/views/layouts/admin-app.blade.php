@@ -12,6 +12,7 @@
     <!-- Scripts -->
     @section('scripts')
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/admin.js') }}" defer></script>
     <script src="https://use.fontawesome.com/564e0d687f.js"></script>

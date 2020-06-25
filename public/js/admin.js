@@ -827,31 +827,69 @@ $(function() {
     (function() {
         let selects = $('.export_column_number');
         if (selects.length) {
-            let arr = {
-                'scu': 'артикул',
-                'product': 'Название товара',
-                'category_id': 'Категория',
-                'manufacture_id': 'Производитель',
-                'vendor_id': 'Поставщик',
-                'price': 'Цена',
-                'description': 'Описание товара',
-                'slug': 'Ссылка',
-                'size_l': 'Длина',
-                'size_w': 'Ширина',
-                'size_t': 'Толщина',
-                'mass': 'Масса',
-                'properties': 'Характеристики',
-            };
+            let arr = new Map([
+                ['scu', 'артикул'],
+                ['product', 'Название товара'],
+                ['category_id', 'Категория'],
+                ['manufacture_id', 'Производитель'],
+                ['vendor_id', 'Поставщик'],
+                ['price', 'Цена'],
+                ['description', 'Описание товара'],
+                ['slug', 'Ссылка'],
+                ['size_l', 'Длина'],
+                ['size_w', 'Ширина'],
+                ['size_t', 'Толщина'],
+                ['mass', 'Масса'],
+                ['properties', 'Характеристики'],
+            ]);
 
             let selected = Array;
 
             selects.each(function(i, elem) {
-                arr.each(function(i2, elem2) {
-                    $(elem).append('<option value="' + i2 + '">' + elem2 + '</option>');
-                });
+                // arr.forEach(function(value, key) {
+                //     $(elem).append('<option value="' + key + '">' + value + '</option>');
+                // });
             });
-
-            console.log(arr);
         }
     })();
+
+    // $('.export_column_number').on('change', function() {
+    //     if ($(this).val() != 0) {
+    //         let count = $(this).data('count');
+    //         count++;
+    //         let parent = $(this).parent().parent();
+    //         let block = $(this).parent().clone();
+    //         $(this).find('select').removeClass('last');
+    //         console.log($(this).find('select'));
+    //         // block.find('option[value="$(this).val()"]');
+    //         block.find('label').attr('for', 'export_column_' + count).html(count + ' столбец');
+    //         block.find('select').data('count', count).attr('id', 'export_column_' + count).attr('name', 'export_column_' + count);
+    //         parent.append(block);
+    //         // console.log(block);
+    //         let values = $(this).find('option').selected;
+    //         // console.log(values);
+    //     }
+    // });
+
+    $('.export_column_number').on('change', function() {
+        if ($(this).val() != 0) {
+            let count = $(this).data('count');
+            count++;
+            let parent = $(this).parent().parent();
+            let block = $(this).parent().clone();
+            $(this).find('select').removeClass('last');
+            console.log($(this).find('select'));
+            // block.find('option[value="$(this).val()"]');
+            block.find('label').attr('for', 'export_column_' + count).html(count + ' столбец');
+            block.find('select').data('count', count).attr('id', 'export_column_' + count).attr('name', 'export_column_' + count);
+            parent.append(block);
+            // console.log(block);
+            let values = $(this).find('option').selected;
+            // console.log(values);
+        }
+    });
+
+    function ExportColumnNumbers() {
+        var export_column_numbers_array = [];
+    }
 });
