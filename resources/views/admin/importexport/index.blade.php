@@ -160,13 +160,13 @@
             </div>
         </div>
         <div class="tab-pane fade mt-4 mb-4" id="nav-export" role="tabpanel" aria-labelledby="nav-export-tab">
-            <form class="row mb-1 w-100" method="POST" enctype="multipart/form-data">
+            <form class="row mb-1 w-100" action="{{ route('admin.import-export.export') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-row w-100 mb-3">
         
                     <div class="col-md-4">
                         <label for="vendor">Поставщик</label>
-                        <select class="form-control" id="vendor" name="vendor" multiple>
+                        <select class="form-control" id="vendor" name="vendor[]" multiple>
                             <option value="0">Все</option>
                             @forelse ($vendors as $vendor)
                                 <option value="{{ $vendor->id }}"
@@ -191,7 +191,7 @@
         
                     <div class="col-md-4">
                         <label for="category_id">Категория</label>
-                        <select class="form-control" id="category_id" data-import='true' name="category" multiple>
+                        <select class="form-control" id="category_id" data-import='true' name="category[]" multiple>
                             <option value="0">Все</option>
                             @include('admin.categories.partials.child-categories', ['categories' => $categories])
                         </select>
@@ -206,7 +206,7 @@
         
                     <div class="col-md-4">
                         <label for="manufacture">Производитель</label>
-                        <select class="form-control" id="manufacture" name="manufacture" multiple>
+                        <select class="form-control" id="manufacture" name="manufacture[]" multiple>
                             <option value="0">Все</option>
                             @forelse ($manufactures as $manufacture)
                                 <option value="{{ $manufacture->id }}">
@@ -230,7 +230,7 @@
                     <div class="col-md-2 mb-2">
                         <fieldset disabled>
                             <label for="export_column_1">1 столбец</label>
-                            <select class="form-control export_column_number disabled" id="export_column_1" name="export_column_1">
+                            <select class="form-control disabled" id="export_column_1" name="export_column_1">
                                 <option value="id">№</option>
                             </select>
                         </fieldset>
@@ -239,14 +239,14 @@
                     <div class="col-md-2 mb-2">
                         <fieldset disabled>
                             <label for="export_column_2">2 столбец</label>
-                            <select class="form-control export_column_number disabled" id="export_column_2" name="export_column_2">
+                            <select class="form-control disabled" id="export_column_2" name="export_column_2">
                                 <option value="autoscu">Внутренний артикул</option>
                             </select>
                         </fieldset>
                     </div>
 
                     <div class="hide">
-                        <select data-count='3' class="form-control template">
+                        <select class="form-control template">
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
@@ -286,9 +286,9 @@
 
                     <div class="col-md-2 mb-2">
                         <label for="export_column_4">4 столбец</label>
-                        <select class="form-control export_column_number disabled" id="export_column_4" name="export_column_4">
+                        <select data-count='4' class="form-control export_column_number disabled" id="export_column_4" name="export_column_4">
                             <option value="0">Пусто</option>
-                            <option value="scu">Артикул</option>
+                            <option value="scu" disabled>Артикул</option>
                             <option value="product">Название товара</option>
                             <option value="category_id">Категория</option>
                             <option value="manufacture_id">Производитель</option>
@@ -306,7 +306,7 @@
 
                     <div class="col-md-2 mb-2">
                         <label for="export_column_5">5 столбец</label>
-                        <select class="form-control export_column_number disabled" id="export_column_5" name="export_column_5">
+                        <select data-count='5' class="form-control export_column_number disabled" id="export_column_5" name="export_column_5">
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
@@ -327,7 +327,7 @@
                     
                     <div class="col-md-2 mb-2">
                         <label for="export_column_6">6 столбец</label>
-                        <select class="form-control export_column_number disabled" id="export_column_6" name="export_column_6">
+                        <select data-count='6' class="form-control export_column_number disabled" id="export_column_6" name="export_column_6">
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
@@ -347,7 +347,7 @@
 
                     <div class="col-md-2 mb-2">
                         <label for="export_column_7">7 столбец</label>
-                        <select class="form-control export_column_number disabled" id="export_column_7" name="export_column_7">
+                        <select data-count='7' class="form-control export_column_number disabled" id="export_column_7" name="export_column_7">
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
@@ -367,7 +367,7 @@
                     
                     <div class="col-md-2 mb-2">
                         <label for="export_column_8">8 столбец</label>
-                        <select class="form-control export_column_number disabled" id="export_column_8" name="export_column_8">
+                        <select data-count='8' class="form-control export_column_number disabled" id="export_column_8" name="export_column_8">
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
@@ -387,7 +387,7 @@
                     
                     <div class="col-md-2 mb-2">
                         <label for="export_column_9">9 столбец</label>
-                        <select class="form-control export_column_number disabled" id="export_column_9" name="export_column_9">
+                        <select data-count='9' class="form-control export_column_number disabled" id="export_column_9" name="export_column_9">
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
@@ -407,7 +407,7 @@
                     
                     <div class="col-md-2 mb-2">
                         <label for="export_column_10">10 столбец</label>
-                        <select class="form-control export_column_number disabled" id="export_column_10" name="export_column_10">
+                        <select data-count='10' class="form-control export_column_number disabled" id="export_column_10" name="export_column_10">
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
@@ -424,7 +424,8 @@
                             <option value="properties">Характеристики</option>
                         </select>
                     </div>
-                </div>               
+                </div>
+                <button type="button" class="btn btn-primary export_send_button">Экспортировать</button>
             </form>
         </div>
     </div>

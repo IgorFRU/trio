@@ -5,6 +5,7 @@
     --main-blue: #577d90;
     --dark-green: #27642b;
     --dark-red: #8a2f2f;
+    --light-red: #c47373;
 }
 
 html,
@@ -32,6 +33,10 @@ a {
 
 .bg-light-grey {
     background: var(--light-grey);
+}
+
+.bg-light-red {
+    background: var(--light-red);
 }
 
 .bg-main-blue {

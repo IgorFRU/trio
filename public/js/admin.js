@@ -1,3 +1,5 @@
+// const { each } = require("lodash");
+
 $(function() {
 
     // добавление класса active к верхним пунктам меню (родительским)
@@ -824,72 +826,61 @@ $(function() {
     });
 
     // export to excel
-    (function() {
-        let selects = $('.export_column_number');
-        if (selects.length) {
-            let arr = new Map([
-                ['scu', 'артикул'],
-                ['product', 'Название товара'],
-                ['category_id', 'Категория'],
-                ['manufacture_id', 'Производитель'],
-                ['vendor_id', 'Поставщик'],
-                ['price', 'Цена'],
-                ['description', 'Описание товара'],
-                ['slug', 'Ссылка'],
-                ['size_l', 'Длина'],
-                ['size_w', 'Ширина'],
-                ['size_t', 'Толщина'],
-                ['mass', 'Масса'],
-                ['properties', 'Характеристики'],
-            ]);
-
-            let selected = Array;
-
-            selects.each(function(i, elem) {
-                // arr.forEach(function(value, key) {
-                //     $(elem).append('<option value="' + key + '">' + value + '</option>');
-                // });
-            });
-        }
-    })();
-
-    // $('.export_column_number').on('change', function() {
-    //     if ($(this).val() != 0) {
-    //         let count = $(this).data('count');
-    //         count++;
-    //         let parent = $(this).parent().parent();
-    //         let block = $(this).parent().clone();
-    //         $(this).find('select').removeClass('last');
-    //         console.log($(this).find('select'));
-    //         // block.find('option[value="$(this).val()"]');
-    //         block.find('label').attr('for', 'export_column_' + count).html(count + ' столбец');
-    //         block.find('select').data('count', count).attr('id', 'export_column_' + count).attr('name', 'export_column_' + count);
-    //         parent.append(block);
-    //         // console.log(block);
-    //         let values = $(this).find('option').selected;
-    //         // console.log(values);
-    //     }
-    // });
-
+    var export_column_numbers_array = new Map();
     $('.export_column_number').on('change', function() {
         if ($(this).val() != 0) {
-            let count = $(this).data('count');
-            count++;
-            let parent = $(this).parent().parent();
-            let block = $(this).parent().clone();
-            $(this).find('select').removeClass('last');
-            console.log($(this).find('select'));
-            // block.find('option[value="$(this).val()"]');
-            block.find('label').attr('for', 'export_column_' + count).html(count + ' столбец');
-            block.find('select').data('count', count).attr('id', 'export_column_' + count).attr('name', 'export_column_' + count);
-            parent.append(block);
-            // console.log(block);
-            let values = $(this).find('option').selected;
-            // console.log(values);
+
+            let selected = $('select.export_column_number');
+            selected.each(function(i, elem) {
+                // console.log(elem);
+
+                $.each(elem.childNodes, function() {
+                    if ($(this)[0].selected && $(this).val() != 0) {
+                        let count = elem.attributes['data-count'].value;
+                        // export_column_numbers_array.push($(this).val());
+
+                        // export_column_numbers_array.push(count);
+                        // export_column_numbers_array[count] = $(this).val();
+                        export_column_numbers_array.set(count, $(this).val());
+                    }
+                });
+
+                console.log(export_column_numbers_array);
+
+                $.each($(this)[0], function() {
+                    let current_option = $(this)[0];
+                    current_option.disabled = false;
+
+                    $.each(export_column_numbers_array, function(key, value) {
+                        if (value == current_option.value) {
+                            current_option.disabled = true;
+                        }
+                    });
+
+                });
+            });
         }
     });
 
-    function ExportColumnNumbers() {
-        var export_column_numbers_array = [];
-    }
+    $('.export_send_button').on('click', function() {
+        let manufacture_not, category_not;
+
+        let vendor = $('select[name="vendor[]"]').val();
+
+        let manufacture = $('select[name="manufacture[]"]').val();
+        if ($('input[name="manufacture_not"]').is(':checked')) {
+            manufacture_not = 1;
+        } else {
+            manufacture_not = 0;
+        }
+
+        let category = $('select[name="category[]"]').val();
+        if ($('input[name="category_not"]').is(':checked')) {
+            category_not = 1;
+        } else {
+            category_not = 0;
+        }
+
+        console.log(export_column_numbers_array);
+    });
 });
