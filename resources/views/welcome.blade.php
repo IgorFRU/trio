@@ -396,6 +396,38 @@
     </div>
 </section>
 
+<section class="uk-section">
+    <div class="uk-container">
+        <div class="uk-child-width-1-2" uk-grid>
+            <div>
+                <h2 class="uk-text-muted uk-text-center uk-heading-line"><span>Сдаём в аренду шлифовальную машину барабанного типа</span></h2>
+                
+                <h4 class="uk-text-muted uk-text-center">Условия аренды:</h2>
+
+                <ul class="uk-list uk-list-large uk-list-divider">
+                    <li>
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-expand">Стоимость аренды в сутки</div>
+                            <div>1 000.00 р</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-expand">Залоговая стоимость</div>
+                            <div>35 000.00 р</div>
+                        </div>
+                    </li>                        
+                </ul>
+
+                <p>Шлифовальная машина барабанного типа для шлифовки паркета и деревянных полов. Не допускается шлифовка полов с торчащими гвоздями, саморезами и другими металлическими предметами, способными повреждение резины, наклеенной на барабан.</p>
+            </div>
+            <div class="co_206">                
+                <img src="{{ asset('imgs/co-206.jpg')}}" alt="">
+            </div>
+        </div>  
+    </div>
+</section>
+
 <section class="uk-section uk-section-primary uk-section-small uk-light">
     <div class="uk-container">
         <div class="uk-text-center">

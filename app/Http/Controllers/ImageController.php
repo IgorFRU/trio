@@ -127,13 +127,21 @@ class ImageController extends Controller
         if (isset($request->method) && $request->method == 'delete') {
             $image = Image::where('id', $request->image_id)->first();
 
-            if ($image->image && file_exists(public_path('imgs/products/'. $image->image))) {
-                unlink(public_path('imgs/products/'.$image->image));
+            if ($image->products->count() == 1) {
+                if ($image->image && file_exists(public_path('imgs/products/'. $image->image))) {
+                    unlink(public_path('imgs/products/'.$image->image));
+                }
+                if ($image->thumbnail && file_exists(public_path('imgs/products/thumbnails/'. $image->thumbnail))) {
+                    unlink(public_path('imgs/products/thumbnails/'.$image->thumbnail));
+                }
+                
+                $image->delete();
             }
-            if ($image->thumbnail && file_exists(public_path('imgs/products/thumbnails/'. $image->thumbnail))) {
-                unlink(public_path('imgs/products/thumbnails/'.$image->thumbnail));
+
+            if ($request->product_id) {
+                $image->products()->detach($request->product_id);
             }
-            $image->delete();
+            
             echo json_encode(array('id' => $request->image_id));
         }
         

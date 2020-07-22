@@ -231,11 +231,13 @@ $(function() {
 
     $('#add_image_delete').on('click', function() {
         var image_id = $('#add_image').attr('data-id');
+        var product_id = $('input[name="id"]').val();
         var method = 'delete';
         var formData = new FormData();
 
         formData.append('method', method);
         formData.append('image_id', image_id);
+        formData.append('product_id', product_id);
 
         $.ajax({
             type: "POST",
@@ -249,7 +251,6 @@ $(function() {
             },
             success: function(data) {
                 var data = $.parseJSON(data);
-                console.log(data);
                 var image_id = $('#add_image').attr('data-id');
                 $('#add_image').attr('data-id', '');
                 $('#add_image').prop('disabled', true);

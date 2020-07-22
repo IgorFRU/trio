@@ -2145,6 +2145,10 @@ section.product .product__images .product__mainimage {
     position: relative;
 }
 
+.co_206>img {
+    clip-path: ellipse(237px 153px at 270px 154px);
+}
+
 @media (max-width:992px) {
     .headsection h1 {
         font-size: 28px;
