@@ -827,13 +827,53 @@ $(function() {
     });
 
     // export to excel
+    // var export_column_numbers_array = new Map();
+    // var export_column_numbers_array_2 = [];
+    // $('.export_column_number').on('change', function() {
+    //     if ($(this).val() != 0) {
+
+    //         let selected = $('select.export_column_number');
+    //         selected.each(function(i, elem) {
+    //             // console.log(elem);
+
+    //             $.each(elem.childNodes, function() {
+    //                 if ($(this)[0].selected && $(this).val() != 0) {
+    //                     let count = elem.attributes['data-count'].value;
+    //                     // export_column_numbers_array.push($(this).val());
+
+    //                     // export_column_numbers_array.push(count);
+    //                     // export_column_numbers_array[count] = $(this).val();
+    //                     export_column_numbers_array.set(count, $(this).val());
+    //                 }
+    //             });
+
+    //             console.log(export_column_numbers_array);
+
+    //             $.each($(this)[0], function() {
+    //                 let current_option = $(this)[0];
+    //                 current_option.disabled = false;
+
+    //                 $.each(export_column_numbers_array, function(key, value) {
+    //                     if (value == current_option.value) {
+    //                         current_option.disabled = true;
+    //                     }
+    //                 });
+
+    //             });
+    //         });
+    //     }
+    // });
+
     var export_column_numbers_array = new Map();
+    var export_column_numbers_array_2 = [];
     $('.export_column_number').on('change', function() {
         if ($(this).val() != 0) {
-
             let selected = $('select.export_column_number');
-            selected.each(function(i, elem) {
-                // console.log(elem);
+            let selected_id = $(this).data('count');
+            
+            $.each(selected, function(i, elem) {
+                console.log($(this).data('count'));
+
 
                 $.each(elem.childNodes, function() {
                     if ($(this)[0].selected && $(this).val() != 0) {
@@ -846,7 +886,7 @@ $(function() {
                     }
                 });
 
-                console.log(export_column_numbers_array);
+                // console.log(export_column_numbers_array);
 
                 $.each($(this)[0], function() {
                     let current_option = $(this)[0];
