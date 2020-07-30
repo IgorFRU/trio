@@ -643,51 +643,52 @@ $(function() {
 
     //при изменении категории в форме добавления/редактирования товара подгружаются характеристики из этой категории
     $('#category_id').bind('input', function() {
-
-        let import_flag = false;
-        if ($(this).data('import') == true) {
-            import_flag = true;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "/admin/products/getcategoryproperties",
-            data: {
-                category_id: $(this).val()
-            },
-            headers: {
-                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(data) {
-
-                var data = $.parseJSON(data);
-                if (import_flag) {
-                    // copy()
-                    let to_insert = $('.import_products_properties');
-                    to_insert.empty();
-                    if (data.length > 0) {
-                        data.forEach(element => {
-                            to_insert.append("<div class='col-md-3 mb-3'><label for='" + element.id + "'>" + element.property + "</label><input type='text' class='form-control check_numeric' data-success_check='success_check' id='" + element.property + "' name='property_values[" + element.id + "]' pattern='^[ 0-9]+$'><div class='invalid-feedback'>Тут должно быть число!</div></div>");
-                        });
-                    } else {
-                        to_insert.append("<div class='alert alert-warning'>Вы еще не добавили ни одной характеристики для данной категории!</div>");
-                    }
-                } else {
-                    let to_insert = $('#properties div');
-                    to_insert.empty();
-                    if (data.length > 0) {
-                        data.forEach(element => {
-                            to_insert.append("<div class='form-group row'><label for='" + element.id + "' class='col-sm-2 col-form-label'>" + element.property + "</label><div class='col-md-4'><input type='text' name='property_values[" + element.id + "]' class='form-control' id='" + element.property + "' value=''></div></div>");
-                        });
-                    } else {
-                        to_insert.append("<div class='alert alert-warning'>Вы еще не добавили ни одной характеристики для данной категории!</div>");
-                    }
-                }
-            },
-            error: function(msg) {
-                console.log(msg);
+        if (!$(this).hasClass('export')) {
+            let import_flag = false;
+            if ($(this).data('import') == true) {
+                import_flag = true;
             }
-        });
+
+            $.ajax({
+                type: "POST",
+                url: "/admin/products/getcategoryproperties",
+                data: {
+                    category_id: $(this).val()
+                },
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+
+                    var data = $.parseJSON(data);
+                    if (import_flag) {
+                        // copy()
+                        let to_insert = $('.import_products_properties');
+                        to_insert.empty();
+                        if (data.length > 0) {
+                            data.forEach(element => {
+                                to_insert.append("<div class='col-md-3 mb-3'><label for='" + element.id + "'>" + element.property + "</label><input type='text' class='form-control check_numeric' data-success_check='success_check' id='" + element.property + "' name='property_values[" + element.id + "]' pattern='^[ 0-9]+$'><div class='invalid-feedback'>Тут должно быть число!</div></div>");
+                            });
+                        } else {
+                            to_insert.append("<div class='alert alert-warning'>Вы еще не добавили ни одной характеристики для данной категории!</div>");
+                        }
+                    } else {
+                        let to_insert = $('#properties div');
+                        to_insert.empty();
+                        if (data.length > 0) {
+                            data.forEach(element => {
+                                to_insert.append("<div class='form-group row'><label for='" + element.id + "' class='col-sm-2 col-form-label'>" + element.property + "</label><div class='col-md-4'><input type='text' name='property_values[" + element.id + "]' class='form-control' id='" + element.property + "' value=''></div></div>");
+                            });
+                        } else {
+                            to_insert.append("<div class='alert alert-warning'>Вы еще не добавили ни одной характеристики для данной категории!</div>");
+                        }
+                    }
+                },
+                error: function(msg) {
+                    console.log(msg);
+                }
+            });
+        }
     });
 
     $('.js_date_today').text(formatDate(new Date()));
@@ -867,40 +868,36 @@ $(function() {
     var export_column_numbers_array = new Map();
     var export_column_numbers_array_2 = [];
     $('.export_column_number').on('change', function() {
-        if ($(this).val() != 0) {
-            let selected = $('select.export_column_number');
-            let selected_id = $(this).data('count');
-            
-            $.each(selected, function(i, elem) {
-                console.log($(this).data('count'));
+        let selected = $('select.export_column_number');
+        let selected_id = $(this).data('count');
 
+        $.each(selected, function(i, elem) {
 
-                $.each(elem.childNodes, function() {
-                    if ($(this)[0].selected && $(this).val() != 0) {
-                        let count = elem.attributes['data-count'].value;
-                        // export_column_numbers_array.push($(this).val());
-
-                        // export_column_numbers_array.push(count);
-                        // export_column_numbers_array[count] = $(this).val();
+            $.each(elem.childNodes, function() {
+                if ($(this)[0].selected) {
+                    let count = elem.attributes['data-count'].value;
+                    if ($(this).val() != 0) {
                         export_column_numbers_array.set(count, $(this).val());
+                    } else {
+                        export_column_numbers_array.delete(count)
                     }
-                });
 
-                // console.log(export_column_numbers_array);
-
-                $.each($(this)[0], function() {
-                    let current_option = $(this)[0];
-                    current_option.disabled = false;
-
-                    $.each(export_column_numbers_array, function(key, value) {
-                        if (value == current_option.value) {
-                            current_option.disabled = true;
-                        }
-                    });
-
-                });
+                }
             });
-        }
+
+            $.each($(this)[0], function() {
+                // console.log($(this)[0]);
+                let current_option = $(this)[0];
+                current_option.disabled = false;
+
+                for (let val of export_column_numbers_array.values()) {
+                    if (val == current_option.value) {
+                        current_option.disabled = true;
+                    }
+                }
+            });
+        });
+        // }
     });
 
     $('.export_send_button').on('click', function() {
@@ -909,6 +906,10 @@ $(function() {
         let vendor = $('select[name="vendor[]"]').val();
 
         let manufacture = $('select[name="manufacture[]"]').val();
+        if (manufacture.indexOf('0') > -1) {
+            manufacture = [];
+            manufacture[0] = 0;
+        }
         if ($('input[name="manufacture_not"]').is(':checked')) {
             manufacture_not = 1;
         } else {
@@ -916,12 +917,41 @@ $(function() {
         }
 
         let category = $('select[name="category[]"]').val();
+        if (category.indexOf('0') > -1) {
+            category = [];
+            category[0] = 0;
+        }
+
         if ($('input[name="category_not"]').is(':checked')) {
             category_not = 1;
         } else {
             category_not = 0;
         }
 
-        console.log(export_column_numbers_array);
+        let column_numbers = Array.from(export_column_numbers_array.keys());
+        let column_values = Array.from(export_column_numbers_array.values());
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/import-export/export",
+            data: {
+                column_numbers: column_numbers,
+                column_values: column_values,
+                category: category,
+                category_not: category_not,
+                manufacture: manufacture,
+                manufacture_not: manufacture_not,
+                vendor: vendor,
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                console.log(data);
+            },
+            error: function(msg) {
+                console.log(msg);
+            }
+        });
     });
 });

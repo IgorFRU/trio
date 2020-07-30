@@ -191,7 +191,7 @@
         
                     <div class="col-md-4">
                         <label for="category_id">Категория</label>
-                        <select class="form-control" id="category_id" data-import='true' name="category[]" multiple>
+                        <select class="form-control export" id="category_id" data-import='true' name="category[]" multiple>
                             <option value="0">Все</option>
                             @include('admin.categories.partials.child-categories', ['categories' => $categories])
                         </select>

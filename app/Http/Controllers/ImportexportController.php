@@ -65,7 +65,8 @@ class ImportexportController extends Controller
     }
 
     public function export(Request $request) {
-        dd($request->all());
+        // return $request->all();
+        
         $categories = (isset($request->category)) ? $request->category : 0;
         $vendors = (isset($request->vendor)) ? $request->vendor : 0;
         $manufactures = (isset($request->manufacture)) ? $request->manufacture : 0;
