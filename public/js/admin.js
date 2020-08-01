@@ -901,31 +901,67 @@ $(function() {
     });
 
     $('.export_send_button').on('click', function() {
-        let manufacture_not, category_not;
+        let manufacture_not,
+            category_not;
+
+        let all_categories = [],
+            all_manufactures = [];
+
+        if ($("#category_id option").length) {
+            $("#category_id option").each(function() {
+                all_categories.push($(this).val());
+            });
+        }
+
+        if ($("#manufacture option").length) {
+            $("#manufacture option").each(function() {
+                all_manufactures.push($(this).val());
+            });
+        }
 
         let vendor = $('select[name="vendor[]"]').val();
 
-        let manufacture = $('select[name="manufacture[]"]').val();
-        if (manufacture.indexOf('0') > -1) {
-            manufacture = [];
-            manufacture[0] = 0;
-        }
         if ($('input[name="manufacture_not"]').is(':checked')) {
             manufacture_not = 1;
         } else {
             manufacture_not = 0;
         }
 
-        let category = $('select[name="category[]"]').val();
-        if (category.indexOf('0') > -1) {
-            category = [];
-            category[0] = 0;
+        let manufacture = $('select[name="manufacture[]"]').val();
+        if (!manufacture_not) {
+            if (manufacture.indexOf('0') > -1) {
+                manufacture = [];
+                manufacture[0] = 0;
+            }
+        } else {
+            let manufacture_tmp = manufacture;
+            manufacture = [];
+            manufacture = uniqueArray(all_manufactures, manufacture_tmp);
+            console.log(manufacture.indexOf('0'));
+            if (manufacture.indexOf('0') > -1) {
+                manufacture.splice(manufacture.indexOf('0'), 1);
+            }
         }
 
         if ($('input[name="category_not"]').is(':checked')) {
             category_not = 1;
         } else {
             category_not = 0;
+        }
+
+        let category = $('select[name="category[]"]').val();
+        if (!category_not) {
+            if (category.indexOf('0') > -1) {
+                category = [];
+                category[0] = 0;
+            }
+        } else {
+            let category_tmp = category;
+            category = [];
+            category = uniqueArray(all_categories, category_tmp);
+            if (category.indexOf('0') > -1) {
+                category.splice(category.indexOf('0'), 1);
+            }
         }
 
         let column_numbers = Array.from(export_column_numbers_array.keys());
@@ -938,9 +974,7 @@ $(function() {
                 column_numbers: column_numbers,
                 column_values: column_values,
                 category: category,
-                category_not: category_not,
                 manufacture: manufacture,
-                manufacture_not: manufacture_not,
                 vendor: vendor,
             },
             headers: {
@@ -954,4 +988,16 @@ $(function() {
             }
         });
     });
+
+    function uniqueArray(arr1, arr2) {
+
+        var elems = arr1.filter(
+            function(i) {
+                return this.indexOf(i) < 0;
+            },
+            arr2
+
+        );
+        return elems;
+    }
 });

@@ -65,23 +65,26 @@ class ImportexportController extends Controller
     }
 
     public function export(Request $request) {
-        // return $request->all();
+        // return $request->category;
         
-        $categories = (isset($request->category)) ? $request->category : 0;
-        $vendors = (isset($request->vendor)) ? $request->vendor : 0;
-        $manufactures = (isset($request->manufacture)) ? $request->manufacture : 0;
+        $categories = (isset($request->category) && count($request->category)) ? $request->category : [];
+        $vendors = (isset($request->vendor) && count($request->vendor)) ? $request->vendor : [];
+        $manufactures = (isset($request->manufacture) && count($request->manufacture)) ? $request->manufacture : [];
 
+        $categories = (count($categories) == 1 && $categories[0] == 0) ? [] : $categories ;
+        $vendors = (count($vendors) == 1 && $vendors[0] == 0) ? [] : $vendors ;
+        $manufactures = (count($manufactures) == 1 && $manufactures[0] == 0) ? [] : $manufactures ;
+
+        // return ['categories' => $categories, 'vendors' => $vendors, 'manufactures' => $manufactures];
         $products = Product::
-        when($categories, function ($query, $categories) {
-            return $query->whereIn('category_id', $categories);
-        })
-        ->when($manufactures, function ($query, $manufactures) {
+        when(count($manufactures), function ($query, $manufactures) {
             return $query->whereIn('manufacture_id', $manufactures);
         })
-        ->when($vendors, function ($query, $vendors) {
+        ->when(count($vendors), function ($query, $vendors) {
             return $query->whereIn('vendor_id', $vendors);
-        })->orderBy('category_id', 'desc')->orderBy('id', 'desc')->with(['category, manufacture'])->get();
+        })->orderBy('category_id', 'desc')->orderBy('id', 'desc')->with(['category', 'manufacture'])->get();
 
+        return $products;
         dd($products, $request->all());
         ProductsExport::export($products);
     }
