@@ -937,7 +937,7 @@ $(function() {
             let manufacture_tmp = manufacture;
             manufacture = [];
             manufacture = uniqueArray(all_manufactures, manufacture_tmp);
-            console.log(manufacture.indexOf('0'));
+
             if (manufacture.indexOf('0') > -1) {
                 manufacture.splice(manufacture.indexOf('0'), 1);
             }

@@ -65,7 +65,7 @@ class ImportexportController extends Controller
     }
 
     public function export(Request $request) {
-        // return $request->category;
+        // return $request->all();
         
         $categories = (isset($request->category) && count($request->category)) ? $request->category : [];
         $vendors = (isset($request->vendor) && count($request->vendor)) ? $request->vendor : [];
@@ -77,15 +77,19 @@ class ImportexportController extends Controller
 
         // return ['categories' => $categories, 'vendors' => $vendors, 'manufactures' => $manufactures];
         $products = Product::
-        when(count($manufactures), function ($query, $manufactures) {
+        when($categories, function ($query, $categories) {
+            return $query->whereIn('category_id', $categories);
+        })
+        ->
+        when($manufactures, function ($query, $manufactures) {
             return $query->whereIn('manufacture_id', $manufactures);
         })
-        ->when(count($vendors), function ($query, $vendors) {
+        ->when($vendors, function ($query, $vendors) {
             return $query->whereIn('vendor_id', $vendors);
-        })->orderBy('category_id', 'desc')->orderBy('id', 'desc')->with(['category', 'manufacture'])->get();
+        })->orderBy('category_id', 'desc')->orderBy('id', 'desc')->get();
 
-        return $products;
-        dd($products, $request->all());
-        ProductsExport::export($products);
+        // return $products;
+        
+        ProductsExport::export($products, $request->column_numbers, $request->column_values);
     }
 }

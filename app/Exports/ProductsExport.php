@@ -15,6 +15,33 @@ class ProductsExport
     static $fileName;
     static $spreadsheet;
     static $sheet;
+    static $date;
+    static $column_numbers;
+    static $column_values;
+    static $titles = [
+        'scu'           => 'Артикул',
+        'product'       => 'Название товара',
+        'category_id'   => 'Категория',
+        'manufacture_id'=> 'Производитель',
+        'description'   => 'Описание товара',
+        'slug'          => 'Ссылка',
+        'size_l'        => 'Длина',
+        'size_w'        => 'Ширина',
+        'size_t'        => 'Толщина',
+        'mass'          => 'Масса',
+        'properties'    => 'Характеристики',
+    ];   
+    
+    static $alfabet = [
+        '3' => 'C',
+        '4' => 'D',
+        '5' => 'E',
+        '6' => 'F',
+        '7' => 'G',
+        '8' => 'H',
+        '9' => 'I',
+        '10' => 'J',
+    ];
 
     static $styleBold = [
         'font' => [
@@ -50,17 +77,47 @@ class ProductsExport
      * @param string $method
      * @return void
      */
-    public static function export(Product $products)
+    public static function export($products, $column_numbers, $column_values)
     {
         self::$products = $products;
-        self::$fileName = 'Export_Stroy82_' . \Carbon\Carbon::now()->toDateTimeString() . '.xls';
+        self::$column_numbers = $column_numbers;
+        self::$column_values = $column_values;
+        self::$date = \Carbon\Carbon::now()->toDateTimeString();
+        self::$fileName = 'Export_Stroy82_' . self::$date . '.xls';
         self::$spreadsheet = new Spreadsheet();
         // $method = Str::camel($method);
-        // self::$method(self::$products, $method);
+        self::fillFile(self::$products);
     }
 
-    public function fillFile() {
-        
+    public static function fillFile() {
+        self::$sheet = self::$spreadsheet->getActiveSheet();
+        self::$sheet->setTitle('1');
+
+        self::$sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT)->setFitToWidth(1);
+        self::$sheet->getPageMargins()->setTop(1);
+        self::$sheet->getPageMargins()->setRight(0.75);
+        self::$sheet->getPageMargins()->setLeft(0.75);
+        self::$sheet->getPageMargins()->setBottom(1);
+
+        $line = 1;
+
+        self::setCellValue('A', $line, '№', [self::$styleBold, self::$styleBlackBorders]);
+        self::setCellValue('B', $line, 'Артикул сайта', [self::$styleBold, self::$styleBlackBorders]);
+
+        foreach (self::$column_numbers as $key => $number) {
+            self::setCellValue(self::$alfabet[$number], $line, self::$titles[self::$column_values[$number]], [self::$styleBold, self::$styleBlackBorders]);
+        }
+
+        $i = 1;
+        if (count(self::$products) > 0) {
+            foreach (self::$products as $product) {
+                $line++;
+                self::setCellValue('A', $line, $i, [self::$styleBlackBorders]);
+                $i++;
+            }
+        }
+
+        self::createFile();
     }
 
     public static function createFile() {
