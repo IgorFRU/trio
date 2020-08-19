@@ -66,10 +66,19 @@ class ImportexportController extends Controller
 
     public function export(Request $request) {
         // return $request->all();
+        if ($request->category_not_hidden) {
+            $categories = preg_split("/[,]/", $request->category_not_hidden[0]);
+        } else {
+            $categories = (isset($request->category) && count($request->category)) ? $request->category : [];
+        }
+
+        if ($request->manufacture_not_hidden) {
+            $manufactures = preg_split("/[,]/", $request->manufacture_not_hidden[0]);
+        } else {
+            $manufactures = (isset($request->manufacture) && count($request->manufacture)) ? $request->manufacture : [];
+        }        
         
-        $categories = (isset($request->category) && count($request->category)) ? $request->category : [];
-        $vendors = (isset($request->vendor) && count($request->vendor)) ? $request->vendor : [];
-        $manufactures = (isset($request->manufacture) && count($request->manufacture)) ? $request->manufacture : [];
+        $vendors = (isset($request->vendor) && count($request->vendor)) ? $request->vendor : [];        
 
         $categories = (count($categories) == 1 && $categories[0] == 0) ? [] : $categories ;
         $vendors = (count($vendors) == 1 && $vendors[0] == 0) ? [] : $vendors ;
@@ -89,7 +98,10 @@ class ImportexportController extends Controller
         })->orderBy('category_id', 'desc')->orderBy('id', 'desc')->get();
 
         // return $products;
+        $columns = ($request->columns) ? $request->columns : [];
+        $values = ($request->values) ? $request->values : [];
         
-        ProductsExport::export($products, $request->column_numbers, $request->column_values);
+        // dd($request->category_not_hidden);
+        ProductsExport::export($products, $columns, $values);
     }
 }

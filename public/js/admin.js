@@ -871,6 +871,9 @@ $(function() {
         let selected = $('select.export_column_number');
         let selected_id = $(this).data('count');
 
+        let columns = $('input[name="columns[]"]');
+        let values = $('input[name="values[]"]');
+
         $.each(selected, function(i, elem) {
 
             $.each(elem.childNodes, function() {
@@ -897,50 +900,20 @@ $(function() {
                 }
             });
         });
-        // }
+
+        columns.val(Array.from(export_column_numbers_array.keys()));
+        values.val(Array.from(export_column_numbers_array.values()));
+        // console.log(Array.from(export_column_numbers_array.keys()), Array.from(export_column_numbers_array.values()));
     });
 
-    $('.export_send_button').on('click', function() {
-        let manufacture_not,
-            category_not;
-
+    $('input[name="category_not"]').on('click', function() {
         let all_categories = [],
-            all_manufactures = [];
+            category_not;
 
         if ($("#category_id option").length) {
             $("#category_id option").each(function() {
                 all_categories.push($(this).val());
             });
-        }
-
-        if ($("#manufacture option").length) {
-            $("#manufacture option").each(function() {
-                all_manufactures.push($(this).val());
-            });
-        }
-
-        let vendor = $('select[name="vendor[]"]').val();
-
-        if ($('input[name="manufacture_not"]').is(':checked')) {
-            manufacture_not = 1;
-        } else {
-            manufacture_not = 0;
-        }
-
-        let manufacture = $('select[name="manufacture[]"]').val();
-        if (!manufacture_not) {
-            if (manufacture.indexOf('0') > -1) {
-                manufacture = [];
-                manufacture[0] = 0;
-            }
-        } else {
-            let manufacture_tmp = manufacture;
-            manufacture = [];
-            manufacture = uniqueArray(all_manufactures, manufacture_tmp);
-
-            if (manufacture.indexOf('0') > -1) {
-                manufacture.splice(manufacture.indexOf('0'), 1);
-            }
         }
 
         if ($('input[name="category_not"]').is(':checked')) {
@@ -964,30 +937,131 @@ $(function() {
             }
         }
 
-        let column_numbers = Array.from(export_column_numbers_array.keys());
-        let column_values = Array.from(export_column_numbers_array.values());
-
-        $.ajax({
-            type: "POST",
-            url: "/admin/import-export/export",
-            data: {
-                column_numbers: column_numbers,
-                column_values: column_values,
-                category: category,
-                manufacture: manufacture,
-                vendor: vendor,
-            },
-            headers: {
-                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(data) {
-                console.log(data);
-            },
-            error: function(msg) {
-                console.log(msg);
-            }
-        });
+        $('input[name="category_not_hidden[]"]').val(category);
     });
+
+    $('input[name="manufacture_not"]').on('click', function() {
+        let all_manufactures = [],
+            manufacture_not;
+
+        if ($("#manufacture option").length) {
+            $("#manufacture option").each(function() {
+                all_manufactures.push($(this).val());
+            });
+        }
+
+        if ($('input[name="manufacture_not"]').is(':checked')) {
+            manufacture_not = 1;
+        } else {
+            manufacture_not = 0;
+        }
+
+        let manufacture = $('select[name="manufacture[]"]').val();
+        if (!manufacture_not) {
+            if (manufacture.indexOf('0') > -1) {
+                manufacture = [];
+                manufacture[0] = 0;
+            }
+        } else {
+            let manufacture_tmp = manufacture;
+            manufacture = [];
+            manufacture = uniqueArray(all_manufactures, manufacture_tmp);
+            if (manufacture.indexOf('0') > -1) {
+                manufacture.splice(manufacture.indexOf('0'), 1);
+            }
+        }
+
+        $('input[name="manufacture_not_hidden[]"]').val(manufacture);
+    });
+
+    // $('.export_send_button2').on('click', function() {
+    //     let manufacture_not,
+    //         category_not;
+
+    //     let all_categories = [],
+    //         all_manufactures = [];
+
+    //     if ($("#category_id option").length) {
+    //         $("#category_id option").each(function() {
+    //             all_categories.push($(this).val());
+    //         });
+    //     }
+
+    //     if ($("#manufacture option").length) {
+    //         $("#manufacture option").each(function() {
+    //             all_manufactures.push($(this).val());
+    //         });
+    //     }
+
+    //     let vendor = $('select[name="vendor[]"]').val();
+
+    //     if ($('input[name="manufacture_not"]').is(':checked')) {
+    //         manufacture_not = 1;
+    //     } else {
+    //         manufacture_not = 0;
+    //     }
+
+    //     let manufacture = $('select[name="manufacture[]"]').val();
+    //     if (!manufacture_not) {
+    //         if (manufacture.indexOf('0') > -1) {
+    //             manufacture = [];
+    //             manufacture[0] = 0;
+    //         }
+    //     } else {
+    //         let manufacture_tmp = manufacture;
+    //         manufacture = [];
+    //         manufacture = uniqueArray(all_manufactures, manufacture_tmp);
+
+    //         if (manufacture.indexOf('0') > -1) {
+    //             manufacture.splice(manufacture.indexOf('0'), 1);
+    //         }
+    //     }
+
+    //     if ($('input[name="category_not"]').is(':checked')) {
+    //         category_not = 1;
+    //     } else {
+    //         category_not = 0;
+    //     }
+
+    //     let category = $('select[name="category[]"]').val();
+    //     if (!category_not) {
+    //         if (category.indexOf('0') > -1) {
+    //             category = [];
+    //             category[0] = 0;
+    //         }
+    //     } else {
+    //         let category_tmp = category;
+    //         category = [];
+    //         category = uniqueArray(all_categories, category_tmp);
+    //         if (category.indexOf('0') > -1) {
+    //             category.splice(category.indexOf('0'), 1);
+    //         }
+    //     }
+
+    //     let column_numbers = Array.from(export_column_numbers_array.keys());
+    //     let column_values = Array.from(export_column_numbers_array.values());
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/admin/import-export/export",
+    //         data: {
+    //             column_numbers: column_numbers,
+    //             column_values: column_values,
+    //             category: category,
+    //             manufacture: manufacture,
+    //             vendor: vendor,
+    //         },
+    //         headers: {
+    //             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         success: function(data) {
+    //             console.log(data);
+    //         },
+    //         error: function(msg) {
+    //             console.log(msg);
+    //         }
+    //     });
+    // });
 
     function uniqueArray(arr1, arr2) {
 

@@ -20,9 +20,11 @@ class ProductsExport
     static $column_values;
     static $titles = [
         'scu'           => 'Артикул',
+        'price'         => 'Цена',
         'product'       => 'Название товара',
-        'category_id'   => 'Категория',
-        'manufacture_id'=> 'Производитель',
+        'category'      => 'Категория',
+        'manufacture'   => 'Производитель',
+        'vendor'        => 'Поставщик',
         'description'   => 'Описание товара',
         'slug'          => 'Ссылка',
         'size_l'        => 'Длина',
@@ -33,14 +35,14 @@ class ProductsExport
     ];   
     
     static $alfabet = [
-        '3' => 'C',
-        '4' => 'D',
-        '5' => 'E',
-        '6' => 'F',
-        '7' => 'G',
-        '8' => 'H',
-        '9' => 'I',
-        '10' => 'J',
+        3 => 'C',
+        4 => 'D',
+        5 => 'E',
+        6 => 'F',
+        7 => 'G',
+        8 => 'H',
+        9 => 'I',
+        10 => 'J',
     ];
 
     static $styleBold = [
@@ -77,11 +79,12 @@ class ProductsExport
      * @param string $method
      * @return void
      */
-    public static function export($products, $column_numbers, $column_values)
+    public static function export($products, array $column_numbers, array $column_values)
     {
         self::$products = $products;
-        self::$column_numbers = $column_numbers;
-        self::$column_values = $column_values;
+        self::$column_numbers = ($column_numbers[0] != '') ? preg_split("/[,]/", $column_numbers[0]) : [] ;
+        self::$column_values = ($column_values[0] != '') ? preg_split("/[,]/", $column_values[0]) : [] ;
+        // dd(self::$column_numbers, $column_numbers);
         self::$date = \Carbon\Carbon::now()->toDateTimeString();
         self::$fileName = 'Export_Stroy82_' . self::$date . '.xls';
         self::$spreadsheet = new Spreadsheet();
@@ -104,15 +107,75 @@ class ProductsExport
         self::setCellValue('A', $line, '№', [self::$styleBold, self::$styleBlackBorders]);
         self::setCellValue('B', $line, 'Артикул сайта', [self::$styleBold, self::$styleBlackBorders]);
 
-        foreach (self::$column_numbers as $key => $number) {
-            self::setCellValue(self::$alfabet[$number], $line, self::$titles[self::$column_values[$number]], [self::$styleBold, self::$styleBlackBorders]);
+        if (count(self::$column_numbers) > 0) {
+            foreach (self::$column_numbers as $key => $number) {
+                // dd(self::$alfabet[(int)$number], self::$titles[self::$column_values[$key]]);
+                self::setCellValue(self::$alfabet[(int)$number], $line, self::$titles[self::$column_values[$key]], [self::$styleBold, self::$styleBlackBorders]);
+            }
         }
 
         $i = 1;
         if (count(self::$products) > 0) {
             foreach (self::$products as $product) {
                 $line++;
-                self::setCellValue('A', $line, $i, [self::$styleBlackBorders]);
+                self::setCellValue('A', $line, $i);
+                self::setCellValue('B', $line, $product->autoscu);
+                
+                if (count(self::$column_numbers)) {
+                    foreach (self::$column_numbers as $key => $number) {
+                        switch (self::$column_values[$key]) {
+                            case 'scu':
+                                $cellData = $product->scu;
+                                break;
+                            case 'price':
+                                $cellData = $product->price;
+                                break;
+                            case 'product':
+                                $cellData = $product->product;
+                                break;
+                            case 'category':
+                                $cellData = $product->category->category;
+                                break;
+                            case 'manufacture':
+                                $cellData = $product->manufacture->manufacture;
+                                break;
+                            case 'vendor':
+                                $cellData = $product->vendor->vendor;
+                                break;
+                            case 'description':
+                                $cellData = $product->description;
+                                break;
+                            case 'slug':
+                                if($product->category) {
+                                    $cellData = route('product', ['category' => $product->category->slug, 'product' => $product->slug]);
+                                }
+                                else {
+                                    $cellData = route('product.without_category', ['product' => $product->slug]);                                   
+                                }
+                                break;
+                            case 'size_l':
+                                $cellData = $product->size_l . $product->size_type . '.';
+                                break;
+                            case 'size_w':
+                                $cellData = $product->size_w . $product->size_type . '.';
+                                break;
+                            case 'size_t':
+                                $cellData = $product->size_t . $product->size_type . '.';
+                                break;
+                            case 'mass':
+                                $cellData = $product->mass . ' кг.';
+                                break;
+                            default:
+                                $cellData = 'error!';
+                                break;
+                        }
+                        if ($cellData == NULL) {
+                            $cellData = '';
+                        }
+                        // dd(self::$column_values[$key], $cellData, $product->product);
+                        self::setCellValue(self::$alfabet[(int)$number], $line, $cellData);
+                    }
+                }                
                 $i++;
             }
         }

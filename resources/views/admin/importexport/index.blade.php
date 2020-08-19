@@ -200,6 +200,7 @@
                         <input type="checkbox" class="custom-control-input" id="category_not" name="category_not">
                         <label class="custom-control-label text-secondary" for="category_not">Кроме выбранных</label>
                     </div>
+                    <input type="hidden" name="category_not_hidden[]">
                     @endif
                     
                     </div>
@@ -221,6 +222,7 @@
                             <input type="checkbox" class="custom-control-input" id="manufacture_not" name="manufacture_not">
                             <label class="custom-control-label text-secondary" for="manufacture_not">Кроме выбранных</label>
                         </div>
+                        <input type="hidden" name="manufacture_not_hidden[]">
                         @endif
                     </div>
                     
@@ -250,9 +252,9 @@
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
-                            <option value="category_id">Категория</option>
-                            <option value="manufacture_id">Производитель</option>
-                            <option value="vendor_id">Поставщик</option>
+                            <option value="category">Категория</option>
+                            <option value="manufacture">Производитель</option>
+                            <option value="vendor">Поставщик</option>
                             <option value="price">Цена</option>
                             <option value="description">Описание товара</option>
                             <option value="slug">Ссылка</option>
@@ -270,9 +272,9 @@
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
-                            <option value="category_id">Категория</option>
-                            <option value="manufacture_id">Производитель</option>
-                            <option value="vendor_id">Поставщик</option>
+                            <option value="category">Категория</option>
+                            <option value="manufacture">Производитель</option>
+                            <option value="vendor">Поставщик</option>
                             <option value="price">Цена</option>
                             <option value="description">Описание товара</option>
                             <option value="slug">Ссылка</option>
@@ -290,9 +292,9 @@
                             <option value="0">Пусто</option>
                             <option value="scu" disabled>Артикул</option>
                             <option value="product">Название товара</option>
-                            <option value="category_id">Категория</option>
-                            <option value="manufacture_id">Производитель</option>
-                            <option value="vendor_id">Поставщик</option>
+                            <option value="category">Категория</option>
+                            <option value="manufacture">Производитель</option>
+                            <option value="vendor">Поставщик</option>
                             <option value="price">Цена</option>
                             <option value="description">Описание товара</option>
                             <option value="slug">Ссылка</option>
@@ -310,9 +312,9 @@
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
-                            <option value="category_id">Категория</option>
-                            <option value="manufacture_id">Производитель</option>
-                            <option value="vendor_id">Поставщик</option>
+                            <option value="category">Категория</option>
+                            <option value="manufacture">Производитель</option>
+                            <option value="vendor">Поставщик</option>
                             <option value="price">Цена</option>
                             <option value="description">Описание товара</option>
                             <option value="slug">Ссылка</option>
@@ -331,9 +333,9 @@
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
-                            <option value="category_id">Категория</option>
-                            <option value="manufacture_id">Производитель</option>
-                            <option value="vendor_id">Поставщик</option>
+                            <option value="category">Категория</option>
+                            <option value="manufacture">Производитель</option>
+                            <option value="vendor">Поставщик</option>
                             <option value="price">Цена</option>
                             <option value="description">Описание товара</option>
                             <option value="slug">Ссылка</option>
@@ -351,9 +353,9 @@
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
-                            <option value="category_id">Категория</option>
-                            <option value="manufacture_id">Производитель</option>
-                            <option value="vendor_id">Поставщик</option>
+                            <option value="category">Категория</option>
+                            <option value="manufacture">Производитель</option>
+                            <option value="vendor">Поставщик</option>
                             <option value="price">Цена</option>
                             <option value="description">Описание товара</option>
                             <option value="slug">Ссылка</option>
@@ -371,9 +373,9 @@
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
-                            <option value="category_id">Категория</option>
-                            <option value="manufacture_id">Производитель</option>
-                            <option value="vendor_id">Поставщик</option>
+                            <option value="category">Категория</option>
+                            <option value="manufacture">Производитель</option>
+                            <option value="vendor">Поставщик</option>
                             <option value="price">Цена</option>
                             <option value="description">Описание товара</option>
                             <option value="slug">Ссылка</option>
@@ -391,9 +393,9 @@
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
-                            <option value="category_id">Категория</option>
-                            <option value="manufacture_id">Производитель</option>
-                            <option value="vendor_id">Поставщик</option>
+                            <option value="category">Категория</option>
+                            <option value="manufacture">Производитель</option>
+                            <option value="vendor">Поставщик</option>
                             <option value="price">Цена</option>
                             <option value="description">Описание товара</option>
                             <option value="slug">Ссылка</option>
@@ -411,9 +413,9 @@
                             <option value="0">Пусто</option>
                             <option value="scu">Артикул</option>
                             <option value="product">Название товара</option>
-                            <option value="category_id">Категория</option>
-                            <option value="manufacture_id">Производитель</option>
-                            <option value="vendor_id">Поставщик</option>
+                            <option value="category">Категория</option>
+                            <option value="manufacture">Производитель</option>
+                            <option value="vendor">Поставщик</option>
                             <option value="price">Цена</option>
                             <option value="description">Описание товара</option>
                             <option value="slug">Ссылка</option>
@@ -425,7 +427,9 @@
                         </select>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary export_send_button">Экспортировать</button>
+                <input type="hidden" name="columns[]">
+                <input type="hidden" name="values[]">
+                <button type="submit" class="btn btn-primary export_send_button">Экспортировать</button>
             </form>
         </div>
     </div>
