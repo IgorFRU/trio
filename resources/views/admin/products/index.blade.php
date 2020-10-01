@@ -34,6 +34,9 @@
                         </form>
                         <button type="button" class="btn bg-warning product_group_delete disabled" disabled data-toggle="modal" data-target=".modalDeleteProduct"><i class="fas fa-trash-alt"></i></button>
                     </div>
+
+                    <input type="input" class="form-control" id="productSearch" placeholder="Поиск...">
+
                     <div class="row col-md-6">
                         <div class="col-md-5">
                             <select class="form-control" id="index_category_id" name="index_category_id">

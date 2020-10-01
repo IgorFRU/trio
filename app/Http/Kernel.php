@@ -62,7 +62,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check.url.login.token' => \App\Http\Middleware\CheckUrlLoginToken::class,        
         'currencyrates' => \App\Http\Middleware\CurrencyRatesUpdate::class,
-        'admin_isset' => \app\Http\Middleware\RedirectIfAdminIsset::class,
+        'admin_isset' => \App\Http\Middleware\RedirectIfAdminIsset::class,
+        'blockip' => \App\Http\Middleware\BlockIp::class,
     ];
 
     /**

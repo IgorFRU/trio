@@ -1074,4 +1074,26 @@ $(function() {
         );
         return elems;
     }
+
+    $('input[id="productSearch"]').on('keyup', function() {
+        let search = $(this).val();
+        if (search.length) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/products/search",
+                data: {
+                    search: search,
+                },
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(msg) {
+                    console.log(msg);
+                }
+            });
+        }
+    })
 });

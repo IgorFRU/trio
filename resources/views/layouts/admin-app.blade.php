@@ -97,11 +97,19 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="{{ route('admin.categories.index') }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-file-alt"></i> Статические страницы
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item {{ (Request::is('*topmenu*') ? 'active' : '') }}" href="{{ route('admin.topmenu.index') }}">Верхнее меню</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-toolbox"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item {{ (Request::is('*block_ip*') ? 'active' : '') }}" href="{{ route('admin.blockip.index') }}"><i class="fas fa-shield-alt"></i> Блок по IP</a>
                             </div>
                         </li>
                     </ul>

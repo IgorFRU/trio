@@ -361,6 +361,16 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index');
     }
 
+    public function search(Request $request) {
+        $search = $request->search;
+        $products = Product::where('autoscu', 'like', '%' . $search . '%')
+            ->orWhere('scu', 'like', '%' . $search . '%')
+            ->orWhere('product', 'like', '%' . $search . '%')
+            ->orWhere('description', 'like', '%' . $search . '%')
+            ->get();
+        return $products;
+    }
+
     public function showInCategory($categoryId) {
         echo ($categoryId);
     }

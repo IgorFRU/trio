@@ -66,13 +66,13 @@ class ImportexportController extends Controller
 
     public function export(Request $request) {
         // return $request->all();
-        if ($request->category_not_hidden) {
+        if ($request->category_not_hidden[0]) {
             $categories = preg_split("/[,]/", $request->category_not_hidden[0]);
         } else {
             $categories = (isset($request->category) && count($request->category)) ? $request->category : [];
         }
 
-        if ($request->manufacture_not_hidden) {
+        if ($request->manufacture_not_hidden[0]) {
             $manufactures = preg_split("/[,]/", $request->manufacture_not_hidden[0]);
         } else {
             $manufactures = (isset($request->manufacture) && count($request->manufacture)) ? $request->manufacture : [];
@@ -95,7 +95,7 @@ class ImportexportController extends Controller
         })
         ->when($vendors, function ($query, $vendors) {
             return $query->whereIn('vendor_id', $vendors);
-        })->orderBy('category_id', 'desc')->orderBy('id', 'desc')->get();
+        })->orderBy('category_id', 'desc')->orderBy('id', 'desc')->finaly()->get();
 
         // return $products;
         $columns = ($request->columns) ? $request->columns : [];

@@ -162,9 +162,15 @@
         <div class="tab-pane fade mt-4 mb-4" id="nav-export" role="tabpanel" aria-labelledby="nav-export-tab">
             <form class="row mb-1 w-100" action="{{ route('admin.import-export.export') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <div class="form-row mb-3">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="published" name="published" checked>
+                        <label class="custom-control-label text-secondary" for="published">Только опубликованные товары</label>
+                    </div>
+                </div>
                 <div class="form-row w-100 mb-3">
         
-                    <div class="col-md-4">
+                    {{-- <div class="col-md-4">
                         <label for="vendor">Поставщик</label>
                         <select class="form-control" id="vendor" name="vendor[]" multiple>
                             <option value="0">Все</option>
@@ -187,7 +193,7 @@
                             <label class="custom-control-label text-secondary" for="vendor_not">Кроме выбранных</label>
                         </div>
                         @endif
-                    </div>
+                    </div> --}}
         
                     <div class="col-md-4">
                         <label for="category_id">Категория</label>

@@ -165,6 +165,16 @@ class ProductsExport
                             case 'mass':
                                 $cellData = $product->mass . ' кг.';
                                 break;
+                            case 'properties':
+                                if (isset($product->propertyvalue)) {
+                                    if (count($product->propertyvalue)) {
+                                        $cellData = '';
+                                        foreach ($product->propertyvalue as $key => $value) {
+                                            $cellData .= $value->properties->property . ': ' . $value->value . '; ';
+                                        }
+                                    }
+                                }                                
+                                break;
                             default:
                                 $cellData = 'error!';
                                 break;

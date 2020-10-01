@@ -229,9 +229,8 @@ class Product extends Model
         } else {
             $price = self::floatToInt($this->price);
         }
-             
-                
-        if ($this->discount) {
+            
+        if ($this->actually_discount) {
             if ($this->discount->type == '%') {
                 if ($price * $this->discount->numeral <= 0) {
                     return 0;
