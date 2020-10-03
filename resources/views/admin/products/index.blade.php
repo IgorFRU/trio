@@ -35,7 +35,7 @@
                         <button type="button" class="btn bg-warning product_group_delete disabled" disabled data-toggle="modal" data-target=".modalDeleteProduct"><i class="fas fa-trash-alt"></i></button>
                     </div>
 
-                    <input type="input" class="form-control" id="productSearch" placeholder="Поиск...">
+                    <button class="btn btn-sm" data-toggle="modal" data-target="#productSearchModal"><i class="fas fa-search"></i> Поиск...</button>
 
                     <div class="row col-md-6">
                         <div class="col-md-5">
@@ -188,23 +188,48 @@
 <div class="modal fade modalDeleteProduct" tabindex="-1" role="dialog" aria-labelledby="modalDeleteProduct" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Удаление товаров</h4>
-                </div>
-                <div class="modal-body">
-                    Вы уверены, что хотите удалить выбранные товары? Отменить выбранное действие будет невозможно!
-                </div>
-                <div class="modal-footer">
-                    <form action="{{ route('admin.products.massdestroy') }}" method="post">
-                        @csrf
-                        <div class="hidden_inputs">
-                            <input type="hidden" name="product_group_ids[]">
-                        </div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                        <button type="submit" class="btn btn-warning">Да</button>
-                    </form>
-                </div>
+            <div class="modal-header">
+                <h4>Удаление товаров</h4>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить выбранные товары? Отменить выбранное действие будет невозможно!
+            </div>
+            <div class="modal-footer">
+                <form action="{{ route('admin.products.massdestroy') }}" method="post">
+                    @csrf
+                    <div class="hidden_inputs">
+                        <input type="hidden" name="product_group_ids[]">
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-warning">Да</button>
+                </form>
+            </div>
         </div>      
     </div>
 </div>
+
+<div class="modal fade" id="productSearchModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="" method="get">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Поиск товара</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="input" class="form-control" id="productSearch" placeholder="Поиск...">
+                    <div id="productSearchResult">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Все результаты поиска</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
 @endsection
