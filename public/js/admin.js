@@ -1077,11 +1077,17 @@ $(function() {
 
     $('input[id="productSearch"]').on('keyup', function() {
         let search = $(this).val();
-        
         if (search.length) {
-            
-            sendData("/admin/products/search", search);
 
+            let products = $('.productSearchResult_item');
+
+            $.each(products, function(i, elem) {
+                if (!$(this).hasClass('template')) {
+                    elem.remove();
+                }
+            });
+
+            productSearch("/admin/products/search", { search: search });
             // $.ajax({
             //     type: "POST",
             //     url: "/admin/products/search",
@@ -1098,31 +1104,53 @@ $(function() {
             //         console.log(msg);
             //     }
             // });
+        } else {
+            // $('.productSearchResult_body').empty();
+            let products = $('.productSearchResult_item');
+
+            $.each(products, function(i, elem) {
+                if (!$(this).hasClass('template')) {
+                    elem.remove();
+                }
+            });
         }
     });
 
-    const sendData = async (url, data) => {
-        $('#productSearchResult').find('.result_wait').removeClass('hide');
-        console.log($('#productSearchResult').find('.result_wait'));
+    const productSearch = async(url, data) => {
+
+        $('#productSearchResult').find('.loader_animate').removeClass('hide');
         const response = await fetch(url, {
-            headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
-          },
-          method: 'POST',
-          body: data,
-          credentials: "same-origin",
+            body: JSON.stringify(data),
+            method: 'POST',
+            credentials: "same-origin",
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                "Accept": "application/json",
+                "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+            }),
+
         });
-      
+
         if (!response.ok) {
-          throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
+            throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
         }
 
-        response.text().then(function(result) {
-            console.log(JSON.parse(result));
-            $('#productSearchResult').find('.result_wait').addClass('hide');
+        let product_list = await response.json();
+
+        $('#productSearchResult').find('.loader_animate').addClass('hide');
+
+        // return json;
+        let row = $('.productSearchResult_item.template');
+        let results = $('#productSearchResult');
+
+
+        $.each(product_list, function(i, elem) {
+            let product = row.clone();
+            product.removeClass('template');
+            product.find('.autoscu').html(elem.autoscu);
+            product.find('.scu').html(elem.scu);
+            product.find('.product').html(elem.product);
+            product.insertBefore($('#productSearchResult').find('.loader_animate'));
         });
     }
 });

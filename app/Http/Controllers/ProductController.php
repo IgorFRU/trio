@@ -364,8 +364,8 @@ class ProductController extends Controller
     public function search(Request $request) {
 
         // return 'p;l;';
-        // return json_decode($request->all());
-        // return json_encode(array('fasfsaf' => 255));
+        // return json_encode($request->all());
+        // return json_encode(array(';;' => $request->search));
 
         $search = $request->search;
         $products = Product::where('autoscu', 'like', '%' . $search . '%')
