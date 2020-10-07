@@ -1077,23 +1077,52 @@ $(function() {
 
     $('input[id="productSearch"]').on('keyup', function() {
         let search = $(this).val();
+        
         if (search.length) {
-            $.ajax({
-                type: "POST",
-                url: "/admin/products/search",
-                data: {
-                    search: search,
-                },
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data) {
-                    console.log(data);
-                },
-                error: function(msg) {
-                    console.log(msg);
-                }
-            });
+            
+            sendData("/admin/products/search", search);
+
+            // $.ajax({
+            //     type: "POST",
+            //     url: "/admin/products/search",
+            //     data: {
+            //         search: search,
+            //     },
+            //     headers: {
+            //         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            //     },
+            //     success: function(data) {
+            //         console.log(data);
+            //     },
+            //     error: function(msg) {
+            //         console.log(msg);
+            //     }
+            // });
         }
-    })
+    });
+
+    const sendData = async (url, data) => {
+        $('#productSearchResult').find('.result_wait').removeClass('hide');
+        console.log($('#productSearchResult').find('.result_wait'));
+        const response = await fetch(url, {
+            headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+          },
+          method: 'POST',
+          body: data,
+          credentials: "same-origin",
+        });
+      
+        if (!response.ok) {
+          throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
+        }
+
+        response.text().then(function(result) {
+            console.log(JSON.parse(result));
+            $('#productSearchResult').find('.result_wait').addClass('hide');
+        });
+    }
 });

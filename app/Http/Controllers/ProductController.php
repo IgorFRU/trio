@@ -362,13 +362,18 @@ class ProductController extends Controller
     }
 
     public function search(Request $request) {
+
+        // return 'p;l;';
+        // return json_decode($request->all());
+        // return json_encode(array('fasfsaf' => 255));
+
         $search = $request->search;
         $products = Product::where('autoscu', 'like', '%' . $search . '%')
             ->orWhere('scu', 'like', '%' . $search . '%')
             ->orWhere('product', 'like', '%' . $search . '%')
             ->orWhere('description', 'like', '%' . $search . '%')
             ->get();
-        return $products;
+        return json_encode($products);
     }
 
     public function showInCategory($categoryId) {

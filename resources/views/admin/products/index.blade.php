@@ -221,7 +221,7 @@
                 <div class="modal-body">
                     <input type="input" class="form-control" id="productSearch" placeholder="Поиск...">
                     <div id="productSearchResult">
-
+                        <div class="result_wait hide">Поиск...</div>
                     </div>
                 </div>
                 <div class="modal-footer">
