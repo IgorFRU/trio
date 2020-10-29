@@ -1142,15 +1142,29 @@ $(function() {
         // return json;
         let row = $('.productSearchResult_item.template');
         let results = $('#productSearchResult');
-
-
+        // console.log(product_list);
+        let count = 1;
         $.each(product_list, function(i, elem) {
             let product = row.clone();
-            product.removeClass('template');
+            product.removeClass('template').removeClass('hide');
+
+            if (!elem.published) {
+                product.addClass('bg-secondary');
+            }
+            product.find('.productSearchResult_number').html(count++);
             product.find('.autoscu').html(elem.autoscu);
             product.find('.scu').html(elem.scu);
             product.find('.product').html(elem.product);
-            product.insertBefore($('#productSearchResult').find('.loader_animate'));
+
+            let price = elem.new_price;
+            if (elem.old_price != undefined) {
+                price = price + ' (<del>' + elem.old_price + '</del>)';
+            }
+            price = price + ' руб.';
+
+            product.find('.price').html(price);
+            product.find('.category').html(elem.category_name);
+            product.insertBefore($('#productSearchResult'));
         });
     }
 });

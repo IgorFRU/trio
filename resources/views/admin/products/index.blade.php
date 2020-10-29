@@ -220,7 +220,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="input" class="form-control" id="productSearch" placeholder="Поиск...">
-                    <div id="productSearchResult" class="my-4">
+                    <div class="my-4">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -233,25 +233,20 @@
                                 <th scope="col">Наличие</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
+                            <tbody  id="productSearchResult">
+                                <tr class="productSearchResult_item template hide">
                                     <th scope="row" class="productSearchResult_number"></th>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td class="autoscu"></td>
+                                    <td class="scu"></td>
+                                    <td class="product"></td>
+                                    <td class="price"></td>
+                                    <td class="category"></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="productSearchResult_item template">
-                            <span class="autoscu mr-1"></span>
-                            <span class="scu mr-1"></span>
-                            <span class="product mr-1"></span>
-                        </div>
                         
                         <div class="loader_animate hide">
                             <div class="cssload-loader">

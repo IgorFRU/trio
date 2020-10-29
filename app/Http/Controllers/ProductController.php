@@ -373,6 +373,17 @@ class ProductController extends Controller
             ->orWhere('product', 'like', '%' . $search . '%')
             ->orWhere('description', 'like', '%' . $search . '%')
             ->get();
+
+        $products = $products->map(function ($item, $key) {
+            $item['category_name'] = $item->category->category;
+
+            if(isset($item->discount) && $item->actually_discount) {
+                $item['old_price'] = $item->old_price;
+            }
+            $item['new_price'] = $item->discount_price;
+            return $item;
+        });
+
         return json_encode($products);
     }
 
