@@ -372,6 +372,7 @@ class ProductController extends Controller
             ->orWhere('scu', 'like', '%' . $search . '%')
             ->orWhere('product', 'like', '%' . $search . '%')
             ->orWhere('description', 'like', '%' . $search . '%')
+            ->orWhere('price', 'like', '%' . $search . '%')
             ->get();
 
         $products = $products->map(function ($item, $key) {
@@ -381,6 +382,7 @@ class ProductController extends Controller
                 $item['old_price'] = $item->old_price;
             }
             $item['new_price'] = $item->discount_price;
+            $item['edit_link'] = route('admin.products.edit', ['id' => $item->id]);
             return $item;
         });
 

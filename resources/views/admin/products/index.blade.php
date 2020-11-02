@@ -213,7 +213,7 @@
         <div class="modal-content">
             <form action="" method="get">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Поиск товара</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Поиск товара (по внутреннему артикулу и артикулу производителя, названию, описанию, цене)</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -238,7 +238,7 @@
                                     <th scope="row" class="productSearchResult_number"></th>
                                     <td class="autoscu"></td>
                                     <td class="scu"></td>
-                                    <td class="product"></td>
+                                    <td class="product"><a href="" target="_blank"></a></td>
                                     <td class="price"></td>
                                     <td class="category"></td>
                                     <td></td>

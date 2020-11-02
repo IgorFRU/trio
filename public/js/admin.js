@@ -1154,7 +1154,8 @@ $(function() {
             product.find('.productSearchResult_number').html(count++);
             product.find('.autoscu').html(elem.autoscu);
             product.find('.scu').html(elem.scu);
-            product.find('.product').html(elem.product);
+            product.find('.product a').html(elem.product);
+            product.find('.product a').attr('href', elem.edit_link);
 
             let price = elem.new_price;
             if (elem.old_price != undefined) {
