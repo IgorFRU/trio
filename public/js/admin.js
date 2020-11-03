@@ -1118,7 +1118,7 @@ $(function() {
 
     const productSearch = async(url, data) => {
 
-        $('#productSearchResult').find('.loader_animate').removeClass('hide');
+        $('.loader_animate').removeClass('hide');
         const response = await fetch(url, {
             body: JSON.stringify(data),
             method: 'POST',
@@ -1132,12 +1132,12 @@ $(function() {
         });
 
         if (!response.ok) {
-            throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
+            // throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
         }
 
         let product_list = await response.json();
 
-        $('#productSearchResult').find('.loader_animate').addClass('hide');
+        $('.loader_animate').addClass('hide');
 
         // return json;
         let row = $('.productSearchResult_item.template');

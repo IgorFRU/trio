@@ -10,6 +10,7 @@ use App\Currency;
 use Excel;
 use Illuminate\Http\Request;
 use App\Imports\ProductsImport;
+use App\Imports\ProductsUpdate;
 use App\Exports\ProductsExport;
 use App\Manufacture;
 
@@ -61,7 +62,31 @@ class ImportexportController extends Controller
             'categories' => Category::with('children')->where('category_id', '0')->get(),
         ); 
 
-        return view('admin.import.index', $data);    
+        return view('admin.import.index', $data);
+    }
+
+    public function update(Request $request) {
+
+        if (isset($request->file)) {
+            
+            // dd($request->all());
+            $request->validate([
+                'file' => 'required|file|max:10000|mimes:xls,xlsx',
+            ]);
+            // dd($request->all()); 
+            
+            $excel = new ProductsUpdate($request->first_line - 1, $request->all(), $request->last_line);
+            Excel::import($excel, $request->file);
+
+            return redirect()->route('admin.import-export.index');
+        }
+
+        $data = array (
+            'title' => 'Обновление цен',
+            
+        );
+
+        return view('admin.import.update', $data);
     }
 
     public function export(Request $request) {

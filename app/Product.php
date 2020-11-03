@@ -175,6 +175,14 @@ class Product extends Model
         return $query->where('imported', true);
     }
 
+    public function getAllViewsAttribute() {
+        return Product::all()->sum('views');;
+    }
+    
+    public function getAvgViewsAttribute() {
+        return round(Product::all()->avg('views'), 2);
+    }
+
     public function getPriceRubAttribute() {
         if ($this->currency->to_update) {
             $hour = 60;
