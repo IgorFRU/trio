@@ -99,4 +99,26 @@
     </div>
 </div>
 <a href="" uk-totop uk-scroll class="to_up"></a>
+<script type='text/javascript'>
+(function () {
+    window['yandexChatWidgetCallback'] = function() {
+        try {
+            window.yandexChatWidget = new Ya.ChatWidget({
+                guid: '30aabd02-3fdf-9f47-5a65-ecac4d8186c3',
+                buttonText: '',
+                title: 'Чат с "Паркетным миром"',
+                theme: 'light',
+                collapsedDesktop: 'never',
+                collapsedTouch: 'never'
+            });
+        } catch(e) { }
+    };
+    var n = document.getElementsByTagName('script')[0],
+        s = document.createElement('script');
+    s.async = true;
+    s.charset = 'UTF-8';
+    s.src = 'https://yastatic.net/s3/chat/widget.js';
+    n.parentNode.insertBefore(s, n);
+})();
+</script>
 </footer>

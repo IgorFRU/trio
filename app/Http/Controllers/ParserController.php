@@ -40,6 +40,9 @@ class ParserController extends Controller
             if (isset($request->menu_class)) {
                 self::$menu_class = $request->menu_class;
                 $menus = $document->find(self::$menu_class);
+                // $menus = $document->find("menu__item");
+
+                // dd($document, $menus, self::$menu_class);
 
                 $arr = [];
                 $ttt = [];
@@ -109,6 +112,8 @@ class ParserController extends Controller
             'menu_only' => self::$menu_only,
             'products' => self::$products,
         ];
+
+        // dd($data);
 
         return view('admin.parser.index', $data);
 

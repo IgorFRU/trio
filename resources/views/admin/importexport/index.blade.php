@@ -100,9 +100,9 @@
                      
                     @forelse ($products as $product)
                     
-                    <tr>
+                    <tr js-click='checkbox' data-checkbox='{{ $product->id }}'>
                         <th scope="row">{{ ($products->currentpage()-1) * $products->perpage() + $loop->iteration }} (id:{{ $product->id }})</th>
-                        <td>
+                        <td class="not_click">
                             <input class="form-check-input product_id"  data-toggle="tooltip" data-placement="top" title="id: {{ $product->id }}" type="checkbox" value="{{ $product->id }}" id="product_id_{{ $product->id }}">
                         </td>
                         <td>{{ $product->product }}</td>

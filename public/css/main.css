@@ -2078,7 +2078,7 @@ section.product .product__images .product__mainimage {
 .to_up {
     position: fixed;
     right: 20px;
-    bottom: 20px;
+    bottom: 100px;
 }
 
 .uk-logo {

@@ -1168,4 +1168,20 @@ $(function() {
             product.insertBefore($('#productSearchResult'));
         });
     }
+
+    $('table').find('[js-click]').find('td').filter(":not(.not_click)").on('click', function() {
+        // console.log($(this).children().length);
+        // if ($(this).children().length) {
+        //     if ($(this).children()[0].tagName != 'input') {
+        let box = $(`input[type='${$(this).parent().attr('js-click')}'][value='${$(this).parent().data('checkbox')}']`);
+        if (box.is(':checked')) {
+            box.prop('checked', false);
+        } else {
+            box.prop('checked', true);
+        }
+        //     }
+        // }
+
+
+    });
 });
