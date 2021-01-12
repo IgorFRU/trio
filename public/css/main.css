@@ -2149,6 +2149,10 @@ section.product .product__images .product__mainimage {
     clip-path: ellipse(237px 153px at 270px 154px);
 }
 
+.main-menu.uk-navbar-dropdown {
+    /* max-height: 300px; */
+}
+
 @media (max-width:992px) {
     .headsection h1 {
         font-size: 28px;

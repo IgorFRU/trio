@@ -383,4 +383,19 @@ $(document).ready(function() {
         });
 
     });
+
+    MenuHeight();
+
+    $(window).on('resize', function(){
+        MenuHeight();
+    });
+
+    function MenuHeight() {
+        const win = $(this);
+        const menuBlockNav = $('nav');
+        const menuBlockNavTop = menuBlockNav[0].offsetTop + menuBlockNav.height() + 40; // + 20 px padding for menu window & + 20 padding bottom
+        const menuBlock = $('.main-menu.uk-navbar-dropdown')[0];
+        menuBlock.style.height = win.height() - menuBlockNavTop + 'px';
+    }
+    
 });

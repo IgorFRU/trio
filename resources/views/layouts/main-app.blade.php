@@ -86,7 +86,7 @@
                 <li class="uk-visible@m">
                     <a href="#" class="uk-text-large">
                         <span class="uk-text-bold"><span uk-icon="icon: chevron-down"></span> Каталог</span></a>
-                    <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" uk-overflow-auto>                        
+                    <div class="uk-navbar-dropdown main-menu" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" uk-overflow-auto>                        
                         <div class="uk-navbar-dropdown-grid {{ 'uk-child-width-1-3' }}" uk-grid>
                             @forelse ($menus as $menu)
                                 <div>
