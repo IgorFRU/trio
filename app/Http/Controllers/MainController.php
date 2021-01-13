@@ -86,21 +86,42 @@ class MainController extends Controller
             $articles = $articles->random(5);
         }
         
+        $discount = Discount::with('product')->get();
+        $discount_products = collect();
+
+        $count = 6;
+        if ($discount->count()) {
+            $i = 0;
+            foreach ($discount as $item) {
+                if ($i <= $count) {
+                    foreach ($item->product as $product) {
+                        // dd($product);
+                        $discount_products->push($product);
+                        $i++;
+                    }
+                }
+                else {
+                    return 1;
+                }                
+            }
+        }
+        // dd($discount_products);
 
         $data = [
-            'title' => 'Паркетный мир - Симферополь. Продажа, укладка, ремонт паркета, ламината, паркетной доски, массивной и инженерной доски. Всё для паркета: клеи, лаки, масла и воски. Доставка паркета по Крыму и Симферополю.',
-            'description' => 'Все виды паркета в Крыму по лучшим ценам',
-            'menus' => Menu::orderBy('sortpriority', 'ASC')->get(),
-            'categories' => Category::orderBy('category', 'ASC')->get(),
-            'lastProducts' => Product::orderBy('id', 'DESC')->finaly()->limit(4)->get(),
-            'recomended_products' => Product::where([
-                ['recomended', '1']
-            ])->get()->random(3),
-            'articles' => $articles,
-            'about' => $about,
-            'meta_description' => 'Продажа паркета, паркетной доски, ламината, пробкового пола, инженерной и массивной доски, террасной доски из экзотических пород дерева. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
+            'title'                 => 'Паркетный мир - Симферополь. Продажа, укладка, ремонт паркета, ламината, паркетной доски, массивной и инженерной доски. Всё для паркета: клеи, лаки, масла и воски. Доставка паркета по Крыму и Симферополю.',
+            'description'           => 'Все виды паркета в Крыму по лучшим ценам',
+            'menus'                 => Menu::orderBy('sortpriority', 'ASC')->get(),
+            'categories'            => Category::orderBy('category', 'ASC')->get(),
+            'lastProducts'          => Product::orderBy('id', 'DESC')->finaly()->limit(4)->get(),
+            'recomended_products'   => Product::where([
+                                            ['recomended', '1']
+                                        ])->published()->get()->random(6),
+            'discount_products'     => $discount_products,
+            'articles'              => $articles,
+            'about'                 => $about,
+            'meta_description'      => 'Продажа паркета, паркетной доски, ламината, пробкового пола, инженерной и массивной доски, террасной доски из экзотических пород дерева. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
         ];
-        
+
         return view('welcome', $data);
     }
 

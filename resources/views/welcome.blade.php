@@ -193,6 +193,73 @@
                         </li>
                     @endforeach                    
                 </ul>
+
+                <ul class="js-filter uk-child-width-1-3@m " uk-grid="masonry:true" uk-height-match=".uk-card-body" ui-grid>
+                    @foreach ($discount_products as $product)
+                        <li data-style="discounted">
+                            <div class="uk-card uk-card-default">
+
+                                <div class="uk-card-media-top">
+                                    <div class="uk-text-center">
+                                        <div class="uk-inline-clip uk-transition-toggle" tabindex="0">
+                                            <img  class="uk-transition-scale-up uk-transition-opaque" 
+                                                @if(isset($product->images) && count($product->images) > 0)
+                                                    data-src="{{ asset('imgs/products/thumbnails/')}}/{{ $product->main_or_first_image->thumbnail }}"
+                                                    alt="{{ $product->main_or_first_image->alt }}"
+                                                @else 
+                                                    data-src="{{ asset('imgs/nopic.png')}}"
+                                                @endif data-width="1000" data-height="667" uk-img="">
+                                            {{-- <div class="uk-position-center">
+                                                <span class="uk-transition-fade" uk-icon="icon: plus; ratio: 2"></span>
+                                            </div> --}}
+                                        </div>
+                                    </div>
+                                <div class="uk-card-badge uk-label-danger"uk-tooltip="Скидка {{ $product->discount->value ?? '--' }} {{ $product->discount->rus_type ?? '--' }}">&minus; {{ $product->discount->value ?? '--' }} {{ $product->discount->rus_type ?? '--' }}</div>
+                                </div>
+
+                                <div class="uk-card-body">
+                                    <h3 class="uk-card-title">{{ $product->product }} @if (isset($product->category))
+                                        {{ ', ' . $product->category->category }}
+                                    @endif</h3>
+                                    {{-- <p class="uk-text-truncate">{{ $product->description ?? '' }}</p> --}}
+                                    <div class="uk-child-width-auto uk-flex-middle" uk-grid>
+                                        <div>
+                                            <span class="uk-text-emphasis uk-text-bold uk-text-large">{{ $product->discount_price }} р/{{ $product->unit->unit ?? 'ед.' }}</span>
+                                        </div>
+                                        {{-- <div>
+                                            <ul class="uk-iconnav uk-flex-right">
+                                                <li><a href="#" uk-icon="icon: heart"></a></li>
+                                                <li><a href="#" uk-icon="icon: comment"></a></li>
+                                                <li><a href="#" uk-icon="icon: star"></a></li>
+                                            </ul>
+                                        </div> --}}
+                                    </div>
+                                    
+                                    <p class="uk-text-small uk-text-muted">
+                                        @if ($product->scu != '')
+                                            <span class="uk-margin-right">{{ 'арт.: ' . $product->scu }}</span>
+                                        @endif
+                                        <span><a href="{{ route('manufacture', $product->manufacture->slug) }}">{{ $product->manufacture->manufacture ?? '' }}</a></span>
+                                    </p>
+                                    
+                                </div>
+                                    
+                                <div class="uk-card-footer">
+                                    <div class="uk-flex uk-flex-between">
+                                        @if($product->category->parent_id)
+                                            <a class="uk-button uk-button-default" href="{{ route('product.subcategory', ['category' => $product->category->slug, 'subcategory' => $product->category->parent_id, 'product' => $product->slug]) }}">Подробнее</a>
+                                        @else
+                                            <a class="uk-button uk-button-default" href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">Подробнее</a>
+                                        @endif
+                                        {{-- <button class="uk-button uk-button-primary uk-text-right">
+                                            <span uk-icon="icon: cart;"></span>
+                                        </button> --}}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach                    
+                </ul>
             </div>
         </div>
     </section>
