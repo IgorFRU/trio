@@ -1294,8 +1294,12 @@ section.products .products__cards .products__card .products__card__info .product
 .product__price {}
 
 .properties_prices {
-    background: var(--light-grey);
-    padding-bottom: 10px;
+    background: #303c4f;
+    color: #fff;
+    border-radius: 3px;
+    text-align: center;
+    box-shadow: 0px 0px 3px rgb(0, 0, 0);
+    padding: 20px;
 }
 
 .properties_prices input {
@@ -1303,14 +1307,14 @@ section.products .products__cards .products__card .products__card__info .product
 }
 
 .product_price_value {
-    color: var(--dark-grey);
+    /* color: var(--dark-grey); */
     font-weight: bold;
     font-size: 24px;
     padding: 0 0 0 10px;
 }
 
 .product_price_package_value {
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 .product_old_price_value {
@@ -1465,9 +1469,12 @@ section.products .products__cards .products__card:hover .products__card__buttons
 }
 
 .products__card__buttons__input span {
-    color: #6e6e6e;
-    padding: 0 5px;
+    padding: 0px 10px;
     cursor: pointer;
+    background: #505864;
+    line-height: 30px;
+    border-radius: 2px;
+    box-shadow: 0px 0px 2px 0 #000000a1;
 }
 
 .product_superiorities {
@@ -1493,6 +1500,7 @@ section.products .products__cards .products__card:hover .products__card__buttons
 
 .for_payment span {
     font-weight: bold;
+    font-size: 24px;
 }
 
 main {
@@ -1926,23 +1934,27 @@ section.product .product__images .product__mainimage {
 .price_top .price__title .products__card__buttons .products__card__buttons__input {
     margin: 0;
     margin-top: 5px;
+    margin-bottom: 20px;
 }
 
 .price_top .price__title .products__card__buttons {
-    width: 200px;
+    /* width: 200px; */
 }
 
 .price_top .price__title .products__card__buttons .products__card__buttons__input input {
-    width: 150px;
+    width: calc(100% - 20px - 20px - 20px - 10px);
     border: none;
     font-family: sans-serif;
-    color: #636b6f;
+    color: #fff;
     font-size: 18px;
     text-align: center;
+    background: #303c4f;
 }
 
 .price_top .price__title .products__card__buttons .for_payment {
-    padding: 5px 0 0;
+    border-top: 1px dotted #b7b7b7;
+    margin: 0 0 20px 0;
+    border-bottom: 1px dotted #c4c4c4;
 }
 
 .price_top .price__title .one_click {

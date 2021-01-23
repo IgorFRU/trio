@@ -38,7 +38,7 @@
                                         <span class="product_card__content__manufacture"> | производитель: <a href="{{ route('manufacture', $product->manufacture->slug) }}"><span class="c-black">{{ $product->manufacture->manufacture ?? '' }}</span></a></span>             
                                     @endisset
                                 </div>
-                            <div class="product__images col-lg-5 row">
+                            <div class="product__images col-xl-5 col-lg-6 row mb-4">
                                 @if (isset($product->images))
                                     @if (count($product->images) > 1)
                                         <div class="product__images__many">
@@ -119,7 +119,7 @@
                                     
                                 </div>
                             </div>
-                            <div class="col-lg-3 product__price">
+                            <div class="col-xl-3  col-lg-6 product__price mb-4">
                                 <div class="properties_prices col-lg-12"> 
                                         <div class="product__price__value price">
                                             <div class="price_top">
@@ -148,10 +148,11 @@
                                                     @if ($product->packaging)
                                                         <div class="product_price_package_value">
                                                             Цена за 1 упаковку ({{ round($product->unit_in_package, 3) ?? '-' }} {{$product->unit->unit ?? 'ед.' }}):
-                                                            <div class="bg-light product_package_price_value">
+                                                            <span class="price_value bold">{{ $product->package_price }}</span> <i class="fa fa-rub"></i>
+                                                            {{-- <div class="bg-light product_package_price_value">
                                                                 <span class="price_value bold">{{ $product->package_price }}</span>
                                                                 <i class="fa fa-rub"></i>
-                                                            </div>
+                                                            </div> --}}
                                                         </div>
                                                     @endif
 
@@ -185,27 +186,27 @@
                                 </div>
                             </div>
                             
-                        <div class="col-lg-4 product_properties">
-                                @isset($product->delivery_time)
-                                    <div class="italic product_properties__delivery" style="display: block;"><i class="far fa-calendar-alt"></i> срок поставки: {{ $product->delivery_time }}</div>
-                                @endisset
-                                @isset($product->category->property)
-                                <div>
-                                    @isset($product->category->property)
-                                        <h5>Характеристики</h5>
+                            <div class="col-xl-4  col-lg-12 product_properties">
+                                    @isset($product->delivery_time)
+                                        <div class="italic product_properties__delivery" style="display: block;"><i class="far fa-calendar-alt"></i> срок поставки: {{ $product->delivery_time }}</div>
                                     @endisset
-                                    @foreach ($product->category->property as $property)
-                                        @if (isset($property->property) && isset($propertyvalues[$property->id]))
-                                            <div class="product__property d-flex justify-content-between">
-                                                <span class="product__property__title">{{ $property->property }}</span> <span  class="product__property__value">{{ $propertyvalues[$property->id] ?? '' }}</span>
-                                            </div>
-                                        @endif
-                                        
-                                    @endforeach
-                                </div>
-                                @endisset
-                                <p>{{ $product->short_description ?? '' }}</p>
-                        </div>
+                                    @isset($product->category->property)
+                                    <div>
+                                        @isset($product->category->property)
+                                            <h5>Характеристики</h5>
+                                        @endisset
+                                        @foreach ($product->category->property as $property)
+                                            @if (isset($property->property) && isset($propertyvalues[$property->id]))
+                                                <div class="product__property d-flex justify-content-between">
+                                                    <span class="product__property__title">{{ $property->property }}</span> <span  class="product__property__value">{{ $propertyvalues[$property->id] ?? '' }}</span>
+                                                </div>
+                                            @endif
+                                            
+                                        @endforeach
+                                    </div>
+                                    @endisset
+                                    <p>{{ $product->short_description ?? '' }}</p>
+                            </div>
                             
                         </div>
                         @isset($product->description)
