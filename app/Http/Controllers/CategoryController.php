@@ -58,6 +58,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $category = Category::create($request->all());
         
         if (isset($request->property_id) && $request->property_id != 0) {

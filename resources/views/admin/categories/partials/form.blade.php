@@ -47,6 +47,24 @@
                 </select>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class="form-check">
+                @if(isset($category->id))
+                    <input class="form-check-input js_oneclick" type="checkbox" id="subcategories" name="subcategories" value="{{ $category->subcategories }}" @if($category->subcategories) checked @endif>                                
+                    {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
+                    <input class="js_oneclick_hidden form-control" type="hidden" name="subcategories" id="subcategories" value="{{ $category->subcategories }}" >
+                @else                            
+                    <input class="form-check-input js_oneclick" type="checkbox" id="subcategories" name="subcategories" value="1" checked>                                
+                    {{-- Скрытое поле для отправки на сервер value неотмеченного чекбокса --}}
+                    <input class="js_oneclick_hidden form-control" type="hidden" name="subcategories" id="subcategories" value="1" >
+                @endif
+                <label class="form-check-label" for="subcategories">
+                    Показывать в категории товары из подкатегории
+                </label>
+            </div>
+        </div>
+
         <div class="form-group row">
             <label for="category_id" class="col-md-4 col-form-label">Родительская категория</label>
             <div class="col-md-8">

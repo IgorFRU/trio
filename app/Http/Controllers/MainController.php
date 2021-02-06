@@ -93,16 +93,15 @@ class MainController extends Controller
         if ($discount->count()) {
             $i = 0;
             foreach ($discount as $item) {
-                if ($i <= $count) {
+                if ($i < $count) {
                     foreach ($item->product as $product) {
                         // dd($product);
-                        $discount_products->push($product);
-                        $i++;
+                        if ($product->actually_discount) {
+                            $discount_products->push($product);
+                            $i++;
+                        }                        
                     }
-                }
-                else {
-                    return 1;
-                }                
+                }              
             }
         }
         // dd($discount_products);
@@ -214,7 +213,17 @@ class MainController extends Controller
         // $products = Product::where('category_id', $category->id)->published()->get()->sortBy($sort_column);
         // $products = $products->paginate($itemsPerPage);
         // dd($products);
-        $products = Product::where('category_id', $category->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->paginate($itemsPerPage);
+                
+        $category = Category::where('id', $category->id)->first();
+
+        if ($category->subcategories) {
+            $products = $category->with_subcategories->paginate($itemsPerPage);
+        } else {
+            $products = $products = Product::where('category_id', $category->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->paginate($itemsPerPage);
+        }
+        
+        // dd($category->with_subcategories);
+        
         // dd(Product::where('category_id', $category->id)->published()->order());
         // $products = Product::orderBy('id', 'DESC')->where('category_id', $category->id)->where('published', 1)->paginate($itemsPerPage);
 
@@ -283,6 +292,7 @@ class MainController extends Controller
         $data = array (
             'title' => $category->category . '. Купить по лучшей цене в Симферополе с доставкой товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
             'products' => $products,
+            // 'products' => $category->with_subcategories->paginate($itemsPerPage),
             'category' => $category,
             'properties' => $properties,
             'checked_properties' => $new_array,

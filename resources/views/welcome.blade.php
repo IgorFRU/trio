@@ -191,10 +191,8 @@
                                 </div>
                             </div>
                         </li>
-                    @endforeach                    
-                </ul>
+                    @endforeach
 
-                <ul class="js-filter uk-child-width-1-3@m " uk-grid="masonry:true" uk-height-match=".uk-card-body" ui-grid>
                     @foreach ($discount_products as $product)
                         <li data-style="discounted">
                             <div class="uk-card uk-card-default">
@@ -258,8 +256,12 @@
                                 </div>
                             </div>
                         </li>
-                    @endforeach                    
+                    @endforeach
                 </ul>
+
+                {{-- <ul class="js-filter uk-child-width-1-3@m " uk-grid="masonry:true" uk-height-match=".uk-card-body" ui-grid>
+                                        
+                </ul> --}}
             </div>
         </div>
     </section>

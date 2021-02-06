@@ -53,7 +53,7 @@
                             </label>
                         </div>
                     </div>   
-                </div>              
+                </div>
                 <div class="col col-lg-2">
                     <div class="form-group">
                         <div class="form-check">
