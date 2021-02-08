@@ -27,9 +27,10 @@
                 <section class="product bg-light-grey">
                     <div class="white_card_global p10">
                         <div class="col-lg-12 row">
-                                <div class="col-lg-12 row product__subtitle">
+                                <div class="col-lg-12 row product__subtitle uk-margin">
+                                    @if($product->sample) <span class="uk-label uk-label-primary uk-margin-small-right" uk-tooltip="В магазине есть образец этого товара!">Есть образец</span> @endif
                                     @isset($product->autoscu)
-                                        <span class="product_card__content__category">артикул: <span class="c-black">{{ $product->autoscu ?? '' }} @isset($product->scu) ({{ $product->scu }}) @endisset </span></span>
+                                        <span class="product_card__content__category">код товара: <span class="c-black">{{ $product->autoscu ?? '' }} @isset($product->scu) (артикул: {{ $product->scu }}) @endisset </span></span>
                                     @endisset
                                     @isset($product->category->slug)
                                         <span class="product_card__content__category"> | категория: <a href="{{ route('category', $product->category->slug) }}"><span class="c-black">{{ $product->category->category ?? '' }}</span></a></span>
@@ -38,8 +39,47 @@
                                         <span class="product_card__content__manufacture"> | производитель: <a href="{{ route('manufacture', $product->manufacture->slug) }}"><span class="c-black">{{ $product->manufacture->manufacture ?? '' }}</span></a></span>             
                                     @endisset
                                 </div>
-                            <div class="product__images col-xl-5 col-lg-6 row mb-4">
-                                @if (isset($product->images))
+
+                                @isset($product->delivery_time)
+                                    <div class="col-lg-12 row uk-margin-small">
+                                        <div class="italic product_properties__delivery" style="display: block;"><i class="far fa-calendar-alt"></i> срок поставки: {{ $product->delivery_time }}</div>
+                                    </div>
+                                @endisset
+                                
+                            {{-- <div class="product__images col-xl-5 col-lg-6 row mb-4"> --}}
+                            <div class="col-xl-5 col-lg-6 row mb-4">
+                                @isset($product->images)
+                                    <div class="product__images" uk-lightbox="animation: fade">
+                                        @forelse ($product->images as $image)
+                                            <div class="product__images_item @if ($loop->first) active @endif" data-image={{ $image->id }}>
+                                                <a class="uk-inline" href="{{ asset('imgs/products')}}/{{ $image->image}}" data-caption="{{ $image->alt ?? $product->product ?? '' }}">
+                                                    <img src="{{ asset('imgs/products/thumbnails')}}/{{ $image->thumbnail}}" alt="{{ $image->alt ?? $product->product ?? '' }}">
+                                                </a>
+                                            </div>
+                                        @empty
+                                            
+                                        @endforelse 
+                                    </div>
+
+                                    @if (count($product->images) > 1)                                
+                                        <div class="product__thumbnails uk-margin-small-top uk-child-width-1-2 uk-child-width-1-3@s" uk-grid>
+                                        {{-- <div class="product__thumbnails uk-margin-small-top uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-5@l" uk-grid uk-lightbox="animation: fade"> --}}
+                                            @forelse ($product->images as $image)
+                                                <div>
+                                                    {{-- <a class="uk-inline" href="{{ asset('imgs/products')}}/{{ $image->image}}" data-caption="{{ $image->alt ?? $product->product ?? '' }}"> --}}
+                                                        <img src="{{ asset('imgs/products/thumbnails')}}/{{ $image->thumbnail}}" class="product__thumbnails_item" alt="{{ $image->alt ?? '' }}" data-thumb={{ $image->id }}>
+                                                    {{-- </a> --}}
+                                                </div>
+                                            @empty
+                                                
+                                            @endforelse                                        
+                                        </div>
+                                    @endif
+                                @endisset
+                                @if (count($product->images) == 0)
+                                    <img src="{{ asset('imgs/nopic.png')}}" alt="">
+                                @endif
+                                {{-- @if (isset($product->images))
                                     @if (count($product->images) > 1)
                                         <div class="product__images__many">
                                             <div class="main_product_image">
@@ -84,7 +124,9 @@
                                     @endif
                                 @else
                                     
-                                @endif
+                                @endif --}}
+
+
                                 <div class="product_superiorities">
                                     {{-- @if($product->pay_online)
                                         <div class="product_superiority">
@@ -96,7 +138,7 @@
                                             </span>
                                         </div>
                                     @endif                     --}}
-                                    @if($product->sample)
+                                    {{-- @if($product->sample)
                                         <div class="product_superiority">
                                             <span class="product_superiority__left">
                                                 <i class="fas fa-eye"></i>
@@ -105,7 +147,7 @@
                                                 В магазине есть образец
                                             </span>
                                         </div>
-                                    @endif
+                                    @endif --}}
                                     {{-- @if($product->actually_discount)
                                         <div class="product_superiority">
                                             <span class="product_superiority__left">
@@ -186,10 +228,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col-xl-4  col-lg-12 product_properties">
-                                    @isset($product->delivery_time)
-                                        <div class="italic product_properties__delivery" style="display: block;"><i class="far fa-calendar-alt"></i> срок поставки: {{ $product->delivery_time }}</div>
-                                    @endisset
+                            <div class="col-xl-4  col-lg-12 product_properties">                                    
                                     @isset($product->category->property)
                                     <div>
                                         @isset($product->category->property)

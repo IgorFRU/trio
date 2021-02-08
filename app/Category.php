@@ -58,48 +58,6 @@ class Category extends Model
         return $this->belongsToMany(Option::class);
     }
 
-    public function scopeOrder($query)
-    {
-        $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';        
-        
-        switch ($sort) {
-            case 'nameAZ':
-                $sort_column = 'product';
-                $sort_order = 'ASC';
-                break;
-            case 'nameZA':
-                $sort_column = 'product';
-                $sort_order = 'DESC';
-                break;
-            case 'popular':
-                $sort_column = 'views';
-                $sort_order = 'DESC';
-                break;
-            case 'price_up':
-                $sort_column = 'price';
-                $sort_order = 'ASC';
-                break;
-            case 'price_down':
-                // $sort_column = $this->discount_price;
-                $sort_column = 'price';
-                $sort_order = 'DESC';
-                break;
-            case 'new_up':
-                $sort_column = 'id';
-                $sort_order = 'DESC';
-                break;                
-            case 'new_down':
-                $sort_column = 'id';
-                $sort_order = 'ASC';
-                break;
-            default:
-                $sort_column = 'product';
-                $sort_order = 'ASC';
-                break;
-        }
-        return $query->sortByDesc($sort_column, $sort_order);
-    }
-
     public function getShortDescriptionAttribute() {
         if (strlen($this->description) > 220) {
             return Str::limit($this->description, 220);
@@ -109,9 +67,24 @@ class Category extends Model
     }
 
     public function getProductsCountAttribute() {
-        return $this->products->where('imported', false)->where('published', 1)->count();
+        if ($this->subcategories) {
+            $count = $this->products->where('imported', false)->where('published', 1)->count();
+            if ($this->children) {
+                foreach ($this->children as $children) {
+                    $count += Product::where('category_id', $children->id)->finaly()->published()->count();;
+                }
+            }
+            return $count;
+        } else {
+            return $this->products->where('imported', false)->where('published', 1)->count();
+        }        
     }
 
+    /**
+     * Show products from subcategories in category
+     *
+     * @return void
+     */
     public function getWithSubcategoriesAttribute() {
         $products = Product::where('category_id', $this->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->get();
 
@@ -161,7 +134,5 @@ class Category extends Model
         }
         $products = ($sort_order == 'ASC') ? $products->sortBy($sort_column) : $products->sortByDesc($sort_column) ;
         return $products;
-
-        // return $products;
     }
 }

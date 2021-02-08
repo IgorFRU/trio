@@ -1721,8 +1721,42 @@ section.product .product__top .product_sample {
     font-size: 14px;
 }
 
-section.product .product__images {
-    /* width: 35%; */
+.product__images {
+    position: relative;
+    overflow: hidden;
+}
+
+.product .product__images div {
+    position: absolute;
+    /* top: 1000px; */
+    opacity: 0;
+    transition: ease 0.1s;
+}
+
+.product .product__images .active {
+    position: relative;
+    /* top: 0; */
+    /* transform: translateY(0); */
+    transition: ease 0.1s;
+    display: block;
+    opacity: 1;
+}
+
+.product__images,
+.product__images_item img {
+    width: 100%;
+}
+
+.product__images a {
+    display: block;
+}
+
+.product .product__thumbnails img {
+    cursor: pointer;
+}
+
+/* section.product .product__images {
+    //width: 35%;
     position: relative;
 }
 
@@ -1744,7 +1778,7 @@ section.product .product__images img {
     transform: scale(1) translateX(-50%);
     transition: 0.5s;
     max-width: none;
-}
+} */
 
 section.product .product__maininfo {
     width: 60%;
@@ -1756,7 +1790,7 @@ section.product .product__maininfo {
     justify-content: space-between;
 }
 
-section.product .product__images .product__images__many {
+/* section.product .product__images .product__images__many {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -1770,7 +1804,7 @@ section.product .product__images .product__images__many .main_product_image {
     overflow: hidden;
     position: relative;
     height: 300px;
-}
+} */
 
 .product__images__many .main_product_image img {
     /* width: 100%; */
@@ -1780,7 +1814,7 @@ section.product .product__images .product__images__many .main_product_image {
     min-height: 100%; */
 }
 
-section.product .product__images .product__images__many .images__container {
+/* section.product .product__images .product__images__many .images__container {
     position: relative;
     width: 100px;
     overflow: hidden;
@@ -1835,7 +1869,7 @@ section.product .product__images .product__images__many .images__container span.
 
 .product__images__many .images__container .images__container__item img.main {
     opacity: 0.7;
-}
+} */
 
 
 /* section.product .product__images,
@@ -1873,9 +1907,9 @@ section.product .product__images .product__mainimage {
     font-size: 20px;
 }
 
-.product__subtitle {
+/* .product__subtitle {
     margin: 20px 0 40px -15px;
-}
+} */
 
 .product__title .product__maininfo__add {
     color: #a1a1a1;

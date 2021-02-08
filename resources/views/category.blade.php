@@ -34,7 +34,7 @@
                         <li>
                             <a class="uk-accordion-title" href="#">Дочерние категории</a>
                             <div class="uk-accordion-content">
-                                <div class="uk-child-width-1-3@s uk-child-width-1-4@m" ui-grid  uk-grid="masonry:true">
+                                <div class="uk-child-width-1-2 uk-child-width-1-4@s uk-child-width-1-6@m uk-child-width-1-8@l" ui-grid  uk-grid="masonry:true">
                                     @forelse ($category->children as $children)
                                         <div>
                                             <div class="uk-inline">
@@ -145,11 +145,11 @@
                                                             <div class="tm-product-card-body">
                                                                 <div class="tm-product-card-info">
                                                                     <h3 class="tm-product-card-title">
-                                                                        @if($category->parent_id)
-                                                                            <a class="uk-link-heading" href="{{ route('product.subcategory', ['category' => $category->slug, 'subcategory' => $category->parent_id, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a>
-                                                                            @else
-                                                                            <a class="uk-link-heading" href="{{ route('product', ['category' => $category->slug, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a>
-                                                                        @endif
+                                                                        {{-- @if($category->parent_id) --}}
+                                                                            {{-- <a class="uk-link-heading" href="{{ route('product.subcategory', ['category' => $category->slug, 'subcategory' => $category->parent_id, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a> --}}
+                                                                            {{-- @else --}}
+                                                                            <a class="uk-link-heading" href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a>
+                                                                        {{-- @endif --}}
                                                                     </h3>
                                                                     <ul class="uk-list uk-text-small tm-product-card-properties">
                                                                         <li>

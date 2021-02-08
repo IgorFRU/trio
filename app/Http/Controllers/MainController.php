@@ -283,11 +283,11 @@ class MainController extends Controller
 
         $local_title = $category->category;
         // dd($products_array, $property_values, $unique_property_values, $properties);
-        if (isset($request->page) && $request->page > 1) {
-            $main_page = 0;
-        } else {
-            $main_page = 1;
-        }
+        // if (isset($request->page) && $request->page > 1) {
+        //     $main_page = 0;
+        // } else {
+        //     $main_page = 1;
+        // }
 
         $data = array (
             'title' => $category->category . '. Купить по лучшей цене в Симферополе с доставкой товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
@@ -298,7 +298,7 @@ class MainController extends Controller
             'checked_properties' => $new_array,
             'local_title' => $local_title,
             // 'currencyrates' => Cbr::getAssociate(),
-            'main_page' => $main_page,
+            // 'main_page' => $main_page,
             'sort' => $sort,
             'products_per_page' => $itemsPerPage,
             'meta_description' => $category->category . '. Купить с доставкой по Симферполю и Крыму. Каталог товаров. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
