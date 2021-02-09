@@ -75,15 +75,15 @@
                     </div>
                 </a>
 
-                <div class="uk-navbar-container uk-hidden@m" uk-navbar>
+                <div class="uk-navbar-container" uk-navbar>
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-toggle" href="" uk-toggle="target: #offcanvas-nav">
-                            <span uk-navbar-toggle-icon class="uk-text-bold"></span> <span class="uk-margin-small-left uk-text-bold uk-visible@s">Меню</span>
+                            <span uk-navbar-toggle-icon class="uk-text-bold"></span> <span class="uk-margin-small-left uk-text-bold uk-visible@s">Каталог</span>
                         </a>
                     </div>
                 </div>                
                 
-                <li class="uk-visible@m">
+                <li class="uk-hidden">
                     <a href="#" class="uk-text-large">
                         <span class="uk-text-bold"><span uk-icon="icon: chevron-down"></span> Каталог</span></a>
                     <div class="uk-navbar-dropdown main-menu" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" uk-overflow-auto>                        
@@ -121,7 +121,7 @@
                         <span class="uk-icon uk-margin-small-right" uk-icon="icon: location"></span>
                         <span class="uk-visible@l">пр. Победы, 129/2, Симферополь</span>                        
                     </a>
-                    <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;">   
+                    <div class="uk-navbar-dropdown">   
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af4cc3b8a1534db3bd226df3963ccc096015a2a811264e967efbacb43c7e2b450&amp;width=100%25&amp;height=280&amp;lang=ru_RU&amp;scroll=true"></script>
                         </ul>

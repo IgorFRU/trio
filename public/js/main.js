@@ -1,5 +1,3 @@
-
-
 $(document).ready(function() {
     var oldScroll = 0;
     var clickToSmall = false;
@@ -122,7 +120,7 @@ $(document).ready(function() {
     var pricePlus = document.querySelectorAll('.products__card__buttons__input > span.plus');
     pricePlus.forEach(function(plus, i) {
         const countInInput = plus.parentNode.parentNode.querySelector('.products__card__buttons__input > input');
-        const forPayment = plus.parentNode.parentNode.querySelector('.for_payment > span');
+        const forPayment = plus.parentNode.parentNode.querySelector('.for_payment > div > span');
         const unit = forPayment.getAttribute('data-unit');
         plus.addEventListener('click', () => {
             let count = countInInput.dataset.countpackage;
@@ -137,7 +135,7 @@ $(document).ready(function() {
     var priceMinus = document.querySelectorAll('.products__card__buttons__input > span.minus');
     priceMinus.forEach(function(minus, i) {
         const countInInput = minus.parentNode.querySelector('.products__card__buttons__input > input');
-        const forPayment = minus.parentNode.parentNode.querySelector('.for_payment > span');
+        const forPayment = minus.parentNode.parentNode.querySelector('.for_payment > div > span');
         const unit = forPayment.getAttribute('data-unit');
         minus.addEventListener('click', () => {
             let count = countInInput.dataset.countpackage;
@@ -154,7 +152,7 @@ $(document).ready(function() {
     one_click.forEach(function(click, i) {
         click.addEventListener('click', () => {
             const quantity = click.parentNode.parentNode.querySelector('.products__card__buttons__input > input').value;
-            const price = click.parentNode.parentNode.querySelector('.for_payment > span').innerText;
+            const price = click.parentNode.parentNode.querySelector('.for_payment > div > span').innerText;
             var product = click.parentNode.parentNode.parentNode.querySelector('.products__card__info > .products__card__maininfo > .products__card__title > h3 > a');
             if (!product) {
                 product = document.URL;
@@ -205,11 +203,11 @@ $(document).ready(function() {
                 } else {
                     if ($(this).hasClass('active')) {
                         $(this).removeClass('active');
-                    }                    
+                    }
                 }
             });
         });
-    });    
+    });
 
     //-----------
     // var mainProductImage = document.querySelector('.main_product_image > img');
@@ -410,7 +408,7 @@ $(document).ready(function() {
 
     MenuHeight();
 
-    $(window).on('resize', function(){
+    $(window).on('resize', function() {
         MenuHeight();
     });
 
@@ -421,5 +419,5 @@ $(document).ready(function() {
         const menuBlock = $('.main-menu.uk-navbar-dropdown')[0];
         menuBlock.style.height = win.height() - menuBlockNavTop + 'px';
     }
-    
+
 });
