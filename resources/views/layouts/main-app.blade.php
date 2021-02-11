@@ -99,7 +99,7 @@
                                                 <li><a href="/catalog/{{ $children->slug }}">{{ $children->category }}</a>
                                             @empty                                                
                                             @endforelse
-                                            <li class="uk-nav-divider"></li>
+                                            {{-- <li class="uk-nav-divider"></li> --}}
                                         @empty                                    
                                         @endforelse
                                         
@@ -218,19 +218,24 @@
                     </div>
                 </a>
                 @forelse ($menus as $menu)
+                    @if (!$loop->first)
+                        <li class="uk-nav-divider"></li>
+                    @endif
                     <li class="uk-nav-header">{{ $menu->menu }}</li>
                     @forelse ($menu->category as $category)
                         <li class="uk-active"></li>
                         <li class="uk-parent">
                             <a class="" href="/catalog/{{ $category->slug }}">{{ $category->category }}</a>
-                            <ul class="uk-nav-sub">
-                                @forelse ($category->children as $children)
-                                    <li><a href="/catalog/{{ $children->slug }}">{{ $children->category }}</a></li>
-                                @empty                                                
-                                @endforelse
-                            </ul>
+                            @if (!empty($category->children))
+                                <ul class="uk-nav-sub">
+                                    @forelse ($category->children as $children)
+                                        <li><a href="/catalog/{{ $children->slug }}">{{ $children->category }}</a></li>
+                                    @empty                                                
+                                    @endforelse
+                                </ul>
+                            @endif                            
                         </li>
-                        <li class="uk-nav-divider"></li>
+                        {{-- <li class="uk-nav-divider"></li> --}}
                     @empty                                    
                     @endforelse
                                                            

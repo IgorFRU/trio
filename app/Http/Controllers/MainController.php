@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
+use Prophecy\Prophet;
 
 class MainController extends Controller
 {
@@ -146,6 +147,8 @@ class MainController extends Controller
     public function category($slug, Request $request) {
         // dd($slug);
         // $today = Carbon::now();
+        $filterManufacture = [];
+        $manufactured_to_title = [];
 
         if (isset($request->prop)) {
             $prop = $request->prop;
@@ -160,50 +163,7 @@ class MainController extends Controller
         $category = Category::where('slug', $slug)->with('property')->firstOrFail();
         if (isset($category)) {
             $category->increment('views', 1);
-        }
-
-        // $sort = $_COOKIE['productsort'];
-        
-        // switch ($sort) {
-        //     case 'default':
-        //         $sort_column = 'id';
-        //         $sort_order = 'ASC';
-        //         break;
-        //     case 'discount':
-        //         $sort_column = 'discount';
-        //         break;
-        //     case 'name':
-        //         $sort_column = 'product';
-        //         $sort_order = 'ASC';
-        //         break;
-        //     case 'popular':
-        //         $sort_column = 'views';
-        //         $sort_order = 'DESC';
-        //         break;
-        //     case 'price_up':
-        //         $sort_column = 'price';
-        //         $sort_order = 'ASC';
-        //         break;
-        //     case 'price_down':
-        //         // $sort_column = $this->discount_price;
-        //         $sort_column = 'price';
-        //         $sort_order = 'DESC';
-        //         break;
-        //     case 'new_up':
-        //         $sort_column = 'id';
-        //         $sort_order = 'DESC';
-        //         break;                
-        //     case 'new_down':
-        //         $sort_column = 'id';
-        //         $sort_order = 'ASC';
-        //         break;
-        //     default:
-        //         $sort_column = 'id';
-        //         $sort_order = 'ASC';
-        //         break;
-        // }
-
-        // dd(Product::where('category_id', $category->id)->where('discount_end_day', '>=', $today)->published()->get());
+        }       
 
         $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';
 
@@ -217,15 +177,33 @@ class MainController extends Controller
         $category = Category::where('id', $category->id)->first();
 
         if ($category->subcategories) {
-            $products = $category->with_subcategories->paginate($itemsPerPage);
+            $products = $category->with_subcategories;
         } else {
-            $products = $products = Product::where('category_id', $category->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->paginate($itemsPerPage);
+            $products = $products = Product::where('category_id', $category->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->get();
         }
         
-        // dd($category->with_subcategories);
+        $manufactures = Manufacture::whereIn('id', $products->pluck('manufacture_id'))->get();
+
+        // $products = $products->paginate($itemsPerPage);
         
-        // dd(Product::where('category_id', $category->id)->published()->order());
-        // $products = Product::orderBy('id', 'DESC')->where('category_id', $category->id)->where('published', 1)->paginate($itemsPerPage);
+        if ($request->all() != NULL) {
+            foreach ($request->all() as $key => $value) {
+                if ($key == 'manufacture') {
+                    $filterManufacture = explode(",", $value);
+                }
+
+            }
+        }
+
+        $manufactured_to_title = Manufacture::whereIn('id', $filterManufacture)->orderBy('manufacture', 'ASC')->pluck('manufacture')->implode(', ');
+
+        if (count($filterManufacture) > 0) {
+            $products = $products->whereIn('manufacture_id', $filterManufacture);
+        } 
+
+        $products_count = $products->count();
+        $products = $products->paginate($itemsPerPage);
+
 
         if ($prop) {
             $prop_products_array = [];
@@ -271,41 +249,29 @@ class MainController extends Controller
 
         $products_array = $products->pluck('id');
         $property_values = Propertyvalue::whereIn('product_id', $products_array)->with('properties')->get();
-        
-
-        // $unique_property_values = $property_values->map(function ($property_values) {
-        //     return collect($property_values)->unique('value')->all();
-        // });
-
         $unique_property_values = $property_values->pluck('value')->unique();
-
         $properties = $property_values->whereIn('value', $unique_property_values)->unique('value');
 
-        $local_title = $category->category;
-        // dd($products_array, $property_values, $unique_property_values, $properties);
-        // if (isset($request->page) && $request->page > 1) {
-        //     $main_page = 0;
-        // } else {
-        //     $main_page = 1;
-        // }
+        
 
+        $local_title = $category->category;
+        
         $data = array (
-            'title' => $category->category . '. Купить по лучшей цене в Симферополе с доставкой товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
+            'title' => $category->category . ' ' . $manufactured_to_title . ' - Купить по лучшей цене в Симферополе с доставкой товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
             'products' => $products,
-            // 'products' => $category->with_subcategories->paginate($itemsPerPage),
+            'products_count' => $products_count,
+            'manufactured_to_title' => $manufactured_to_title,
             'category' => $category,
             'properties' => $properties,
             'checked_properties' => $new_array,
             'local_title' => $local_title,
-            // 'currencyrates' => Cbr::getAssociate(),
-            // 'main_page' => $main_page,
             'sort' => $sort,
+            'manufactures'          => $manufactures,
+            'filteredManufacture'   => $filterManufacture,
             'products_per_page' => $itemsPerPage,
             'meta_description' => $category->category . '. Купить с доставкой по Симферполю и Крыму. Каталог товаров. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
-            // 'subcategories' => Category::where('slug', $slug)->firstOrFail()
         );
-        // dd($data['properties']);
-        // dd($request->all());
+        
         return view('category', $data);
     }
 

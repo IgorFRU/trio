@@ -34,4 +34,8 @@ class Property extends Model
     public function values() {
         return $this->hasMany(Propertyvalue::class);
     }
+
+    // public function getUniqueValuesAttribute() {
+    //     dd($this);
+    // }
 }

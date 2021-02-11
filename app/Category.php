@@ -135,4 +135,8 @@ class Category extends Model
         $products = ($sort_order == 'ASC') ? $products->sortBy($sort_column) : $products->sortByDesc($sort_column) ;
         return $products;
     }
+
+    // public function getUniqueValuesAttribute() {
+    //     dd($this);
+    // }
 }

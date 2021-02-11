@@ -1933,6 +1933,25 @@ section.product .product__images .product__mainimage {
     margin-top: 20px;
 }
 
+.property__list .confirm_property_button {
+    position: absolute;
+    top: -4px;
+    right: -106px;
+    display: none;
+    font-size: 10px;
+    padding: 7px 10px;
+    z-index: 10;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.property__list {
+    position: relative;
+}
+
+.property__list .confirm_property_button.active {
+    display: block;
+}
+
 .price {
     /* margin-top: 25px; */
 }

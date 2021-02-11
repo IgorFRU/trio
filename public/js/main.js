@@ -420,4 +420,85 @@ $(document).ready(function() {
         menuBlock.style.height = win.height() - menuBlockNavTop + 'px';
     }
 
+    (function() {
+        let confirm_property_button_all = document.querySelectorAll('.confirm_property_button');
+        var properties_array = {};
+
+        $('.property__item').change(function() {
+            properties_array = propertiesChecked($('input[type=checkbox]:checked'));
+            // let index = $(this).attr('data-property_id');
+            // if (this.checked) {
+            //     if (index in properties_array) {
+            //         properties_array[index].push(this.value);
+            //     } else {
+            //         properties_array[index] = {};
+            //         properties_array[index] = [this.value];
+            //     }
+            // } else {
+            //     if (index in properties_array) {
+            //         let index_to_delete = properties_array[index].indexOf(this.value);
+            //         if (index_to_delete != -1) {
+            //             properties_array[index].splice(index_to_delete, 1);
+            //             if (properties_array[index].length == 0) {
+            //                 delete properties_array[index];
+            //             }
+            //         }
+            //     }
+            // }
+
+            let confirm_property_button = this.parentNode.parentNode.querySelector('.confirm_property_button');
+
+            $.each(confirm_property_button_all, function(index, value) {
+                if (value.classList.contains('active')) {
+                    value.classList.remove('active');
+                }
+            });
+
+            if (!confirm_property_button.classList.contains('active')) {
+                confirm_property_button.classList.add('active');
+            }
+
+
+        });
+
+        confirm_property_button_all.forEach(function(button, i) {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                var new_address = '';
+                for (var key in properties_array) {
+                    // new_address += 'filter[' + key + ']=' + properties_array[key] + '&';
+                    new_address += key + '=' + properties_array[key] + '&';
+                }
+                new_address = new_address.slice(0, new_address.length - 1);
+                let old_url = window.location.href;
+                let new_url = old_url.slice(0, AddressStringSearch(old_url, '[?]'));
+                // AddressStringSearch(old_url, "[?]");
+
+                window.location.replace(new_url + '?' + new_address);
+            });
+        });
+    }());
+
+    function propertiesChecked(properties) {
+        var properties_array = {};
+        $.each(properties, function(i, element) {
+            let index = '' + $(this).data("property_id");
+            if (index in properties_array) {
+                properties_array[index].push($(this)[0].value);
+            } else {
+                properties_array[index] = {};
+                properties_array[index] = [$(this)[0].value];
+            }
+        });
+        return properties_array;
+    }
+
+    function AddressStringSearch(str, symbol) {
+        if (str.search(symbol) != -1) {
+            return str.search(symbol);
+        } else {
+            return str.length;
+        }
+    }
+
 });
