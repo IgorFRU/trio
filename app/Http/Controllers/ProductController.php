@@ -108,8 +108,9 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        dd($request->all());
         $today = Carbon::now();
         $data = array (
             'product' => [],

@@ -85,8 +85,8 @@
                             <th scope="col">Категория</th>
                             <th scope="col">Наличие</th>
                             <th scope="col">Срок доставки</th>
-                            <th scope="col">Оплата онлайн</th>
-                            <th scope="col"></th>
+                            <th scope="col">-</th>
+                            <th scope="col">-</th>
                             {{-- <th scope="col">Описание</th> --}}
                             </tr>
                         </thead>
@@ -132,7 +132,9 @@
                             {{-- <td>{{ $product->manufactures->manufacture }}</td> --}}
                             <td>{{ $product->quantity }}</td>
                             <td>{{ $product->delivery_time }}</td>
-                            <td>{{ $product->pay_online }}</td>
+                            <td>
+                                <a class="btn btn-outline-info btn-sm" href="{{ route('admin.products.create', ['product' => $product->id]) }}" role="button"><i class="fas fa-code-branch"></i></a>                                
+                            </td>
                             <td>
                                 <div class='row'>                                
                                     <a href="{{ route('admin.products.edit', ['id' => $product->id]) }}" class="btn btn-warning btn-sm"><i class="fas fa-pen"></i></a>
