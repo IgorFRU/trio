@@ -295,6 +295,8 @@
     
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".product_choises_modal">Опции</button>
 
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".product_childs_modal">Дочерние товары</button>
+
     <input type="hidden" name="autoscu" class="form-control" id="autoscu" value="{{ $product->autoscu ?? '' }}">
     
     <div class="modal fade product_choises_modal " tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
@@ -398,6 +400,77 @@
             </div>
         </div>        
     </div>
+
+    <div class="modal fade product_childs_modal " tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Дочерние товары</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="product_child_choises_parent">
+                        <div class="product_child_choises_row">
+                            <div class="d-flex w-100 row col-12">
+                                <div class="col col-6">
+                                    <div class="form-group row">
+                                        <label for="productSearch_category_id" class="col-md-4 col-form-label">Категория</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" id="productSearch_category_id" name="productSearch_category_id">
+                                                <option></option>
+                                                @include('admin.categories.partials.child-categories', ['categories' => $categories])
+                                            </select>
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="input" class="form-control" id="productSearch" placeholder="Поиск...">
+
+                                </div>
+                                <div class="col-lg-12 my-4">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Внутр. арт.</th>
+                                            <th scope="col">Арт.</th>
+                                            <th scope="col">Название</th>
+                                            <th scope="col">Цена (без скидки)</th>
+                                            <th scope="col">Категория</th>
+                                            <th scope="col">Наличие</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody  id="productSearchResult">
+                                            <tr class="productSearchResult_item template hide">
+                                                <th scope="row" class="productSearchResult_number"></th>
+                                                <td class="autoscu"></td>
+                                                <td class="scu"></td>
+                                                <td class="product"><a href="" target="_blank"></a></td>
+                                                <td class="price"></td>
+                                                <td class="category"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                    <div class="loader_animate hide">
+                                        <div class="cssload-loader">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+
 </div>
 <div id="description1" class="tab_item">
     <div class="row">

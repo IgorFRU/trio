@@ -1077,6 +1077,18 @@ $(function() {
 
     $('input[id="productSearch"]').on('keyup', function() {
         let search = $(this).val();
+        let category = $('select[name="productSearch_category_id"]');
+
+        if (category.length) {
+            if (category[0].value) {
+                category = category[0].value;
+            } else {
+                category = 0;
+            }
+        } else {
+            category = 0;
+        }
+
         if (search.length) {
 
             let products = $('.productSearchResult_item');

@@ -146,6 +146,20 @@ class Product extends Model
         return $this->belongsToMany(Image::class);
     }
 
+    public function child_products() {
+        return $this->belongsToMany(Product::class)
+        ->withPivot([
+            'quantity',
+            'quantity_for',
+            'created_by',
+            'updated_by',
+        ]);;
+    }
+
+    public function parent_products() {
+        return $this->belongsToMany(Product::class);
+    }
+
     public function orders() {
         return $this->belongsToMany(Order::class);
     }
