@@ -219,7 +219,7 @@
                                                         </div>
                                                         <div class="buttons">
                                                             @if ($product->discount_price > 0)
-                                                                <div class="one_click btn uk-button-primary">Купить в 1 клик</div>
+                                                                <div class="one_click btn buy_btn">Купить в 1 клик</div>
                                                             @else
                                                                 <div class="btn btn-warning">В данный момент этот товар нельзя приобрести</div>
                                                             @endif
