@@ -106,7 +106,7 @@
             <div class="form-group row">
                 <label for="product" class="col-sm-2 col-form-label">Название</label>
                 <div class="col-md-10">
-                    <input type="text" name="product" class="form-control" required id="product" value="{{ $product->product ?? '' }}">
+                    <input type="text" name="product" class="form-control" required id="product" value="{{ $product->product ?? $product ?? '' }}">
                 </div>                                    
             </div>   
             <div class="row">
@@ -577,7 +577,7 @@
 </div>
 <div id="properties" class="tab_item">
     <div class="col-lg-12">
-    @isset($properties)    
+    @isset($properties)
         @forelse ($properties as $property)        
             <div class="form-group row">
                 <label for="{{ $property->id }}" class="col-sm-2 col-form-label">{{ $property->property }}</label>

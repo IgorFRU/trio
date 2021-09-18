@@ -110,10 +110,20 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
-        dd($request->all());
         $today = Carbon::now();
+        $product = Product::published()->finaly()->latest('id')->first();
+        $product->images = [];
+
+        if (isset($product->category->property)) {
+            $properties = $product->category->property;
+        } else {
+            $properties = array();
+        }
+
         $data = array (
-            'product' => [],
+            'product' => $product,
+            'properties' => $properties,
+            'propertyvalues' => Propertyvalue::where('product_id', $product->id)->pluck('value', 'property_id'),
             'choises_children' => Choise::children()->get(),
             'choises_parent' => Choise::parent()->get(),
             //коллекция вложенных подкатегорий
@@ -127,7 +137,7 @@ class ProductController extends Controller
             //символ, обозначающий вложенность категорий
             'delimiter' => ''
         );
-        // dd($data['choises_parent']);
+        // dd();
         
         return view('admin.products.create', $data);
     }

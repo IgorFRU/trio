@@ -86,57 +86,84 @@ class Category extends Model
      * @return void
      */
     public function getWithSubcategoriesAttribute() {
-        $products = Product::where('category_id', $this->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->get();
+        if (!isset($_COOKIE['productsort'])) {
+            $_COOKIE['productsort'] = '';
+        }
+        $products = Product::where('category_id', $this->id)->finaly()->published()->with('manufacture', 'images', 'unit', 'currency')->get();
 
         if ($this->children) {
             foreach ($this->children as $children) {
-                $products2 = Product::where('category_id', $children->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->get();;
+                $products2 = Product::where('category_id', $children->id)->finaly()->published()->with('manufacture', 'images', 'unit', 'currency')->get();;
                 $products = $products->merge($products2);
             }
         }
 
         $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';        
-        
-        switch ($sort) {
-            case 'nameAZ':
-                $sort_column = 'product';
-                $sort_order = 'ASC';
-                break;
-            case 'nameZA':
-                $sort_column = 'product';
-                $sort_order = 'DESC';
-                break;
-            case 'popular':
-                $sort_column = 'views';
-                $sort_order = 'DESC';
-                break;
-            case 'price_up':
-                $sort_column = 'price';
-                $sort_order = 'ASC';
-                break;
-            case 'price_down':
-                // $sort_column = $this->discount_price;
-                $sort_column = 'price';
-                $sort_order = 'DESC';
-                break;
-            case 'new_up':
-                $sort_column = 'id';
-                $sort_order = 'DESC';
-                break;                
-            case 'new_down':
-                $sort_column = 'id';
-                $sort_order = 'ASC';
-                break;
-            default:
-                $sort_column = 'product';
-                $sort_order = 'ASC';
-                break;
+       
+        $currencies_count = Product::where('category_id', $this->id)->distinct()->count('currency_id');
+        $currencies_count --;
+
+        if ($currencies_count || ($_COOKIE['productsort'] == 'price_up' || $_COOKIE['productsort'] == 'price_down')) {
+            $products = $products->each(function ($item, $key) {
+                $item['sort_price'] = $item->discount_price;                    
+            });
+            
+            $products = ($_COOKIE['productsort'] == 'price_up') ? $products->sortBy('sort_price') : $products->sortByDesc('sort_price') ;
+        } else {
+            switch ($sort) {
+                case 'nameAZ':
+                    $sort_column = 'product';
+                    $sort_order = 'ASC';
+                    break;
+                case 'nameZA':
+                    $sort_column = 'product';
+                    $sort_order = 'DESC';
+                    break;
+                case 'popular':
+                    $sort_column = 'views';
+                    $sort_order = 'DESC';
+                    break;
+                case 'pric_up':
+                    $sort_column = 'price';
+                    $sort_order = 'ASC';
+                    break;
+                case 'price_down':
+                    // $sort_column = $this->discount_price;
+                    $sort_column = 'price';
+                    $sort_order = 'DESC';
+                    break;
+                case 'new_up':
+                    $sort_column = 'id';
+                    $sort_order = 'DESC';
+                    break;                
+                case 'new_down':
+                    $sort_column = 'id';
+                    $sort_order = 'ASC';
+                    break;
+                default:
+                    $sort_column = 'product';
+                    $sort_order = 'ASC';
+                    break;
+            }
+            $products = ($sort_order == 'ASC') ? $products->sortBy($sort_column) : $products->sortByDesc($sort_column) ;
         }
-        $products = ($sort_order == 'ASC') ? $products->sortBy($sort_column) : $products->sortByDesc($sort_column) ;
         return $products;
     }
 
     // public function getUniqueValuesAttribute() {
     //     dd($this);
     // }
+
+    public function getMainParrentAttribute() {
+        if ($this->parents != NULL) {
+            $parent = $this->parents;
+            while ($parent->parent != NULL) {
+                $parent = $parent->parents;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

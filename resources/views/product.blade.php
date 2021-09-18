@@ -236,10 +236,13 @@
                             
                             <div class="col-xl-4  col-lg-12 product_properties">                                    
                                     @isset($product->category->property)
-                                    <div>
-                                        @isset($product->category->property)
-                                            <h5>Характеристики</h5>
-                                        @endisset
+                                    <div>                                        
+                                        <h5>Характеристики</h5> 
+                                        <div class="product__property d-flex justify-content-between">
+                                            <span class="product__property__title">Размер</span>
+                                            <span  class="product__property__value">{{ $product->full_size }}</span>
+
+                                        </div>
                                         @foreach ($product->category->property as $property)
                                             @if (isset($property->property) && isset($propertyvalues[$property->id]))
                                                 <div class="product__property d-flex justify-content-between">
@@ -248,6 +251,10 @@
                                             @endif
                                             
                                         @endforeach
+
+                                        @if ($product->full_size != '')
+                                                                              
+                                            @endif
                                     </div>
                                     @endisset
                                     <p>{{ $product->short_description ?? '' }}</p>

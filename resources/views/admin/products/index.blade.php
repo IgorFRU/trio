@@ -79,7 +79,7 @@
                             <tr>
                             <th scope="col">#</th>
                             <th scope="col"></th>
-                            <th scope="col">Арт.</th>
+                            <th scope="col">Код./Арт.</th>
                             <th scope="col">Товар</th>
                             <th scope="col">Цена</th>
                             <th scope="col">Категория</th>
@@ -103,7 +103,10 @@
                             <td>
                                 <input class="form-check-input product_id"  data-toggle="tooltip" data-placement="top" title="id: {{ $product->id }}" type="checkbox" value="{{ $product->id }}" id="product_id_{{ $product->id }}">
                             </td>
-                            <td>{{ $product->autoscu }}</td>
+                            <td>{{ $product->autoscu }}
+                                <br>
+                            {{ $product->scu ?? '' }}
+                            </td>
                             <td>{{ $product->product }}</td>
                             <td>
                                 @if(isset($product->discount) && $product->actually_discount)

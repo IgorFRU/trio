@@ -87,6 +87,8 @@
                                                                     <option @if ($sort == "nameAZ" || $sort == NULL) selected @endif value="nameAZ">По названию (А-Я)</option>
                                                                     <option @if ($sort == "nameZA") selected @endif value="nameZA">По названию (Я-А)</option>
                                                                     <option @if ($sort == "popular") selected @endif value="popular">По популярности</option>
+                                                                    <option @if ($sort == "price_up") selected @endif value="price_up">Сначала дешевле</option>
+                                                                    <option @if ($sort == "price_down") selected @endif value="price_down">Сначала дороже</option>
                                                                     <option @if ($sort == "new_up") selected @endif value="new_up">Сначала новые</option>
                                                                     <option @if ($sort == "new_down") selected @endif value="new_down">Сначала старые</option>
                                                                 </select>

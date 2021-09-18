@@ -8,12 +8,20 @@
 
     <title>{{ $title ?? "Паркетный мир - Симферополь. Продажа, укладка, ремонт паркета, ламината, паркетной доски, массивной и инженерной доски. Всё для паркета: клеи, лаки, масла и воски. Доставка паркета по Крыму и Симферополю."}}</title>
 
+    {{-- <meta name="leaq-verification" content="9f3004b2-6ae1-4f52-af20-1118e6cc0579" />
+
+    <script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(20781085, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); </script> <noscript><div><img src="https://mc.yandex.ru/watch/20781085" style="position:absolute; left:-9999px;" alt="" /></div></noscript> --}}
+
     <meta description="{{ $meta_description ?? "Паркетный мир - Симферополь. Купить все виды паркета в Крыму по лучшим ценам! Укладка, ремонт и реставрация паркета. Ламинат, паркетная доска, массивная и инженерная доска, клей и лак для паркета, масла и воски" }}">
     <meta keywords="{{ $meta_keywords ?? "" }}">
 
     {{-- <script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(20781085, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); </script> <noscript><div><img src="https://mc.yandex.ru/watch/20781085" style="position:absolute; left:-9999px;" alt="" /></div></noscript> --}}
     
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    @isset($canonical)
+        @if ($canonical) <link rel="canonical" /> @endif
+    @endisset
 
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ asset('/imgs/favicon/apple-touch-icon-57x57.png') }}" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ asset('/imgs/favicon/apple-touch-icon-114x114.png') }}" />

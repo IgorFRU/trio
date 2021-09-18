@@ -174,12 +174,29 @@ class MainController extends Controller
         // $products = $products->paginate($itemsPerPage);
         // dd($products);
                 
-        $category = Category::where('id', $category->id)->first();
+        // $category = Category::where('id', $category->id)->first();
 
         if ($category->subcategories) {
             $products = $category->with_subcategories;
         } else {
-            $products = $products = Product::where('category_id', $category->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->get();
+            $currencies_count = Product::where('category_id', $category->id)->distinct()->count('currency_id');
+            $currencies_count --;
+
+            if (!isset($_COOKIE['productsort'])) {
+                $_COOKIE['productsort'] = '';
+            }
+
+            if ($currencies_count && ($_COOKIE['productsort'] == 'price_up' || $_COOKIE['productsort'] == 'price_down')) {
+                $products = Product::where('category_id', $category->id)->finaly()->published()->with('manufacture', 'images', 'unit', 'currency')->get();
+
+                $products = $products->each(function ($item, $key) {
+                    $item['sort_price'] = $item->discount_price;                    
+                });
+
+                $products = ($_COOKIE['productsort'] == 'price_up') ? $products->sortBy('sort_price') : $products->sortByDesc('sort_price') ;
+            } else {
+                $products = Product::where('category_id', $category->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->get();
+            }            
         }
         
         $manufactures = Manufacture::whereIn('id', $products->pluck('manufacture_id'))->get();
@@ -202,6 +219,7 @@ class MainController extends Controller
         } 
 
         $products_count = $products->count();
+        
         $products = $products->paginate($itemsPerPage);
 
 
@@ -252,10 +270,9 @@ class MainController extends Controller
         $unique_property_values = $property_values->pluck('value')->unique();
         $properties = $property_values->whereIn('value', $unique_property_values)->unique('value');
 
-        
+        $local_title = ($manufactured_to_title) ? $category->category . ' ' . $manufactured_to_title : $category->category ;
+        $meta_description = ($manufactured_to_title) ? $category->category . ' ' . $manufactured_to_title : $category->category ;
 
-        $local_title = $category->category;
-        
         $data = array (
             'title' => $category->category . ' ' . $manufactured_to_title . ' - Купить по лучшей цене в Симферополе с доставкой товары из категории ' . $category->category . ' - Паркетный мир (Симферополь)',
             'products' => $products,
@@ -269,8 +286,11 @@ class MainController extends Controller
             'manufactures'          => $manufactures,
             'filteredManufacture'   => $filterManufacture,
             'products_per_page' => $itemsPerPage,
-            'meta_description' => $category->category . '. Купить с доставкой по Симферполю и Крыму. Каталог товаров. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
+            'meta_description' => $meta_description . '. Купить с доставкой по Симферполю и Крыму. Каталог товаров. Укладка, реставрация и ремонт паркета в Крыму и Симферополе. Паркетные лаки, масла и воски, клеи, сопутствующие товары.',
+            'canonical' => $category->main_parrent,
         );
+
+        // dd($data['local_title']);
         
         return view('category', $data);
     }

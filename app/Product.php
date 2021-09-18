@@ -227,6 +227,26 @@ class Product extends Model
         }
     }
 
+    public function getFullSizeAttribute() {
+        $size = '';
+        if ($this->size_type != '' && $this->size_type != NULL) {
+            $size_type = '(' . $this->size_type . ')';
+        } else {
+            $size_type = '';
+        }        
+        if ($this->size_l != '' && $this->size_w != NULL) {
+            $size .= 'длина: ' . $this->size_l . $size_type . '. ';
+        }
+        if ($this->size_w != '' && $this->size_l != NULL) {
+            $size .= 'ширина: ' . $this->size_w . $size_type . '. ';
+        }
+        if ($this->size_t != '' && $this->size_t != NULL) {
+            $size .= 'толщина: ' . $this->size_t . $size_type . '. ';
+        }
+
+        return $size;
+    }
+
     public function getActuallyDiscountAttribute($value) {
         $today = Carbon::now();
         if (isset($this->discount) && $this->discount->discount_end >= $today) {
@@ -326,8 +346,8 @@ class Product extends Model
 
     public function scopeOrder($query)
     {
-        $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';        
-        
+        $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';
+
         switch ($sort) {
             case 'nameAZ':
                 $sort_column = 'product';
@@ -363,6 +383,7 @@ class Product extends Model
                 $sort_order = 'ASC';
                 break;
         }
+
         return $query->orderBy($sort_column, $sort_order);
     }
 
