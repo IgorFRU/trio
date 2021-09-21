@@ -32,6 +32,9 @@
                             </div>
                             <button type="submit" class="btn product_group_published disabled mr-1 bg-success text-white" href="#"><i class="fas fa-eye"></i></button>
                         </form>
+                        
+                        <button type="submit" class="btn product_group_massedit disabled mr-1 btn-warning" href="#"><i class="fas fa-pen"></i></button>
+                        
                         <button type="button" class="btn bg-warning product_group_delete disabled" disabled data-toggle="modal" data-target=".modalDeleteProduct"><i class="fas fa-trash-alt"></i></button>
                     </div>
 
@@ -98,9 +101,9 @@
                         @php
                             // dd($product)
                         @endphp
-                        <tr @if (!$product->published) class='bg-secondary'  @endif>
+                        <tr @if (!$product->published) class='bg-secondary'  @endif js-click='checkbox' data-checkbox='{{ $product->id }}'>
                             <th scope="row">{{ $count++ }}</th>
-                            <td>
+                            <td class="not_click">
                                 <input class="form-check-input product_id"  data-toggle="tooltip" data-placement="top" title="id: {{ $product->id }}" type="checkbox" value="{{ $product->id }}" id="product_id_{{ $product->id }}">
                             </td>
                             <td>{{ $product->autoscu }}

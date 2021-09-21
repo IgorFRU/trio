@@ -33,7 +33,7 @@ $(function() {
 
     // в карточке добавления / редактирования товара показ или скрытие большой кнопки "добавить изображения"
     $('#createproductandaddimages').hide(0);
-    $('#product').bind('input', function() {
+    $('#product').on('input', function() {
         let value = $('#product').val();
         if (value.length > 3) {
             $('#createproductandaddimages').show();
@@ -85,7 +85,7 @@ $(function() {
     //     }
     // });
 
-    $('#ajaxAddProductByCategory').bind('input', function() {
+    $('#ajaxAddProductByCategory').on('input', function() {
         let value = $('#ajaxAddProductByCategory').val();
         let object = $('#object_id').val();
         let objectType = $('#object_id').attr('data-object');
@@ -157,7 +157,7 @@ $(function() {
     });
 
     // AJAX загрузка изображений для создаваемого товара
-    $('#productImage').bind('input', function() {
+    $('#productImage').on('input', function() {
         $('#add_image').prop('disabled', false);
         $('#add_image').attr('data-method', 'store');
     });
@@ -293,7 +293,7 @@ $(function() {
     // управление характеристиками товаров
     // в категориях
 
-    $('#property').bind('input', function() {
+    $('#property').on('input', function() {
         var property = $('#property').val();
         if (property.length < 3) {
             $('#propertyAddButton').addClass('disabled');
@@ -302,7 +302,7 @@ $(function() {
         }
     });
 
-    $('#property_id').bind('input', function() {
+    $('#property_id').on('input', function() {
         var property = $('#property_id').val();
         if (property != 0) {
             $('#propertyAddButton0').removeClass('disabled');
@@ -435,7 +435,7 @@ $(function() {
     });
 
     // На старанице всех товаров фильтр по категориям и производителям
-    $('#index_category_id').bind('input', function() {
+    $('#index_category_id').on('input', function() {
         var category = $('#index_category_id').val();
         var p_published = $('#p_published').val();
         var pp = $('#pp').val();
@@ -446,7 +446,7 @@ $(function() {
             window.location.href = '/admin/products/?pp=' + pp + '&p_published=' + p_published + '&category=' + category;
         }
     });
-    $('#index_manufacture_id').bind('input', function() {
+    $('#index_manufacture_id').on('input', function() {
         var manufacture = $('#index_manufacture_id').val();
         var category = $('#index_category_id').val();
         var p_published = $('#p_published').val();
@@ -642,7 +642,7 @@ $(function() {
     });
 
     //при изменении категории в форме добавления/редактирования товара подгружаются характеристики из этой категории
-    $('#category_id').bind('input', function() {
+    $('#category_id').on('input', function() {
         if (!$(this).hasClass('export')) {
             let import_flag = false;
             if ($(this).data('import') == true) {
@@ -708,7 +708,7 @@ $(function() {
         return day + '.' + monthNames[monthIndex] + '.' + year;
     }
 
-    $('.product_id').bind('input', function() {
+    const checkingCheckboxes = function() {
         let product_checked = $('.product_id');
 
         let product_checked_ids = [];
@@ -720,6 +720,7 @@ $(function() {
         if (product_checked_ids.length > 0) {
             $('.product_group_copy').removeClass('disabled');
             $('.product_group_published').removeClass('disabled');
+            $('.product_group_massedit').removeClass('disabled');
             $('.product_group_unimported').removeClass('disabled');
             $('.product_group_delete').removeClass('disabled');
             $('.product_group_delete').prop('disabled', false);
@@ -727,6 +728,7 @@ $(function() {
             if (!$('.product_group_copy').hasClass('disabled')) {
                 $('.product_group_copy').addClass('disabled');
                 $('.product_group_published').addClass('disabled');
+                $('.product_group_massedit').addClass('disabled');
                 $('.product_group_unimported').addClass('disabled');
                 $('.product_group_delete').addClass('disabled');
                 $('.product_group_delete').prop('disabled', true);
@@ -736,7 +738,24 @@ $(function() {
         for (let i = 0; i < product_checked_ids.length; i++) {
             $(".hidden_inputs").append("<input type='hidden' name='product_group_ids[]' value=" + product_checked_ids[i] + ">");
         }
+    }
+
+    $('.product_id').on('input', function() {
+        checkingCheckboxes();
     });
+
+    $('.product_group_massedit').on('click', function() {
+        let product_checked = $('.product_id');
+
+        let product_checked_ids = [];
+        product_checked.each(function(i, elem) {
+            if ($(elem).prop('checked')) {
+                window.open(`products/${$(elem).val()}/edit`, '_blank');
+                // product_checked_ids.push($(elem).val());
+            }
+        });
+
+    })
 
     // import - check numeric
 
@@ -1182,18 +1201,12 @@ $(function() {
     }
 
     $('table').find('[js-click]').find('td').filter(":not(.not_click)").on('click', function() {
-        // console.log($(this).children().length);
-        // if ($(this).children().length) {
-        //     if ($(this).children()[0].tagName != 'input') {
         let box = $(`input[type='${$(this).parent().attr('js-click')}'][value='${$(this).parent().data('checkbox')}']`);
         if (box.is(':checked')) {
             box.prop('checked', false);
         } else {
             box.prop('checked', true);
         }
-        //     }
-        // }
-
-
+        checkingCheckboxes();
     });
 });

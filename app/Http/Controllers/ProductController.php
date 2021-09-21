@@ -418,6 +418,10 @@ class ProductController extends Controller
         }   
     }
 
+    public function massedit(Request $request) {
+
+     }
+
     public function unimported(Request $request) {
         if (isset($request->product_group_ids) && count($request->product_group_ids) > 0) {
             $products = Product::whereIn('id', $request->product_group_ids)->get();

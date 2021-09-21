@@ -88,6 +88,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::post('/products/search', 'ProductController@search');
   Route::post('/products/massdestroy', 'ProductController@massDestroy')->name('products.massdestroy');
   Route::post('/products/published', 'ProductController@published')->name('products.published');
+  Route::post('/products/massedit', 'ProductController@massedit')->name('products.massedit');
   Route::post('/products/copy', 'ProductController@copy')->name('products.copy');
   Route::post('/products/unimported', 'ProductController@unimported')->name('products.unimported');
   Route::post('/products/store/ajax', 'ProductController@storeAjax')->name('products.storeAjax');
