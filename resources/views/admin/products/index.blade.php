@@ -169,7 +169,7 @@
                                 $perPage = 5;
                                 $count = 5;
                             @endphp
-                            <select class="form-control" name="pp" id="pp">
+                            <select class="form-control" name="itemsPerPage" id="itemsPerPage">
                                 @for ($i = 1; $i < $count; $i++)
                                 @php
                                     $pP = $perPage * pow(2, $i);
@@ -180,7 +180,7 @@
                         </div>
                         
                         <div class="col-md-2">
-                                <select class="form-control" id="p_published" name="p_published">
+                                <select class="form-control" id="productPublished" name="productPublished">
                                     <option @if ($productPublished == 2) selected='selected' @endif value="2">Все</option>
                                     <option @if ($productPublished == 1) selected='selected' @endif value="1">Опублик.</option>
                                     <option @if ($productPublished == 0) selected='selected' @endif value="0">Неопублик.</option>

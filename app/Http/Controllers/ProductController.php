@@ -39,7 +39,6 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $minutes = 2;
         if (isset($request->category)) {
             $category = $request->category;
         } else {
@@ -56,29 +55,30 @@ class ProductController extends Controller
         if (is_null($itemsPerPage)) {
             $itemsPerPage = 10;
         }
-        if (isset($request->pp)) {
-            $itemsPerPage = $request->pp;
+        if (isset($request->itemsPerPage)) {
+            $itemsPerPage = $request->itemsPerPage;
             Cookie::queue(cookie()->forever('itemsPerPage', $itemsPerPage));           
         }
 
-        
-        $pp = request()->cookie('p_published');
-        $published = array();
-        $published = ['0', '1'];
-        if (isset($request->p_published)) {
-            if ($request->p_published == 2) {                
-                $published = ['0', '1'];
-                $pp = 2;
-            } else {
-                $published [] = $request->p_published;
-                $pp = $request->p_published;
-            } 
-            Cookie::queue('p_published', $pp, $minutes);           
-        } else if (is_null($pp)) {
-            $published = ['0', '1'];
-            $pp = 2;
+        $productPublishedTmp = request()->cookie('productPublished');
+        $productPublished [] = $productPublishedTmp;
+
+        if (is_null($productPublished)) { // all products
+            $productPublished = [0, 1];
+            $productPublishedTmp = 2;
         }
-        
+        if (isset($request->productPublished)) {
+            $productPublishedTmp = $request->productPublished;
+            Cookie::queue(cookie()->forever('productPublished', $productPublishedTmp));
+            // $productPublished = $request->productPublished;
+            if ($request->productPublished == 2) {
+                $productPublished = [0, 1];
+            } else {
+                $productPublished = array();
+                $productPublished [] = $productPublishedTmp;
+            }            
+                       
+        }
 
         $products = Product::
         when($category, function ($query, $category) {
@@ -86,7 +86,7 @@ class ProductController extends Controller
         })
         ->when($manufacture, function ($query, $manufacture) {
             return $query->where('manufacture_id', $manufacture);
-        })->orderBy('id', 'desc')->finaly()->with('category')->whereIn('published', $published)->with('manufacture')->paginate($itemsPerPage);
+        })->orderBy('id', 'desc')->finaly()->with('category')->whereIn('published', $productPublished)->with('manufacture')->paginate($itemsPerPage);
 
         $data = array (
             'products' => $products,
@@ -96,7 +96,7 @@ class ProductController extends Controller
             'current_manufacture' => $manufacture,
             'manufactures' => Manufacture::get(),
             'itemsPerPage' => $itemsPerPage,
-            'productPublished' => $pp,
+            'productPublished' => $productPublishedTmp,
         ); 
         // dd($data);
         // dd($data['categories']);
