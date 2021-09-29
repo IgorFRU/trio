@@ -1209,4 +1209,46 @@ $(function() {
         }
         checkingCheckboxes();
     });
+
+    $('.fast-price-edit').on('click', function() {
+        let input = $(this).parent().find('input[name="price"]');
+        input.parent().toggleClass('hide');
+    });
+
+    $('.fast-price-edit_input').on('input', function() {
+        let data = $(this).val();
+        let button = $(this).parent().find('.fast-price-edit_submit');
+        if (data > 0) {
+            button.removeClass('hide');
+        } else {
+            button.addClass('hide');
+        }
+    });
+
+    $('.fast-price-edit_submit').on('click', function() {
+        let input = $(this).parent().find('.fast-price-edit_input');
+        let price = input.val();
+        let id = input.data('id');
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/products/fastpriceedit/ajax",
+            data: {
+                id: id,
+                price: price,
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                location.reload();
+            },
+            error: function(msg) {
+                console.log(msg);
+            }
+        });
+    })
+
+
+
 });

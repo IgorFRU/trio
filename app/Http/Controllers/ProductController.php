@@ -626,4 +626,11 @@ class ProductController extends Controller
         // echo json_encode(array('response' => $request->product));
         // echo json_encode($request->all());
     }
+
+    public function ajaxFastPriceEdit(Request $request) {
+        $product = Product::where('id', $request->id)->first();
+        $product->update(['price' => $request->price]);
+        
+        return 0;
+    }
 }

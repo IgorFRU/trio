@@ -131,7 +131,15 @@
                                     <div class="btn text-light bg-success btn-sm">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div> 
                                 @endif
                                 
-                            
+                                <span class="not_click" data-id="{{ $product->id }}">
+                                    <div class="fast-price-edit btn btn-warning btn-sm" data-id="{{ $product->id }}"><i class="fas fa-pen"></i>
+                                    </div>
+                                    <div class="hide">
+                                        <input class="not_click fast-price-edit_input" type="text" name="price" data-id="{{ $product->id }}">
+                                        <span class="btn btn-warning btn-sm fast-price-edit_submit hide">OK
+                                        </span>
+                                    </div>                                    
+                                </span>                               
                             
                             </td>
                             <td>{{ $product->category->category ?? '' }}</td>

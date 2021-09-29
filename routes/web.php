@@ -93,6 +93,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::post('/products/unimported', 'ProductController@unimported')->name('products.unimported');
   Route::post('/products/store/ajax', 'ProductController@storeAjax')->name('products.storeAjax');
   Route::post('/products/search/ajax', 'ProductController@ajaxSearch'); // поиск товара для добавления к статье
+  Route::post('/products/fastpriceedit/ajax', 'ProductController@ajaxFastPriceEdit'); // поиск товара для добавления к статье
   Route::get('/products/addImages/{product}', 'ProductController@addImages')->name('products.addImages');
   Route::post('/products/getcategoryproperties', 'ProductController@getCategoryProperties'); // во время создания товара при изменении категории подтягиваются параметры
   Route::resource('/units', 'UnitController');
