@@ -49,9 +49,11 @@
                             
                         @empty
                             Вы еще не добавили ни одной категории
-                        @endforelse
-                    
+                        @endforelse                    
                 </div>
+            </div>
+            <div class="paginate">
+                {{ $categories->appends(request()->input())->links('layouts.pagination') }}
             </div>
         </div>
     </div>

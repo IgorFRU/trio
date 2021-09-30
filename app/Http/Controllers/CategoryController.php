@@ -23,7 +23,7 @@ class CategoryController extends Controller
     {
         $data = array (
             'categories' => Category::orderBy('id', 'DESC')
-                                    ->paginate(20)
+                                    ->paginate(15)
         );
 
         return view('admin.categories.index', $data);
