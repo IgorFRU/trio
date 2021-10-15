@@ -85,9 +85,6 @@
                             <th scope="col">Код./Арт.</th>
                             <th scope="col">Товар</th>
                             <th scope="col">Цена</th>
-                            <th scope="col">Категория</th>
-                            <th scope="col">Наличие</th>
-                            <th scope="col">Срок доставки</th>
                             <th scope="col">-</th>
                             <th scope="col">-</th>
                             {{-- <th scope="col">Описание</th> --}}
@@ -110,25 +107,30 @@
                                 <br>
                             {{ $product->scu ?? '' }}
                             </td>
-                            <td>{{ $product->product }}</td>
+                            <td>
+                                {{ $product->product }}
+                                <p class="text-secondary">{{ $product->category->category ?? '' }}
+                                    {{ ' / ' . $product->manufacture->manufacture ?? '' }}
+                                    {{ ' / ' . $product->delivery_time ?? '' }}</p>
+                            </td>
                             <td>
                                 @if(isset($product->discount) && $product->actually_discount)
                                     @if ($product->discount->type == '%')
                                         <div class='btn-group' role="group">
-                                            <div class="btn text-light bg-success btn-sm" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ $product->discount->d_m_y ?? '' }}"> 
+                                            <div class="p-1 bg-success  text-white" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ $product->discount->d_m_y ?? '' }}"> 
                                                 {{ $product->price * $product->discount->numeral }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}
                                             </div>
-                                            <div class="btn text-light bg-secondary btn-sm">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
+                                            <div class="p-1 bg-secondary text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
                                         </div>
                                     @elseif ($product->discount->type == 'rub')
                                         <div class='btn-group' role="group">
-                                            <div class="btn text-light bg-success btn-sm" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ Carbon\Carbon::parse($product->discount->discount_end)->locale('ru')->isoFormat('DD MMMM YYYY', 'Do MMMM') }}">
+                                            <div class="p-1 bg-success  text-white" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ Carbon\Carbon::parse($product->discount->discount_end)->locale('ru')->isoFormat('DD MMMM YYYY', 'Do MMMM') }}">
                                                 {{ $product->price - $product->discount->value }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}
                                             </div>
-                                            <div class="btn text-light bg-secondary btn-sm">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
+                                            <div class="p-1 bg-secondary text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
                                     @endif
                                 @else
-                                    <div class="btn text-light bg-success btn-sm">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div> 
+                                    <span class="p-1 bg-success  text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</span> 
                                 @endif
                                 
                                 <span class="not_click" data-id="{{ $product->id }}">
@@ -142,10 +144,8 @@
                                 </span>                               
                             
                             </td>
-                            <td>{{ $product->category->category ?? '' }}</td>
                             {{-- <td>{{ $product->manufactures->manufacture }}</td> --}}
                             <td>{{ $product->quantity }}</td>
-                            <td>{{ $product->delivery_time }}</td>
                             <td>
                                 <a class="btn btn-outline-info btn-sm" href="{{ route('admin.products.create', ['product' => $product->id]) }}" role="button"><i class="fas fa-code-branch"></i></a>                                
                             </td>
