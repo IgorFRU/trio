@@ -383,7 +383,7 @@ class MainController extends Controller
         $manufacture = Manufacture::where('slug', $slug)->firstOrFail();
         
         $products = Product::whereManufactureId($manufacture->id)->published()->order()->with('manufacture', 'category', 'images', 'unit', 'currency')->paginate($itemsPerPage);
-        // dd($category);
+        
         $data = array (
             'title' => $manufacture->manufacture . '. Купить товары производителя ' . $manufacture->manufacture . ' с доставкой по Симферополю и Крыму - Паркетный мир (Симферополь)',
             'products' => $products,
