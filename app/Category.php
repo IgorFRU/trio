@@ -58,6 +58,10 @@ class Category extends Model
         return $this->belongsToMany(Option::class);
     }
 
+    public function manufactures() {
+        return $this->hasManyThrough(Manufacture::class, Product::class, 'manufacture_id', 'id');
+    }
+
     public function getShortDescriptionAttribute() {
         if (strlen($this->description) > 220) {
             return Str::limit($this->description, 220);

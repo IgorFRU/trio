@@ -37,6 +37,10 @@ class Manufacture extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function categories() {
+        return $this->hasManyThrough(Category::class, Product::class, 'category_id', 'id');
+    }
+
     public function getShortDescriptionAttribute() {
         if (strlen($this->description) > 80) {
             return Str::limit($this->description, 80);
