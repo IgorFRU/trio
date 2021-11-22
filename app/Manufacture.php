@@ -38,7 +38,7 @@ class Manufacture extends Model
     }
 
     public function categories() {
-        return $this->hasManyThrough(Category::class, Product::class, 'category_id', 'id');
+        return $this->hasManyThrough(Category::class, Product::class, 'manufacture_id', 'category_id', 'id');
     }
 
     public function getShortDescriptionAttribute() {

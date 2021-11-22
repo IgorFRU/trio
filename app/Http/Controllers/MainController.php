@@ -365,7 +365,9 @@ class MainController extends Controller
     }
 
     public function manufactures() {
-        $manufactures = Manufacture::all();
+        $manufactures = Manufacture::orderBy('manufacture')->get();
+        
+        // dd($manufactures[0]->categories);
         $data = array (
             'title' => 'Производители, представленные в Паркетном мире (Симферополь)',
             'manufactures' => $manufactures,

@@ -40,9 +40,9 @@
                                                         @endif</a>
                                                     </h3>
                                                     
-                                                        @foreach ($manufacture->categories as $category)
+                                                        {{-- @foreach ($manufacture->categories as $category)
                                                             {{ $category->category }}@if (!$loop->last), @endif
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     
                                                     <hr>
                                                     <p>{{ $manufacture->short_description ?? '' }}</p>
