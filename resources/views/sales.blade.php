@@ -32,7 +32,6 @@
                                             <hr>
                                             <div class="card_info card_info_sale_date @if($sale->it_actuality) dark-green @else dark-red  @endif">{{ $sale->start_d_m_y }} - {{ $sale->d_m_y }}@if(!$sale->it_actuality)<br><span class="bold">(акция закончилась!)</span> @endif</div>
                                             <div class="card_description">{{ $sale->short_description ?? '' }}</div>
-                                            <p>{{ $manufacture->short_description ?? '' }}</p>
                                         </div>
                                         
                                     </div>
