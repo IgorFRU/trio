@@ -350,7 +350,7 @@ class MainController extends Controller
     }
 
     public function sale($slug) {
-        $sale = Discount::where('slug', $slug)->FirstOrFail();
+        $sale = Discount::where('slug', $slug)->with('product')->FirstOrFail();
         if(isset($sale)) {
             $sale->increment('views', 1);
         }
@@ -474,7 +474,7 @@ class MainController extends Controller
     }
 
     public function questions() {
-        $questions = Question::orderBy('created_at')->published()->paginate(20);
+        $questions = Question::orderBy('created_at', 'DESC')->published()->paginate(20);
         $data = array (
             'title' => 'Вопросы о паркете и ответы на них',
             'questions' => $questions,

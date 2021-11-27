@@ -68,7 +68,7 @@
                 
             @endforelse
             <a href="{{ route('questions') }}" class="uk-padding uk-padding-remove-vertical"><span uk-icon="question" uk-tooltip="Ваши вопросы и ответы"></span> <span class="uk-visible@m">Вопросы и ответы</span></a>
-            <a href="{{ route('articles') }}" class="uk-padding uk-padding-remove-vertical">Статьи</a>
+            {{-- <a href="{{ route('articles') }}" class="uk-padding uk-padding-remove-vertical">Статьи</a> --}}
             <a href="{{ route('sales') }}" class="topmenu__left__red uk-padding uk-padding-remove-vertical">Акции</a>
         </div>
     </div>
