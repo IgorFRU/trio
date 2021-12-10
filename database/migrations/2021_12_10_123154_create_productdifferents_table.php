@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductdifferensetypesTable extends Migration
+class CreateProductdifferentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateProductdifferensetypesTable extends Migration
      */
     public function up()
     {
-        // Schema::create('productdifferensetypes', function (Blueprint $table) {
-        //     $table->bigIncrements('id');
-        //     $table->string('type', 190);
-        //     $table->timestamps();
-        // });
+        Schema::create('productdifferents', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('productdifferent', 190)->unique();
+        });
     }
 
     /**
@@ -27,6 +26,6 @@ class CreateProductdifferensetypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('productdifferensetypes');
+        Schema::dropIfExists('productdifferents');
     }
 }
