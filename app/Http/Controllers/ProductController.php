@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Property;
+use App\Productdifferent;
 use App\Currency;
 use App\Choise;
 use App\Propertyvalue;
@@ -97,6 +98,7 @@ class ProductController extends Controller
             'manufactures' => Manufacture::get(),
             'itemsPerPage' => $itemsPerPage,
             'productPublished' => $productPublishedTmp,
+            'productdifferents' => Productdifferent::get(),
         ); 
         // dd($data);
         // dd($data['categories']);
@@ -112,6 +114,8 @@ class ProductController extends Controller
     {
         $today = Carbon::now();
         $product = Product::published()->finaly()->latest('id')->first();
+        $product->id = '';
+        $product->slug = 'sasad';
         $product->images = [];
 
         if (isset($product->category->property)) {
@@ -135,7 +139,8 @@ class ProductController extends Controller
             'currencies' => Currency::get(),
             'typeRequest' => 'create',       //тип запроса - создание или редактирование, чтобы можно было менять action формы
             //символ, обозначающий вложенность категорий
-            'delimiter' => ''
+            'delimiter' => '',
+            'productdifferents' => Productdifferent::get(),
         );
         // dd();
         
@@ -150,8 +155,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        dd($request->all());
         $product = Product::create($request->all());
+
+        if (isset($request->parentproduct_id)) {
+            $product->update(['parentproduct_id' => $request->parentproduct_id]);
+        }
         
         if (isset($request->image_id)) {
             $imagesArray = $request->image_id;
@@ -232,7 +241,8 @@ class ProductController extends Controller
             'properties' => $properties,
             'propertyvalues' => Propertyvalue::where('product_id', $product->id)->pluck('value', 'property_id'),
             'typeRequest' => 'edit',
-            'delimiter' => ''
+            'delimiter' => '',
+            'productdifferents' => Productdifferent::get(),
         );
         // dd(Choise::get());
         // dd($data['choises_children']);

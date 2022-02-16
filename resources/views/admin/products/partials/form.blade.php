@@ -287,12 +287,59 @@
                                 Продажа упаковками
                             </label>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>                      
         </div>
     </div>
     
+    @if (! Request()->product_id )
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-3 col p-3">
+                        <div class="form-group ">
+                            <div class="form-checkp-1  ml-4">
+                                @if(isset($product->id) && $product->id != '')                                    
+                                    <input class="form-check-input js_oneclick" type="checkbox" id="complicated" name="complicated" value="{{ $product->complicated }}" @if($product->complicated) checked @endif>
+                                    <input class="js_oneclick_hidden form-control" type="hidden" id="complicated" name="complicated" value="{{ $product->complicated }}">
+                                @else
+                                    <input class="form-check-input js_oneclick" type="checkbox" name="complicated" id="complicated" value="0" >
+                                    <input type="hidden" name="complicated" id="complicated" class="js_oneclick_hidden form-control" value="0" >
+                                @endif
+                                <label class="form-check-label font-weight-bold h4" for="complicated">
+                                    Составной товар
+                                </label>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="col-lg-9 col p-3 productdifferent_list" @if (!isset($product->id) || $product->id == '' || !$product->complicated) style="display: none;" @endif>
+                        @forelse ($productdifferents as $productdifferent)
+                        
+                            <span class="form-group d-inline">
+                                <span class="form-checkp-1  ml-4">
+                                    {{-- @if(isset($product->id))
+                                        <input class="form-check-input js_oneclick" type="checkbox" id="complicated" name="complicated" value="{{ $productdifferent->id }}" @if($productdifferent->productdifferent) checked @endif>
+                                        <input class="js_oneclick_hidden form-control" type="hidden" id="complicated" name="complicated" value="{{ $product->complicated }}">
+                                    @else --}}
+                                        <input class="form-check-input js_oneclick" type="checkbox" name="productdifferent" id="productdifferent{{ $productdifferent->id }}" value="{{ $productdifferent->id }}" >
+                                        <input type="hidden" name="productdifferent" id="productdifferent{{ $productdifferent->id }}" class="js_oneclick_hidden form-control" value="{{ $productdifferent->id }}" >
+                                    {{-- @endif --}}
+                                    <label class="form-check-label font-weight-bold" for="productdifferent{{ $productdifferent->id }}">
+                                        {{ $productdifferent->productdifferent }}
+                                    </label>
+                                </span>
+                            </span> 
+                        @empty
+                            
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    
+
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".product_choises_modal">Опции</button>
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".product_childs_modal">Дочерние товары</button>
@@ -606,7 +653,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">art.</span>
                 </div>
-                <input type="text" class="form-control" name="id" disabled aria-label="art" aria-describedby="basic-addon1" value="{{ $product->autoscu ?? '' }}">
+                <input type="text" class="form-control" name="id" disabled aria-label="art" aria-describedby="basic-addon1" @if (isset($product->id) && $product->id!='') value="{{ $product->autoscu ?? '' }}" @endif>
             </div>       
             {{-- <div class="input-group mb-3 col-md-2">
                 <div class="input-group-prepend">
@@ -618,7 +665,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">slug</span>
                 </div>
-                <input type="text" class="form-control" name="slug"  aria-label="Username" aria-describedby="basic-addon1" value="{{ $product->slug ?? '' }}">
+                <input type="text" class="form-control" name="slug"  aria-label="Username" aria-describedby="basic-addon1" @if (isset($product->id) && $product->id!='') value="{{ $product->slug ?? '' }}" @endif>
             </div>
             <div class="mb-3 col-md-2">
                     <button type="submit" class="btn btn-primary">Сохранить</button>

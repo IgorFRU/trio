@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Property;
+use App\Productdifferent;
 use App\Propertyvalue;
 use App\Image;
 use App\ImageProduct;
@@ -96,7 +97,8 @@ class ProductController extends Controller
             'units' => Unit::get(),
             'typeRequest' => 'create',       //тип запроса - создание или редактирование, чтобы можно было менять action формы
             //символ, обозначающий вложенность категорий
-            'delimiter' => ''
+            'delimiter' => '',
+            'productdifferents' => Productdifferent::all(),
         );
         // dd($data['categories']);
         
@@ -191,9 +193,10 @@ class ProductController extends Controller
             'properties' => $properties,
             'propertyvalues' => Propertyvalue::where('product_id', $product->id)->pluck('value', 'property_id'),
             'typeRequest' => 'edit',
-            'delimiter' => ''
+            'delimiter' => '',
+            'productdifferents' => Productdifferent::get(),
         );
-        // dd($data['propertyvalues']);
+        dd($data['productdifferents']);
         
         // dd($rr->category->first()->id);
         

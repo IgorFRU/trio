@@ -45,7 +45,9 @@ class Product extends Model
         'quantity_vendor',
         'sample',
         'recomended',
-        'imported'
+        'imported',
+        'complicated',
+        'parentproduct_id'
     ];
 
     protected $casts = [

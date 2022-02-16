@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Schema;
 use App\Cart;
 use App\Category;
+use App\Deliverycategory;
 use App\Article;
 use App\Set;
 use App\Setting;
@@ -231,8 +232,10 @@ class AppServiceProvider extends ServiceProvider
             $topmenu = Topmenu::where('published', 1)
                 ->OrderBy('priority', 'ASC')
                 ->OrderBy('title', 'DESC')
-                ->get();
-            
+                ->get();            
+                
+            $deliverycategories =Deliverycategory::orderBy('id', 'DESC')->get();
+
             $carts = Cart::where('session_id', session('session_id'))->get();
             // dd(session('session_id'));
             $carts1 = $carts->pluck('quantity', 'product_id');
@@ -256,6 +259,7 @@ class AppServiceProvider extends ServiceProvider
 
             $data = array (
                 'categories' => $categories,
+                'deliverycategories' => $deliverycategories,
                 'manufactures' => Manufacture::get(),
                 'sets'        => $sets,
                 'carts' => $carts1,

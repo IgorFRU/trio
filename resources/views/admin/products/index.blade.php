@@ -36,6 +36,8 @@
                         <button type="submit" class="btn product_group_massedit disabled mr-1 btn-warning" href="#"><i class="fas fa-pen"></i></button>
                         
                         <button type="button" class="btn bg-warning product_group_delete disabled" disabled data-toggle="modal" data-target=".modalDeleteProduct"><i class="fas fa-trash-alt"></i></button>
+
+                        <button class="btn btn-sm" data-toggle="modal" data-target="#productdifferentAddModal"><i class="fas fa-cubes"></i></button>
                     </div>
 
                     <button class="btn btn-sm" data-toggle="modal" data-target="#productSearchModal"><i class="fas fa-search"></i> Поиск...</button>
@@ -102,6 +104,9 @@
                             <th scope="row">{{ $count++ }}</th>
                             <td class="not_click">
                                 <input class="form-check-input product_id"  data-toggle="tooltip" data-placement="top" title="id: {{ $product->id }}" type="checkbox" value="{{ $product->id }}" id="product_id_{{ $product->id }}">
+                                @if ($product->complicated)
+                                    <div class="uk-text-primary" uk-tooltip="title: Составной товар!"><i class="far fa-list-alt"></i></div>
+                                @endif
                             </td>
                             <td>{{ $product->autoscu }}
                                 <br>
@@ -114,40 +119,52 @@
                                     {{ ' / ' . $product->delivery_time ?? '' }}</p>
                             </td>
                             <td>
-                                @if(isset($product->discount) && $product->actually_discount)
-                                    @if ($product->discount->type == '%')
-                                        <div class='btn-group' role="group">
-                                            <div class="p-1 bg-success  text-white" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ $product->discount->d_m_y ?? '' }}"> 
-                                                {{ $product->price * $product->discount->numeral }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}
+                                @if (!$product->complicated)
+                                    @if(isset($product->discount) && $product->actually_discount)
+                                        @if ($product->discount->type == '%')
+                                            <div class='btn-group' role="group">
+                                                <div class="p-1 bg-success  text-white" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ $product->discount->d_m_y ?? '' }}"> 
+                                                    {{ $product->price * $product->discount->numeral }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}
+                                                </div>
+                                                <div class="p-1 bg-secondary text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
                                             </div>
-                                            <div class="p-1 bg-secondary text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
-                                        </div>
-                                    @elseif ($product->discount->type == 'rub')
-                                        <div class='btn-group' role="group">
-                                            <div class="p-1 bg-success  text-white" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ Carbon\Carbon::parse($product->discount->discount_end)->locale('ru')->isoFormat('DD MMMM YYYY', 'Do MMMM') }}">
-                                                {{ $product->price - $product->discount->value }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}
-                                            </div>
-                                            <div class="p-1 bg-secondary text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
+                                        @elseif ($product->discount->type == 'rub')
+                                            <div class='btn-group' role="group">
+                                                <div class="p-1 bg-success  text-white" data-toggle="tooltip" data-placement="top" title="Акция '{{ $product->discount->discount }}' до {{ Carbon\Carbon::parse($product->discount->discount_end)->locale('ru')->isoFormat('DD MMMM YYYY', 'Do MMMM') }}">
+                                                    {{ $product->price - $product->discount->value }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}
+                                                </div>
+                                                <div class="p-1 bg-secondary text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
+                                        @endif
+                                    @else
+                                        <span class="p-1 bg-success  text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</span> 
                                     @endif
+                                    
+                                    <span class="not_click" data-id="{{ $product->id }}">
+                                        <div class="fast-price-edit btn btn-warning btn-sm" data-id="{{ $product->id }}"><i class="fas fa-pen"></i>
+                                        </div>
+                                        <div class="hide">
+                                            <input class="not_click fast-price-edit_input" type="text" name="price" data-id="{{ $product->id }}">
+                                            <span class="btn btn-warning btn-sm fast-price-edit_submit hide">OK
+                                            </span>
+                                        </div>                                    
+                                    </span>
                                 @else
-                                    <span class="p-1 bg-success  text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</span> 
-                                @endif
-                                
-                                <span class="not_click" data-id="{{ $product->id }}">
-                                    <div class="fast-price-edit btn btn-warning btn-sm" data-id="{{ $product->id }}"><i class="fas fa-pen"></i>
+                                    <div class="uk-width-medium">
+                                        <ul uk-accordion>
+                                            <li>
+                                                <a class="uk-accordion-title" href="#">Товары</a>
+                                                <div class="uk-accordion-content">
+                                                    Здесь будет список продуктов Здесь будет список продуктов Здесь будет список продуктов Здесь будет список продуктов Здесь будет список продуктов Здесь будет список продуктов Здесь будет список продуктов Здесь будет список продуктов Здесь будет список продуктов Здесь будет список продуктов
+                                                </div>
+                                            </li>
+                                        </ul>                                        
                                     </div>
-                                    <div class="hide">
-                                        <input class="not_click fast-price-edit_input" type="text" name="price" data-id="{{ $product->id }}">
-                                        <span class="btn btn-warning btn-sm fast-price-edit_submit hide">OK
-                                        </span>
-                                    </div>                                    
-                                </span>                               
-                            
+                                @endif
                             </td>
                             {{-- <td>{{ $product->manufactures->manufacture }}</td> --}}
                             <td>{{ $product->quantity }}</td>
                             <td>
-                                <a class="btn btn-outline-info btn-sm" href="{{ route('admin.products.create', ['product' => $product->id]) }}" role="button"><i class="fas fa-code-branch"></i></a>                                
+                                <a class="btn btn-outline-info btn-sm" href="{{ route('admin.products.create', ['product_id' => $product->id]) }}" role="button"><i class="fas fa-code-branch"></i></a>                                
                             </td>
                             <td>
                                 <div class='row'>                                
@@ -274,6 +291,44 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                     <button type="submit" class="btn btn-primary">Все результаты поиска</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="productdifferentAddModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="" method="get">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление параметров, по которым может отличаться товар внутри одного родительского (масса, цвет, степень блеска, объем и тд)</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="productdifferent" class="col-sm-4 col-form-label">Новый параметр</label>
+                        <div class="col-md-6">
+                            <input type="text" name="productdifferent" class="form-control" id="productdifferent" value="" placeholder="введите название...">
+                        </div> 
+                        <button type="button" class="col-md-2 btn btn-success btn-sm disabled" id="productdifferentAddButton">Добавить</button>                                   
+                    </div>                     
+
+                    <hr>
+                    <div class="my-4">
+                        @isset($productdifferents)
+                            @foreach ($productdifferents as $item)
+                                <button type="button" class="btn btn-secondary">{{ $item->productdifferent }} 
+                                    <span class="productdifferentRemove" data-id="{{ $item->id }}"><i class="fas fa-window-close"></i></span>
+                                </button>
+                            @endforeach
+                        @endisset
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                 </div>
             </form>
         </div>

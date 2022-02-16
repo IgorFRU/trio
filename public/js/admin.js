@@ -434,6 +434,52 @@ $(function() {
         });
     });
 
+    $('#complicated').on('click', function() {
+        if ($(this)[0].checked) {
+            $('.productdifferent_list').show();
+        } else {
+            $('.productdifferent_list').hide();
+        }
+    })
+
+    $('#productdifferent').on('input', function() {
+        var property = $('#productdifferent').val();
+        if (property.length < 3) {
+            $('#productdifferentAddButton').addClass('disabled');
+        } else {
+            $('#productdifferentAddButton').removeClass('disabled');
+        }
+    });
+
+    $('#productdifferentAddButton').on('click', function() {
+        var productdifferent = $('#productdifferent').val();
+        if (productdifferent.length > 3) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/products/productdifferent/store",
+                data: {
+                    productdifferent: productdifferent,
+                },
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    var data = $.parseJSON(data);
+                    console.log(data);
+                    $('#productdifferent').val('');
+                    var productdifferent_id = data.id;
+                    var productdifferent = data.productdifferent;
+                    $('#productdifferentAddButton').addClass('disabled');
+                    $(".hidden_inputs").append("<input type='hidden' name='productdifferent_id[]' value=" + productdifferent_id + ">");
+                    $('#AddProductdifferentResult').append("<button type='button' data-productdifferent-id='" + productdifferent_id + "' class='btn btn-success'>" + productdifferent + " </button>");
+                },
+                error: function(errResponse) {
+                    console.log(errResponse);
+                }
+            });
+        }
+    });
+
     // На старанице всех товаров фильтр по категориям и производителям
     $('#index_category_id').on('input', function() {
         var category = $('#index_category_id').val();
@@ -1236,6 +1282,26 @@ $(function() {
             data: {
                 id: id,
                 price: price,
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                location.reload();
+            },
+            error: function(msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $('.productdifferentRemove').on('click', function() {
+        const id = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "/admin/products/productdifferent/destroy",
+            data: {
+                id: id,
             },
             headers: {
                 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')

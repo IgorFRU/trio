@@ -31,11 +31,18 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
 
     <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/[uikit-version]/css/uikit.min.css" />
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/[uikit-version]/css/uikit.min.css" /> --}}
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/css/uikit.min.css" integrity="sha512-Je1wwJz37N237FpJ3eJXkzVW2ek9331ygz5JdzfbmkmbMIObSC7K3UelTVpcVNRgzJRxoh40NhRDqNNuMfEVuA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- UIkit JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit-icons.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit-icons.min.js"></script> --}}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/js/uikit.min.js" integrity="sha512-HrOabH0q8HnOwCVtR2lvwgRYoHtI0V2zC0ii6Kt0xfKDWhvNrTM3TqQv4EIYjt5NlyowqHhjBJ2gheJ/BfoPnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/js/uikit-core.min.js" integrity="sha512-IeT1HldAqb15q2QiOY0bIajZA0DgR7q0TLoHgVAPs6hFB+d/7c9ufgJLnrivBOTJTaK7Wgs4jLzOITVRLpY3Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/js/uikit-icons.min.js" integrity="sha512-ZN3+/fQI4kCvbrvd9em65IXBx8PtRcc+RsVgZIBIyEoO0CbXcUOL8sLLxQsmytTwg6Jm91fnDS6Xkaw48zB8Eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/js/components/tooltip.min.js" integrity="sha512-4z1VFBn80lqZMDa+AIBssIYO8pJmQXN0/kAK3QepM3xzabL/plWHr2LMX3ly8Ub231nXDHXeVaQNhsV52sp4zg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
 </head>
 <body>
@@ -59,8 +66,10 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item {{ (Request::is('*products*') ? 'active' : '') }}" href="{{ route('admin.products.index') }}"><i class="fas fa-archive"></i> товары</a>
                                 <a class="dropdown-item {{ (Request::is('*importexport*') ? 'active' : '') }}" href="{{ route('admin.import-export.index') }}"><i class="fas fa-file-excel"></i> импорт/экспорт</a>
-                                <a class="dropdown-item {{ (Request::is('*categories*') ? 'active' : '') }}" href="{{ route('admin.categories.index') }}"><i class="fas fa-folder"></i> категории</a>
+                                <a class="dropdown-item {{ (Request::is('categories*') ? 'active' : '') }}" href="{{ route('admin.categories.index') }}"><i class="fas fa-folder"></i> категории</a>
                                 <a class="dropdown-item {{ (Request::is('*manufactures*') ? 'active' : '') }}" href="{{ route('admin.manufactures.index') }}"><i class="fas fa-industry"></i> производители</a>
+                                <hr>
+                                <a class="dropdown-item {{ (Request::is('*delivery*') ? 'active' : '') }}" href="{{ route('admin.deliverycategories.index') }}"><i class="fas fa-truck"></i> Доставки</a>
                                 <a class="dropdown-item {{ (Request::is('*vendors*') ? 'active' : '') }}" href="{{ route('admin.vendors.index') }}"><i class="fas fa-store-alt"></i>  Поставщики</a>
                                 <a class="dropdown-item {{ (Request::is('*sets*') ? 'active' : '') }}" href="{{ route('admin.sets.index') }}"><i class="fas fa-tasks"></i> Группы товаров</a>
                                 <a class="dropdown-item {{ (Request::is('*options*') ? 'active' : '') }}" href="{{ route('admin.options.index') }}">Опции товаров</a>

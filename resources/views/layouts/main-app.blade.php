@@ -44,11 +44,17 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
     
     <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/css/uikit.min.css" />
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/css/uikit.min.css" /> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/css/uikit.min.css" integrity="sha512-Je1wwJz37N237FpJ3eJXkzVW2ek9331ygz5JdzfbmkmbMIObSC7K3UelTVpcVNRgzJRxoh40NhRDqNNuMfEVuA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- UIkit JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit-icons.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.4.2/js/uikit-icons.min.js"></script> --}}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/js/uikit.min.js" integrity="sha512-HrOabH0q8HnOwCVtR2lvwgRYoHtI0V2zC0ii6Kt0xfKDWhvNrTM3TqQv4EIYjt5NlyowqHhjBJ2gheJ/BfoPnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/js/uikit-core.min.js" integrity="sha512-IeT1HldAqb15q2QiOY0bIajZA0DgR7q0TLoHgVAPs6hFB+d/7c9ufgJLnrivBOTJTaK7Wgs4jLzOITVRLpY3Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/js/uikit-icons.min.js" integrity="sha512-ZN3+/fQI4kCvbrvd9em65IXBx8PtRcc+RsVgZIBIyEoO0CbXcUOL8sLLxQsmytTwg6Jm91fnDS6Xkaw48zB8Eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.9.4/js/components/tooltip.min.js" integrity="sha512-4z1VFBn80lqZMDa+AIBssIYO8pJmQXN0/kAK3QepM3xzabL/plWHr2LMX3ly8Ub231nXDHXeVaQNhsV52sp4zg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 
@@ -67,6 +73,9 @@
             @empty
                 
             @endforelse
+            @if ($deliverycategories->count())
+                <a href="{{ route('delivery') }}" class="uk-padding uk-padding-remove-vertical"><span uk-tooltip="Доставка"><i class="fas fa-truck"></i></span> <span class="uk-visible@s">Доставка</span></a>
+            @endif
             <a href="{{ route('questions') }}" class="uk-padding uk-padding-remove-vertical"><span uk-icon="question" uk-tooltip="Ваши вопросы и ответы"></span> <span class="uk-visible@m">Вопросы и ответы</span></a>
             {{-- <a href="{{ route('articles') }}" class="uk-padding uk-padding-remove-vertical">Статьи</a> --}}
             <a href="{{ route('sales') }}" class="topmenu__left__red uk-padding uk-padding-remove-vertical">Акции</a>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Deliverycategory;
 use App\Discount;
 use App\Product;
 use App\Property;
@@ -481,6 +482,16 @@ class MainController extends Controller
             'meta_description' => 'Здесь вы можете задать любые интересующие вас вопросы о напольных покрытиях: какой паркет лучше выбрать, на что приклеить, чем покрыть и т.д.',
         );
         return view('questions', $data);
+    }
+
+    public function delivery() {
+        $deliverycategories = Deliverycategory::orderBy('id', 'DESC')->get();
+        $data = array (
+            'title' => 'Доставка в "Паркетном мире"',
+            'deliverycategories' => $deliverycategories,
+            'meta_description' => 'Описание вариантов доставки приобретенного в "Паркетном мире" товара',
+        );
+        return view('delivery', $data);
     }
 
     public function questionsStore(Request $request) {

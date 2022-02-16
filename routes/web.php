@@ -25,6 +25,8 @@ Route::middleware('blockip')->group(function(){
   Route::get('/sets', 'MainController@sets')->name('sets');
   Route::get('/sets/{set}', 'MainController@set')->name('set');
 
+  Route::get('/delivery', 'MainController@delivery')->name('delivery');
+
   Route::get('/sales', 'MainController@sales')->name('sales');
   Route::get('/sales/{sale}', 'MainController@sale')->name('sale');
 
@@ -77,6 +79,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::post('/uploadimg',  'ImageController@store');
   // Route::any('/updateimg/{id}',  'ImageController@update');
   Route::resource('/categories', 'CategoryController');
+  Route::resource('/deliverycategories', 'DeliverycategoryController');
+  Route::resource('/delivery', 'DeliveryController');
   Route::resource('/articles', 'ArticleController');
   Route::resource('/sets', 'SetController');
   Route::resource('/currencies', 'CurrencyController');
@@ -96,6 +100,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::post('/products/fastpriceedit/ajax', 'ProductController@ajaxFastPriceEdit'); // поиск товара для добавления к статье
   Route::get('/products/addImages/{product}', 'ProductController@addImages')->name('products.addImages');
   Route::post('/products/getcategoryproperties', 'ProductController@getCategoryProperties'); // во время создания товара при изменении категории подтягиваются параметры
+  Route::post('/products/productdifferent/store',  'ProductdifferentController@store'); // добавление вариантов товара (масса, цвет, размер)
+  Route::post('/products/productdifferent/destroy',  'ProductdifferentController@destroy'); // удаление вариантов товара (масса, цвет, размер)
+
   Route::resource('/units', 'UnitController');
   Route::resource('/options', 'OptionController');
   Route::resource('/choises', 'ChoiseController');
