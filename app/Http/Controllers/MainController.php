@@ -16,6 +16,8 @@ use App\Question;
 use App\Setting;
 use App\Topmenu;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 use Route;
 
@@ -196,80 +198,117 @@ class MainController extends Controller
 
                 $products = ($_COOKIE['productsort'] == 'price_up') ? $products->sortBy('sort_price') : $products->sortByDesc('sort_price') ;
             } else {
-                $products = Product::where('category_id', $category->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->get();
+                $products = Product::where('category_id', $category->id)->finaly()->published()->order('55')->with('manufacture', 'images', 'unit', 'currency')->get();
             }            
         }
         
         $manufactures = Manufacture::whereIn('id', $products->pluck('manufacture_id'))->get();
 
         // $products = $products->paginate($itemsPerPage);
-        
-        if ($request->all() != NULL) {
+        $filtered = [];
+        if ($request->all() != NULL) {            
             foreach ($request->all() as $key => $value) {
                 if ($key == 'manufacture') {
                     $filterManufacture = explode(",", $value);
+                } else {
+                    $filtered[$key] = $value;
                 }
 
             }
         }
 
+        $products_array = $products->pluck('id');
+
         $manufactured_to_title = Manufacture::whereIn('id', $filterManufacture)->orderBy('manufacture', 'ASC')->pluck('manufacture')->implode(', ');
 
-        if (count($filterManufacture) > 0) {
-            $products = $products->whereIn('manufacture_id', $filterManufacture);
-        } 
+            if (count($filterManufacture) > 0) {
+                $products = $products->whereIn('manufacture_id', $filterManufacture);
+            } 
+
+        if (count($filtered)) {
+            [$filtered_keys, $filtered_values] = Arr::divide($filtered);
+            $product_ids['properties'] = Property::whereIn('id', $filtered_keys)->with('products')->get();
+            $product_ids['propertyvalues_all'] = Propertyvalue::whereIn('product_id', $products_array)->get();
+            $product_ids1 = $product_ids['propertyvalues_all']->whereIn('value', $filtered_values)->pluck('product_id');
+            $product_ids2 = $product_ids['propertyvalues_all']->whereIn('product_id', $product_ids1)->whereIn('property_id', $filtered_keys)->pluck('product_id')->unique();
+            // $product_ids['propertyvalues'] = $product_ids['propertyvalues']->whereIn('property_id', $filtered_keys);
+            dd($product_ids, $filtered_values, $filtered_keys);
+    
+            $filtered_products = '';
+    
+            dd($filtered_products);
+            
+        }
+
+        
+
+        // dd($filtered, $products, $products[5], $products[5]->propertyvalue[0], $products[5]->property_active_product, $products->whereIn('propertyvalue', ['2266мм.']));        
 
         $products_count = $products->count();
+
+        
         
         $products = $products->paginate($itemsPerPage);
 
+        // if ($prop) {
+        //     $prop_products_array = [];
+        //     $prop_array = [];
 
-        if ($prop) {
-            $prop_products_array = [];
-            $prop_array = [];
-
-            $new_array = [];
-            foreach ($prop as $key => $value) {
-                // dd($value);
-                $prop_array[] = $key;
-                if (strpos($value, ',')) {
-                    $values = [];
-                    $values = explode(",", $value);
+        //     $new_array = [];
+        //     foreach ($prop as $key => $value) {
+        //         // dd($value);
+        //         $prop_array[] = $key;
+        //         if (strpos($value, ',')) {
+        //             $values = [];
+        //             $values = explode(",", $value);
                     
-                    // dd($values);                    
-                } else {
-                    $values = [];
-                    $values = $value;
-                }
-                // $new_array[] = $key;
-                $new_array[$key] = $values;
-            }
-            // dd($new_array);
-            // dd($prop);
-            // 
+        //             // dd($values);                    
+        //         } else {
+        //             $values = [];
+        //             $values = $value;
+        //         }
+        //         // $new_array[] = $key;
+        //         $new_array[$key] = $values;
+        //     }
+        //     // dd($new_array);
+        //     // dd($prop);
+        //     // 
 
-            $products_array = Propertyvalue::whereIn('property_id', $prop_array)->pluck('id');
-            // dd($products_array);
-            $prop_array = Propertyvalue::whereIn('property_id', $prop_array)->pluck('product_id');
-            // dd($prop_array);
+        //     $products_array = Propertyvalue::whereIn('property_id', $prop_array)->pluck('id');
+        //     dd($products_array);
+        //     $prop_array = Propertyvalue::whereIn('property_id', $prop_array)->pluck('product_id');
+        //     // dd($prop_array);
             
-            // dd($products);
-            // $props = Propertyvalue::wherein('products', $products)->get();
-            // dd($props);
+        //     // dd($products);
+        //     // $props = Propertyvalue::wherein('products', $products)->get();
+        //     // dd($props);
             
-        } else {
-            $new_array = [];
-        }  
+        // } else {
+        //     $new_array = [];
+        // }
         // dd($products);      
 
         // выбираем все propertyvalues и кидаем в массив айдишники товаров
         // выбираем товары с параметром wherein (id товаров из массива)
         //
 
-        $products_array = $products->pluck('id');
+        
         $property_values = Propertyvalue::whereIn('product_id', $products_array)->with('properties')->get();
+
+        // $property_values_filtered = $property_values->whereIn('property_id', $filtered_keys)->whereIn('value', $filtered_values);
+        // dd($products_count, $property_values_filtered, $property_values_filtered->pluck('product_id'), $products->pluck('id')->sort());
+
+        // $unique_property_values_2 = $property_values->pluck('product_id')->unique();
         $unique_property_values = $property_values->pluck('value')->unique();
         $properties = $property_values->whereIn('value', $unique_property_values)->unique('value');
+
+        // foreach ($unique_property_values as $key => $value) {
+        //     # code...
+        // }
+
+        // dd($filtered_keys, $products_array, $property_values, $property_values[0]->products, $unique_property_values, $properties);
+        // dd($products_array, $property_values, $unique_property_values_2, $property_values[0]->products, $unique_property_values, $properties);
+    
 
         $local_title = ($manufactured_to_title) ? $category->category . ' ' . $manufactured_to_title : $category->category ;
         $meta_description = ($manufactured_to_title) ? $category->category . ' ' . $manufactured_to_title : $category->category ;
@@ -281,7 +320,7 @@ class MainController extends Controller
             'manufactured_to_title' => $manufactured_to_title,
             'category' => $category,
             'properties' => $properties,
-            'checked_properties' => $new_array,
+            // 'checked_properties' => $new_array,
             'local_title' => $local_title,
             'sort' => $sort,
             'manufactures'          => $manufactures,

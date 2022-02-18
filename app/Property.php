@@ -31,6 +31,10 @@ class Property extends Model
         return $this->belongsToMany(Propertyvalue::class);
     }
 
+    public function products() {
+        return $this->belongsToMany(Product::class, 'propertyvalues', 'property_id', 'product_id');
+    }
+
     public function values() {
         return $this->hasMany(Propertyvalue::class);
     }

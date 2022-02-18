@@ -170,6 +170,10 @@ class Product extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public function properties() {
+        return $this->belongsToMany(Property::class, 'propertyvalues', 'product_id', 'property_id');
+    }
+
     public function propertyvalue() {
         return $this->hasMany(Propertyvalue::class);
     }
@@ -212,11 +216,15 @@ class Product extends Model
         }
     }
 
-    //проверяет, отмечен ли товар в боковом меню фильтра товаров
+    //проверяет, отмечен ли товар в боковом меню фильтра товаров // НЕ РАБОТАЕТ
     public function getPropertyActiveProductAttribute($property) {
+        $arr = [];
         foreach ($this->propertyvalue as $key => $value) {
-            return $value->property_id;
+            // return $value->property_id;
+            array_push($arr, $value->property_id);
         }
+
+        return $arr;
     }
 
     public function getMainOrFirstImageAttribute($value) {
@@ -346,8 +354,7 @@ class Product extends Model
         return number_format($this, 2, ',', ' ');
     }
 
-    public function scopeOrder($query)
-    {
+    public function scopeOrder($query) {
         $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';
 
         switch ($sort) {

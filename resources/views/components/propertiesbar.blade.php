@@ -14,7 +14,7 @@
                 </div>
             @endif
 
-            {{-- @forelse ($category_properties as $category_property)
+            @forelse ($category_properties as $category_property)
                 <h5 class="uk-heading-line property__title"><span>{{ $category_property->property }} ({{$category_property->id}})</span></h5>
                 <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid property__list">
                         @foreach ($properties as $property)
@@ -31,7 +31,7 @@
                 </div>
             @empty
                 
-            @endforelse --}}
+            @endforelse
         </div>
 
         <form action="" method="post" id="properties">
