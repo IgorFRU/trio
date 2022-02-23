@@ -66,7 +66,7 @@
 
             <div class="uk-grid-small" uk-grid>
                 @if (count($category->property) > 0 || count($manufactures) > 1)
-                    @include('components.propertiesbar', ['min_price' =>$products->min('price'), 'category_properties' => $category->property, 'properties' => $properties, 'manufactures' => $manufactures, 'filteredManufacture' => $filteredManufacture ])
+                    @include('components.propertiesbar', ['min_price' =>$products->min('price'), 'category_properties' => $category->property, 'properties' => $properties, 'manufactures' => $manufactures, 'filteredManufacture' => $filteredManufacture, '$checked_properties' => $checked_properties ])
                     
                 @endif
                 

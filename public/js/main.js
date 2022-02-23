@@ -472,6 +472,7 @@ $(document).ready(function() {
                 new_address = new_address.slice(0, new_address.length - 1);
                 let old_url = window.location.href;
                 let new_url = old_url.slice(0, AddressStringSearch(old_url, '[?]'));
+
                 // AddressStringSearch(old_url, "[?]");
 
                 window.location.replace(new_url + '?' + new_address);

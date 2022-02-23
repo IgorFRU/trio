@@ -19,11 +19,11 @@
                 <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid property__list">
                         @foreach ($properties as $property)
                             @if ($property->properties->id == $category_property->id)
-                                <label><input class="uk-checkbox property__item" type="checkbox" data-property_id="{{ $property->property_id }}" value="{{ $property->value }}" name="{{ $category_property->property }}"> {{ $property->value }}</label>
+                                <label><input class="uk-checkbox property__item" type="checkbox" data-property_id="{{ $property->property_id }}" value="{{ $property->value }}" name="{{ $category_property->property }}" @isset($checked_properties[$property->property_id]) @if (in_array($property->value, $checked_properties[$property->property_id])) checked
+                                    
+                                @endif @endisset> {{ $property->value }}</label>
 
-                            @endif
-                        
-                    
+                            @endif                    
                         @endforeach
 
                         <button class="btn confirm_property_button btn btn-sm btn-info" title="Применить"><i class="fas fa-check"></i> Применить</button>
