@@ -6,6 +6,7 @@ use App\Setting;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 
 class SettingController extends Controller
 {
@@ -99,5 +100,17 @@ class SettingController extends Controller
         Artisan::call('migrate');
 
         return redirect()->back()->with('success', 'Миграция выполнена!');
+    }
+
+    public function updateTime(Request $request) {
+        echo json_encode('55');
+        Cache::forget('time_to_update_tomorrow');
+        $settings = Setting::first();
+        $settings->update(['time_to_update_tomorrow' => $request->value]);
+
+        Cache::forget('time_to_update_tomorrow');
+        // echo json_encode($settings);
+        // echo json_encode('55');
+        return 0;
     }
 }

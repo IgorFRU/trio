@@ -1264,7 +1264,7 @@ $(function() {
     $('.fast-price-edit_input').on('input', function() {
         let data = $(this).val();
         let button = $(this).parent().find('.fast-price-edit_submit');
-        if (data > 0) {
+        if (data >= 0) {
             button.removeClass('hide');
         } else {
             button.addClass('hide');
@@ -1315,6 +1315,27 @@ $(function() {
         });
     })
 
-
+    $('#time_to_update_tomorrow').on('keydown', function(e) {
+        if (e.which == 13) {
+            const value = $('#time_to_update_tomorrow').val();
+            $.ajax({
+                type: "POST",
+                url: "/admin/settings/updatetime",
+                data: {
+                    value2: value,
+                },
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    console.log(data);
+                    // location.reload();
+                },
+                error: function(msg) {
+                    console.log(msg);
+                }
+            });
+        }
+    });
 
 });

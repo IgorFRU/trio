@@ -18,7 +18,8 @@ class Setting extends Model
         'whatsapp',
         'vkontakte',
         'main_text',
-        'orderstatus_id'
+        'orderstatus_id',
+        'time_to_update_tomorrow',
     ];
 
     public function getFullMainPhoneAttribute($value) {

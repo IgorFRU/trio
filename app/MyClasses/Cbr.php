@@ -5,6 +5,7 @@ namespace App\MyClasses;
 use \Carbon\Carbon;
 use App\Currency;
 use App\Currencyrate;
+use App\Setting;
 
 use Illuminate\Support\Facades\Cache;
 
@@ -13,6 +14,7 @@ class Cbr
     static $days = [];
     static $today;
     static $tomorrow;
+    static $time_to_update_tomorrow;
     static $valute_names = [];
     static $valute_values = [];
     static $valute_values_array = [];
@@ -23,6 +25,7 @@ class Cbr
     public static function configurate() {
         self::$today = Carbon::now()->format('d.m.Y');
         self::$tomorrow = Carbon::now()->addDay()->format('d.m.Y');
+        self::$time_to_update_tomorrow = Setting::first()->time_to_update_tomorrow;
 
         //выбор валют, которые нуждаются в обновлении курса. Основная валюта только одна и это обычно рубль. Относительно нее все курсы
 
@@ -37,7 +40,7 @@ class Cbr
 
         if (self::$valute_names) {
             self::getCourses(self::$today);
-            if (Carbon::now()->format('H') >= '14') {
+            if (Carbon::now()->format('H') >= self::$time_to_update_tomorrow) {
                 self::getCourses(self::$tomorrow);
             }
         } else {
@@ -53,24 +56,41 @@ class Cbr
         // $tmp = Currencyrate::where('ondate', date("Y-m-d", strtotime($day)))->get();
         // dd($tmp[0]->currency->currency);
         if (!Currencyrate::where('ondate', date("Y-m-d", strtotime($day)))->count()) {
-            self::$file = simplexml_load_file("http://www.cbr.ru/scripts/XML_daily.asp?date_req=".$day);
-            //self::$file = simplexml_load_file($day);
-            $content = [];
 
-            foreach (self::$file AS $el){
-                $content[strval($el->CharCode)] = strval($el->Value);
-            }
-        
-            for ($j=0; $j < self::$count_valutes; $j++) {
-                self::$valute_values = number_format(str_replace(',', '.', $content[self::$valute_names[$j]]), 2, '.', '');
-                //dd(self::$valute_values);
-                $todatabase['currency_id'] = Currency::where('currency', self::$valute_names[$j])->pluck('id')[0];
-                // $todatabase['value'] = end(self::$valute_values);
-                $todatabase['value'] = self::$valute_values;
-                $todatabase['ondate'] = date("Y-m-d", strtotime($day));
+            try {
+                self::$file = simplexml_load_file("http://www.cb2r.ru/scripts/XML_daily.asp?date_req=".$day);
+                //self::$file = simplexml_load_file($day);
+                $content = [];
+
+                foreach (self::$file AS $el){
+                    $content[strval($el->CharCode)] = strval($el->Value);
+                }
+
+                // dd(self::$file, $content);
+            
+                for ($j=0; $j < self::$count_valutes; $j++) {
+                    self::$valute_values = number_format(str_replace(',', '.', $content[self::$valute_names[$j]]), 2, '.', '');
+                    //dd(self::$valute_values);
+                    $todatabase['currency_id'] = Currency::where('currency', self::$valute_names[$j])->pluck('id')[0];
+                    // $todatabase['value'] = end(self::$valute_values);
+                    $todatabase['value'] = self::$valute_values;
+                    $todatabase['ondate'] = date("Y-m-d", strtotime($day));
+                    
+                    Currencyrate::create($todatabase);
+                }
+            } catch (\Throwable $th) {
+                $reserved_values = Currency::currenciesListToUpdateFull();
                 
-                Currencyrate::create($todatabase);
+                for ($i=0; $i < $reserved_values->count(); $i++) { 
+                    // dd($reserved_values[$i]);
+                    $todatabase['currency_id'] = $reserved_values[$i]->id;
+                    $todatabase['value'] = $reserved_values[$i]->reserved_value;
+                    $todatabase['ondate'] = date("Y-m-d", strtotime($day));
+                    
+                    Currencyrate::create($todatabase);
+                }                
             }
+            
         } else {             
             for ($j=0; $j < self::$count_valutes; $j++) {
                 $id = Currency::where('currency', self::$valute_names[$j])->pluck('id')[0];

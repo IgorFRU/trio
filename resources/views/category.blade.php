@@ -180,8 +180,17 @@
                                                                             @if ($product->actually_discount)
                                                                                 <del class="uk-text-meta"><span class="price_value">{{ $product->old_price }}</span> <i class="fa fa-rub"></i></del>
                                                                             @endif
-                                                                            <div class="tm-product-card-price"><span class="price_value">{{ $product->discount_price }}</span> <i class="fa fa-rub"></i>
-                                                                                <span class="uk-text-muted uk-text-small uk-margin-left-small">за 1 {{ $product->unit->unit ?? 'ед.' }}</span>
+                                                                            <div class="tm-product-card-price">
+                                                                                @if ($product->discount_price <= 0)
+                                                                                    <a href="tel:+79788160166" class="uk-text-primary">
+                                                                                        <span class="uk-icon uk-margin-small-right" uk-icon="icon: phone"></span>
+                                                                                        <span class="uk-visible@m">Цену уточняйте</span>
+                                                                                    </a>
+                                                                                @else
+                                                                                    <span class="price_value">{{ $product->discount_price }}</span> <i class="fa fa-rub"></i>
+                                                                                    <span class="uk-text-muted uk-text-small uk-margin-left-small">за 1 {{ $product->unit->unit ?? 'ед.' }}</span>
+                                                                                @endif
+                                                                                
                                                                             </div>
                                                                         </div>
                                                                         {{-- <div class="tm-product-card-add">
@@ -209,6 +218,8 @@
                                                 </div>
                                                 <div class="paginate uk-margin-left uk-margin-right uk-margin">
                                                     {{ $products->appends(request()->input())->links('layouts.pagination') }}
+                                                    {{-- {!! (method_exists($products, 'links') ? $products->appends(request()->except(['page']))->render() : "") !!} --}}
+                                                    {{-- {{ $products->links('layouts.pagination')->withQueryString() }} --}}
                                                 </div>
                                             </div>
 

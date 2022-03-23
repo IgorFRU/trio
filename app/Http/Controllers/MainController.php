@@ -74,7 +74,8 @@ class MainController extends Controller
         $about = Setting::first();
         if ($about == NULL) {
             $about = Setting::create(
-                ['site_name'        => 'Паркетный мир - Симферополь',
+                [
+                'site_name'        => 'Паркетный мир - Симферополь',
                 'address'          => 'Симферополь, пр. Победы, 129/2',
                 'phone_1'          => '9788160166',
                 'phone_2'          => '',
@@ -82,7 +83,9 @@ class MainController extends Controller
                 'viber'            => '9788160166',
                 'whatsapp'         => '9788160166',
                 'main_text'        => 'Паркет со всего мира по лучшим ценам!',
-                'orderstatus_id'   => '1']
+                'orderstatus_id'   => '1',
+                'time_to_update_tomorrow' => 18,
+                ]
             );
         }
 
@@ -149,7 +152,7 @@ class MainController extends Controller
     }
 
     public function category($slug, Request $request) {
-        // dd($slug);
+        // dd($request->field);
         // $today = Carbon::now();
         $filterManufacture = [];
         $manufactured_to_title = [];
@@ -207,22 +210,21 @@ class MainController extends Controller
 
         // $products = $products->paginate($itemsPerPage);
         $filtered = [];
-        if ($request->all() != NULL) {            
-            foreach ($request->all() as $key => $value) {
+        if ($request->field != NULL) {            
+            foreach ($request->field as $key => $value) {
                 if ($key == 'manufacture') {
                     $filterManufacture = explode(",", $value);
-                } else {
+                } elseif($key != 'page') {
                     $filtered[$key] = $value;
                 }
-
             }
         }
 
+        // dd($filterManufacture);
+        // dd(count($filterManufacture));
         $products_array = $products->pluck('id');
 
         $manufactured_to_title = Manufacture::whereIn('id', $filterManufacture)->orderBy('manufacture', 'ASC')->pluck('manufacture')->implode(', ');
-
-            
 
         $checked_properties = [];
 
@@ -251,10 +253,6 @@ class MainController extends Controller
                         $checked_properties[$key][] = $tmp->unique('value')->pluck('value')->toArray()[0];
                     }                    
                 }
-            }
-
-            if (count($filterManufacture) > 0) {
-                $products = $products->whereIn('manufacture_id', $filterManufacture);
             }
 
             // [$trash, $checked_properties] = Arr::divide($checked_properties);
@@ -292,11 +290,13 @@ class MainController extends Controller
             // $filtered_product_ids = $filtered_product_ids->pluck('product_id');
             foreach ($filtered_ids as $key => $value) {
                 // dd($value);
-                $products = $products->wherein('id', $value);
+                $products = $products->whereIn('id', $value);
             }
-            
-            
-        }      
+        }
+
+        if (count($filterManufacture) > 0) {
+            $products = $products->whereIn('manufacture_id', $filterManufacture);
+        }
 
         $products_count = $products->count();
         $products = $products->paginate($itemsPerPage);

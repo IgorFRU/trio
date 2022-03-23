@@ -68,6 +68,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
   Route::get('/settings/clearcache', 'SettingController@clearCache')->name('clearcache'); // очистка всего кеша
   Route::get('/settings/migrate', 'SettingController@migrate')->name('migrate');
+  Route::post('/settings/updatetime', 'SettingController@updateTime');
     
   Route::post('/password/email', 'Auth\AdminForgotPasswordController@sendResetLinkEmail')->name('password.email');    
   Route::get('/password/reset', 'Auth\AdminForgotPasswordController@showLinkRequestForm')->name('password.request');    

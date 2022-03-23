@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Currency;
+use App\Setting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class CurrencyController extends Controller
 {
@@ -23,7 +25,8 @@ class CurrencyController extends Controller
         $data = array (
             'title'         => 'АДМИН - Паркетный мир - Валюты',
             'currencies'    => Currency::orderBy('id', 'DESC')
-                                    ->paginate(10)
+                                    ->paginate(10),
+            'time_to_update_tomorrow'  => self::timeToUpdate(),
         );
 
         return view('admin.currencies.index', $data);
@@ -119,5 +122,12 @@ class CurrencyController extends Controller
         $currency->delete();
 
         return redirect()->back()->with('success', 'Валюта успешно удалена');
+    }
+
+    private function timeToUpdate() {
+        $time_to_update_tomorrow = Cache::remember('time_to_update_tomorrow', 60, function() {
+            return Setting::first()->time_to_update_tomorrow;
+        });
+        return $time_to_update_tomorrow;
     }
 }

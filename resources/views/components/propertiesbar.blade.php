@@ -15,11 +15,11 @@
             @endif
 
             @forelse ($category_properties as $category_property)
-                <h5 class="uk-heading-line property__title"><span>{{ $category_property->property }} ({{$category_property->id}})</span></h5>
+                <h5 class="uk-heading-line property__title"><span>{{ $category_property->property }}</span></h5>
                 <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid property__list">
                         @foreach ($properties as $property)
                             @if ($property->properties->id == $category_property->id)
-                                <label><input class="uk-checkbox property__item" type="checkbox" data-property_id="{{ $property->property_id }}" value="{{ $property->value }}" name="{{ $category_property->property }}" @isset($checked_properties[$property->property_id]) @if (in_array($property->value, $checked_properties[$property->property_id])) checked
+                                <label><input class="uk-checkbox property__item" type="checkbox" data-property_id="{{ $property->property_id }}" data-property_value="{{ $category_property->property }}" value="{{ $property->value }}" name="{{ $category_property->property }}" @isset($checked_properties[$property->property_id]) @if (in_array($property->value, $checked_properties[$property->property_id])) checked
                                     
                                 @endif @endisset> {{ $property->value }}</label>
 

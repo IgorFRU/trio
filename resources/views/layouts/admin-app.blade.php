@@ -47,7 +47,149 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+            <nav class="uk-navbar-container" uk-navbar>
+                <div class="uk-navbar-left">
+                    <ul class="uk-navbar-nav">
+                        <li class="nav-item {{ Request::is('admin') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('admin.index') }}" data-toggle="tooltip" data-placement="top" title="Основные настройки сайта"><i class="fas fa-sliders-h"></i><span class="sr-only">(current)</span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-store-alt"></i> Магазин</a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li><a class="dropdown-item {{ (Request::is('*products*') ? 'active' : '') }}" href="{{ route('admin.products.index') }}"><i class="fas fa-archive"></i> товары</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*importexport*') ? 'active' : '') }}" href="{{ route('admin.import-export.index') }}"><i class="fas fa-file-excel"></i> импорт/экспорт</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*categories*') ? 'active' : '') }}" href="{{ route('admin.categories.index') }}"><i class="fas fa-folder"></i> категории</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*manufactures*') ? 'active' : '') }}" href="{{ route('admin.manufactures.index') }}"><i class="fas fa-industry"></i> производители</a></li>
+                                    <hr>
+                                    <li><a class="dropdown-item {{ (Request::is('*delivery*') ? 'active' : '') }}" href="{{ route('admin.deliverycategories.index') }}"><i class="fas fa-truck"></i> Доставки</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*vendors*') ? 'active' : '') }}" href="{{ route('admin.vendors.index') }}"><i class="fas fa-store-alt"></i>  Поставщики</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*sets*') ? 'active' : '') }}" href="{{ route('admin.sets.index') }}"><i class="fas fa-tasks"></i> Группы товаров</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*options*') ? 'active' : '') }}" href="{{ route('admin.options.index') }}">Опции товаров</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*units*') ? 'active' : '') }}" href="{{ route('admin.units.index') }}"><i class="fas fa-tape"></i>  Ед. измерения</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*currencies*') ? 'active' : '') }}" href="{{ route('admin.currencies.index') }}"><i class="fas fa-money-bill-alt"></i> валюты</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*menus*') ? 'active' : '') }}" href="{{ route('admin.menus.index') }}"><i class="fas fa-bars"></i> пункты меню</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-tags"></i> Продвижение</a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li><a class="dropdown-item {{ (Request::is('*discounts*') ? 'active' : '') }}" href="{{ route('admin.discounts.index') }}"><i class="fas fa-percentage"></i>  Акции</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*articles*') ? 'active' : '') }}" href="{{ route('admin.articles.index') }}"><i class="fas fa-newspaper"></i>  Статьи</a></li>
+                                    <li><a class="dropdown-item {{ (Request::is('*questions*') ? 'active' : '') }}" href="{{ route('admin.questions.index') }}"><i class="fas fa-question"></i>  FAQ</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-images"></i>  Баннеры</a></li>
+                                    <hr>
+                                    <li><a class="dropdown-item {{ (Request::is('*parser*') ? 'active' : '') }}" href="{{ route('admin.parser') }}"><i class="fas fa-images"></i>  Парсер</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-archive"></i>  Покупатели и заказы</a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-user-friends"></i>  Покупатели</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-map-marked-alt"></i>  Адреса покупателей</a></li>
+                                    <hr>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-check"></i>  Статусы заказов</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-shopping-basket"></i>  Заказы</a></li>
+                                    <li><a class="dropdown-item rounded text-white bg-danger" href="#"><i class="fas fa-fire"></i>  Заказы к исполнению</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-boxes"></i>  Архив заказов</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-file-alt"></i> Статические страницы</a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li><a class="dropdown-item {{ (Request::is('*topmenu*') ? 'active' : '') }}" href="{{ route('admin.topmenu.index') }}">Верхнее меню</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-toolbox"></i></a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li><a class="dropdown-item {{ (Request::is('*block_ip*') ? 'active' : '') }}" href="{{ route('admin.blockip.index') }}"><i class="fas fa-shield-alt"></i> Блок по IP</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="uk-navbar-center">
+                    <ul class="uk-navbar-nav">
+                        <li class="currency__today">
+                            <a href="#">
+                                <div> Сегодня: 
+                                    @foreach ($cbrToday as $key=>$value)
+                                        <span class="currency__child"> 
+                                            <i class="fa fa-{{strtolower($value->currency->currency) ?? ''}}" aria-hidden="true"></i>
+                                            <span class="currency__value">{{ $value->value ?? '-' }}</span>
+                                            <span                    
+                                            @if($value->value != -1)
+                                                @if(count($cbrTomorrow))
+                                                    @if($value->value < $cbrTomorrow[$key]->value)
+                                                        class="currency__red" 
+                                                    @elseif($value->value > $cbrTomorrow[$key]->value)
+                                                        class="currency__green"  
+                                                    @else                       
+                                                        class="currency__grey"                        
+                                                    @endif
+                                                @endif                                   
+                                            @else                       
+                                                class="currency__grey"                       
+                                            @endif>
+                                            </span>
+                                        </span>
+                                    @endforeach
+                                    @if(count($cbrTomorrow))
+                                        <div class="currency__tomorrow uk-navbar-subtitle">
+                                                Завтра:
+                                                @foreach ($cbrTomorrow as $value)
+                                                <span>
+                                                    <i class="fa fa-{{strtolower($value->currency->currency) ?? ''}}" aria-hidden="true"></i>
+                                                    <span class="currency__value">{{ $value->value ?? '-' }}</span>
+                                                </span>    
+                                                @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="uk-navbar-right">
+                    <ul class="uk-navbar-nav">
+                        <li class="nav-item {{ Request::is('admin') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ url('/') }}" target="_blank"><i class="fas fa-link"></i>  На сайт</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-user-shield"></i>  {{ Auth::user()->name }} <span class="caret"></span></a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li>
+                                        <a class="dropdown-item" href="@if (Auth::guard('admin')->check()) {{ route('admin.logout') }} @else {{ route('logout') }} @endif"
+                                            onclick="event.preventDefault();
+                                                          document.getElementById('logout-form').submit();">
+                                             <i class="fas fa-sign-out-alt"></i>  {{ __('Выйти') }}
+                                         </a>
+     
+                                         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                             @csrf
+                                         </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        
+        {{-- <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
             <div class="container">                
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -190,7 +332,7 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> --}}
 
         <main class="py-4">
             @section('adminmenu')

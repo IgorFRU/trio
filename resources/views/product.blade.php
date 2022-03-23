@@ -175,56 +175,68 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
-                                                            @if ($product->actually_discount)
-                                                                <span class="price_value product_price_value">{{ $product->discount_price }} </span>
-                                                                <i class="fa fa-rub"></i>
-                                                                <div class="old_price_value product_old_price_value price_value">
-                                                                    {{ $product->old_price }}
-                                                                </div>
-                                                                за 1 {{$product->unit->unit ?? 'ед.' }}
+                                                            @if ($product->discount_price <= 0)
+                                                                <a href="tel:+79788160166" class="uk-text-primary">
+                                                                    <span class="uk-icon uk-margin-small-right" uk-icon="icon: phone"></span>
+                                                                    <span class="uk-visible@m">Цену уточняйте</span>
+                                                                </a>
                                                             @else
-                                                                <div>
-                                                                    <span class="price_value product_price_value">{{ $product->old_price }} </span>
+                                                                @if ($product->actually_discount)
+                                                                    <span class="price_value product_price_value">{{ $product->discount_price }} </span>
                                                                     <i class="fa fa-rub"></i>
-                                                                </div>          
-                                                                за 1 {{$product->unit->unit ?? 'ед.' }}
+                                                                    <div class="old_price_value product_old_price_value price_value">
+                                                                        {{ $product->old_price }}
+                                                                    </div>
+                                                                    за 1 {{$product->unit->unit ?? 'ед.' }}
+                                                                @else
+                                                                    <div>
+                                                                        <span class="price_value product_price_value">{{ $product->old_price }} </span>
+                                                                        <i class="fa fa-rub"></i>
+                                                                    </div>          
+                                                                    за 1 {{$product->unit->unit ?? 'ед.' }}
+                                                                @endif
                                                             @endif
+                                                            
                                                         </div>
-                                                        @if ($product->packaging)
-                                                            <div class="product_price_package_value">
-                                                                <div><span class="price_value bold">{{ $product->package_price }}</span> <i class="fa fa-rub"></i></div>
-                                                                 за 1 упаковку {{ round($product->unit_in_package, 3) ?? '-' }} {{$product->unit->unit ?? 'ед.' }}
-                                                                {{-- <div class="bg-light product_package_price_value">
-                                                                    <span class="price_value bold">{{ $product->package_price }}</span>
-                                                                    <i class="fa fa-rub"></i>
-                                                                </div> --}}
-                                                            </div>
+                                                        @if ($product->discount_price > 0)
+                                                            @if ($product->packaging)
+                                                                <div class="product_price_package_value">
+                                                                    <div><span class="price_value bold">{{ $product->package_price }}</span> <i class="fa fa-rub"></i></div>
+                                                                    за 1 упаковку {{ round($product->unit_in_package, 3) ?? '-' }} {{$product->unit->unit ?? 'ед.' }}
+                                                                    {{-- <div class="bg-light product_package_price_value">
+                                                                        <span class="price_value bold">{{ $product->package_price }}</span>
+                                                                        <i class="fa fa-rub"></i>
+                                                                    </div> --}}
+                                                                </div>
+                                                            @endif
                                                         @endif
                                                     </div>
-                                                    <div class="products__card__buttons">
-                                                        <div class="products__card__buttons__input">
-                                                            <span class="minus"><i class="fa fa-minus"></i></span>
-                                                            <input type="text" name="count" id="count" 
-                                                            data-price="{{ round($product->discount_price * $product->unit_in_package, 2) }}" 
-                                                            data-count="{{ round($product->unit_in_package, 2) }}"
-                                                            data-countpackage="1"
-                                                            @if($product->packaging) value="{{ round($product->unit_in_package, 2) }} {{ $product->unit->unit ?? 'ед.' }}" @endif >
-                                                            <span class="plus"><i class="fa fa-plus"></i></span>
-                                                        </div>
-                                                        <div class="for_payment">
-                                                            к оплате: 
-                                                            <div>
-                                                                <span class="price_value" data-unit="{{ $product->unit->unit ?? 'ед.' }}">{{ round($product->discount_price * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
+                                                    @if ($product->discount_price > 0)
+                                                        <div class="products__card__buttons">
+                                                            <div class="products__card__buttons__input">
+                                                                <span class="minus"><i class="fa fa-minus"></i></span>
+                                                                <input type="text" name="count" id="count" 
+                                                                data-price="{{ round($product->discount_price * $product->unit_in_package, 2) }}" 
+                                                                data-count="{{ round($product->unit_in_package, 2) }}"
+                                                                data-countpackage="1"
+                                                                @if($product->packaging) value="{{ round($product->unit_in_package, 2) }} {{ $product->unit->unit ?? 'ед.' }}" @endif >
+                                                                <span class="plus"><i class="fa fa-plus"></i></span>
+                                                            </div>
+                                                            <div class="for_payment">
+                                                                к оплате: 
+                                                                <div>
+                                                                    <span class="price_value" data-unit="{{ $product->unit->unit ?? 'ед.' }}">{{ round($product->discount_price * $product->unit_in_package, 2) }}</span> <i class="fa fa-rub"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="buttons">
+                                                                @if ($product->discount_price > 0)
+                                                                    <div class="one_click btn buy_btn">Купить в 1 клик</div>
+                                                                @else
+                                                                    <div class="uk-text-break">В данный момент этот товар нельзя приобрести</div>
+                                                                @endif
                                                             </div>
                                                         </div>
-                                                        <div class="buttons">
-                                                            @if ($product->discount_price > 0)
-                                                                <div class="one_click btn buy_btn">Купить в 1 клик</div>
-                                                            @else
-                                                                <div class="btn btn-warning">В данный момент этот товар нельзя приобрести</div>
-                                                            @endif
-                                                        </div>
-                                                    </div>
+                                                    @endif
                                                 </div>
                                             <div class="price__selector">
 

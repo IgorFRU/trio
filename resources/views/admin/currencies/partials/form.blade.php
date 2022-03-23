@@ -7,13 +7,19 @@
                 <input type="text" name="currency" class="form-control" id="currency" value="{{ $currency->currency ?? '' }}" required maxlength="3">
             </div>
         </div>
-        <div class='col-lg-5 row'>
-            <label for="currency_rus" class="col-lg-4 col-form-label">Русское название</label>
-            <div class="col-md-8">
-                <input type="text" name="currency_rus" class="form-control" id="currency_rus" value="{{ $currency->currency ?? '' }}" required maxlength="16">
+        <div class='col-lg-3 row'>
+            <label for="reserved_value" class="col-lg-6 col-form-label">Резервное значение</label>
+            <div class="col-lg-6">
+                <input type="text" name="reserved_value" class="form-control" id="reserved_value" value="{{ $currency->reserved_value ?? '' }}" required maxlength="3">
             </div>
         </div>
-        <div class="col-lg-3 row">
+        <div class='col-lg-4 row'>
+            <label for="currency_rus" class="col-lg-4 col-form-label">Русское название</label>
+            <div class="col-md-8">
+                <input type="text" name="currency_rus" class="form-control" id="currency_rus" value="{{ $currency->currency_rus ?? '' }}" required maxlength="16">
+            </div>
+        </div>
+        <div class="col-lg-2 row">
             <label for="to_update" class="col-lg-10 col-form-label">Запрашивать курс обмена?</label>  
             <div class="col-md-2">      
                 @if(isset($currency->id))
@@ -35,7 +41,7 @@
         <div class='col-lg-12 row'>
             <label for="css_style" class="col-lg-1 col-form-label">CSS</label>
             <div class="col-lg-11">
-                <input type="text" name="css_style" class="form-control" id="css_style" value="{{ $currency->css_style ?? '' }}" required maxlength="127">
+                <input type="text" name="css_style" class="form-control" id="css_style" value="{{ $currency->css_style ?? '' }}" maxlength="127">
             </div>
         </div>
     </div>    

@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="uk-section uk-section-small">
-    <div class="uk-container">
+    <div class="uk-container uk-container-large">
         <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid=''>
             <div class="uk-text-center uk-first-column">
                 <ul class="uk-breadcrumb uk-flex-center uk-margin-remove">
@@ -20,13 +20,13 @@
                 <h1 class="uk-margin-small-top uk-margin-remove-bottom">{{ $sale->discount }} {{ $sale->value }} {{ $sale->rus_type }}</h1>
                 <div class="card_info col-lg-12 @if($sale->it_actuality) uk-text-success uk-text-bold @else uk-text-danger @endif">{{ $sale->start_d_m_y }} - {{ $sale->d_m_y }} @if(!$sale->it_actuality) <br>(акция закончилась!) @endif</div>
             </div>
-            @if ($sale->description != NULL)
+            {{-- @if ($sale->description != NULL) --}}
                 <div class="uk-card uk-card-default uk-card-body ">
                     
                     <div>{!! $sale->description !!}</div>
 
                     @if ($sale->product->count())
-                    <hr>
+                    @if ($sale->description != NULL)<hr>@endif
                         <h3>Товары, участвующие в акции</h3>
                         <div class="uk-grid-margin uk-first-column">
                             <div class="uk-grid-collapse uk-child-width-1-4@l uk-child-width-1-2@s uk-child-width-1-3@m tm-products-grid js-products-grid uk-grid" uk-grid=''>
@@ -99,7 +99,7 @@
                         </div>
                     @endif
                 </div>                
-            @endif
+            {{-- @endif --}}
         </div>
     </div>
 </section>

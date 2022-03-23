@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Currency extends Model
 {
     
-    protected $fillable = ['currency', 'currency_rus', 'to_update', 'css_style'];
+    protected $fillable = ['currency', 'currency_rus', 'reserved_value', 'to_update', 'css_style'];
 
     public function products() {
         return $this->hasMany(Product::class);
@@ -21,6 +21,11 @@ class Currency extends Model
     public static function currenciesListToUpdate() {
         // return Currency::lists('currency');
         return Currency::where('to_update', '1')->pluck('currency');
+    }
+
+    public static function currenciesListToUpdateFull() {
+        // return Currency::lists('currency');
+        return Currency::where('to_update', '1')->get();
     }
 
     public function currencyrate() {

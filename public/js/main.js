@@ -1,4 +1,23 @@
 $(document).ready(function() {
+
+    // $(document).on('click', '.pagination li a', function(e) {
+    //     e.preventDefault();
+    //     if ($(this).attr('href')) {
+    //         var queryString = '';
+    //         var allQueries = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    //         if (allQueries[0].split('=').length > 1) {
+    //             for (var i = 0; i < allQueries.length; i++) {
+    //                 var hash = allQueries[i].split('=');
+    //                 if (hash[0] !== 'page') {
+    //                     queryString += '&' + hash[0] + '=' + hash[1];
+    //                 }
+    //             }
+    //         }
+    //         // console.log(hash, allQueries, $(this).attr('href'), queryString);
+    //         window.location.replace($(this).attr('href') + queryString);
+    //     }
+    // });
+
     var oldScroll = 0;
     var clickToSmall = false;
     var marginMainMenu = $('.mainmenu').css('margin-top');
@@ -464,33 +483,60 @@ $(document).ready(function() {
         confirm_property_button_all.forEach(function(button, i) {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
+                // console.log(properties_array);
                 var new_address = '';
                 for (var key in properties_array) {
                     // new_address += 'filter[' + key + ']=' + properties_array[key] + '&';
-                    new_address += key + '=' + properties_array[key] + '&';
+                    // console.log(properties_array[key], properties_array[key][0]);
+                    new_address += `field[${key}]=${properties_array[key]}&`;
                 }
                 new_address = new_address.slice(0, new_address.length - 1);
                 let old_url = window.location.href;
                 let new_url = old_url.slice(0, AddressStringSearch(old_url, '[?]'));
-
+                // new_address = `filter=[${new_address}]`
                 // AddressStringSearch(old_url, "[?]");
+                // console.log(new_address);
 
                 window.location.replace(new_url + '?' + new_address);
             });
         });
     }());
 
+    // function propertiesChecked(properties) {
+    //     var properties_array = {};
+    //     $.each(properties, function(i, element) {
+    //         let index = '' + $(this).data("property_value");
+    //         let values = [];
+    //         if (index in properties_array) {
+    //             // values.push($(this)[0].value);
+    //             properties_array[index][0].push($(this)[0].value);
+    //         } else {
+    //             values = [$(this)[0].value];
+    //             properties_array[index] = {};
+    //             properties_array[index] = [values];
+    //             values = [];
+    //         }
+    //     });
+    //     // console.log(properties_array);
+    //     return properties_array;
+    // }
+
     function propertiesChecked(properties) {
         var properties_array = {};
         $.each(properties, function(i, element) {
             let index = '' + $(this).data("property_id");
+            let values = [];
             if (index in properties_array) {
-                properties_array[index].push($(this)[0].value);
+                // values.push($(this)[0].value);
+                properties_array[index][0].push(strReplace($(this)[0].value));
             } else {
+                values = [strReplace($(this)[0].value)];
                 properties_array[index] = {};
-                properties_array[index] = [$(this)[0].value];
+                properties_array[index] = [values];
+                values = [];
             }
         });
+        // console.log(properties_array);
         return properties_array;
     }
 
@@ -500,6 +546,46 @@ $(document).ready(function() {
         } else {
             return str.length;
         }
+    }
+
+    function strReplace(string) {
+        return string
+            .replaceAll("%", "%25") // Процент
+            .replaceAll(" ", "%20") // Пробел
+            .replaceAll("\t", "%20") // Табуляция (заменяем на пробел)
+            .replaceAll("\n", "%20") // Переход строки (заменяем на пробел)
+            .replaceAll("\r", "%20") // Возврат каретки (заменяем на пробел)
+            .replaceAll("!", "%21") // Восклицательный знак
+            .replaceAll("\"", "%22") // Двойная кавычка
+            .replaceAll("#", "%23") // Октоторп, решетка
+            .replaceAll("\\$", "%24") // Знак доллара
+            .replaceAll("&", "%26") // Амперсанд
+            .replaceAll("'", "%27") // Одиночная кавычка
+            .replaceAll("\\(", "%28") // Открывающаяся скобка
+            .replaceAll("\\)", "%29") // Закрывающаяся скобка
+            .replaceAll("\\*", "%2a") // Звездочка
+            .replaceAll("\\+", "%2b") // Знак плюс
+            .replaceAll(",", "%2c") // Запятая
+            .replaceAll("-", "%2d") // Дефис
+            .replaceAll("\\.", "%2e") // Точка
+            .replaceAll("/", "%2f") // Слеш, косая черта
+            .replaceAll(":", "%3a") // Двоеточие
+            .replaceAll(";", "%3b") // Точка с запятой
+            .replaceAll("<", "%3c") // Открывающаяся угловая скобка
+            .replaceAll("=", "%3d") // Знак равно
+            .replaceAll(">", "%3e") // Закрывающаяся угловая скобка
+            .replaceAll("\\?", "%3f") // Вопросительный знак
+            .replaceAll("@", "%40") // At sign, по цене, собачка
+            .replaceAll("\\[", "%5b") // Открывающаяся квадратная скобка
+            .replaceAll("\\\\", "%5c") // Одиночный обратный слеш '\'
+            .replaceAll("\\]", "%5d") // Закрывающаяся квадратная скобка
+            .replaceAll("\\^", "%5e") // Циркумфлекс
+            .replaceAll("_", "%5f") // Нижнее подчеркивание
+            .replaceAll("`", "%60") // Гравис
+            .replaceAll("\\{", "%7b") // Открывающаяся фигурная скобка
+            .replaceAll("\\|", "%7c") // Вертикальная черта
+            .replaceAll("\\}", "%7d") // Закрывающаяся фигурная скобка
+            .replaceAll("~", "%7e"); // Тильда
     }
 
 });

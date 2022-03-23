@@ -303,7 +303,7 @@ class AppServiceProvider extends ServiceProvider
             $hour = 60;
             $cbrToday = Cbr::today();
             $cbrTomorrow = Cbr::tomorrow();
-            $cbrNames = Cbr::getNames();             
+            $cbrNames = Cbr::getNames();
 
             $data = array (
                 'cbrToday'                  => $cbrToday,
