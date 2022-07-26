@@ -6,10 +6,10 @@
 
 @section('content')
 <section class="uk-section uk-section-small">
-    <div class="uk-container">
+    <div class="uk-padding">
         <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid=''>
             <div class="uk-text-center uk-first-column">
-                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove">
+                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove" itemscope="" itemtype="http://schema.org/BreadcrumbList">
                     @component('components.breadcrumb')
                         @slot('main') <i class="fas fa-home"></i> @endslot
                         @slot('parent') Производители @endslot
@@ -86,9 +86,8 @@
                                                                 <div class="tm-product-card-media">
                                                                     <div class="tm-ratio tm-ratio-4-3">
                                                                         <a class="tm-media-box" 
-                                                                            @if($product->category->parent_id) href="{{ route('product.subcategory', ['category' => $product->category->slug, 'subcategory' => $product->category->parent_id, 'product' => $product->slug]) }}"
-                                                                                @else href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}"
-                                                                            @endif
+                                                                                href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}"
+                                                                            
                                                                         >
                                                                             <div class="tm-product-card-labels">
                                                                                 @if ($product->recomended)
@@ -115,11 +114,8 @@
                                                                 <div class="tm-product-card-body">
                                                                     <div class="tm-product-card-info">
                                                                         <h3 class="tm-product-card-title">
-                                                                            {{-- @if($product->category->parent_id) --}}
-                                                                                {{-- <a class="uk-link-heading" href="{{ route('product.subcategory', ['category' => $product->category->slug, 'subcategory' => $product->category->parent_id, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a> --}}
-                                                                                {{-- @else --}}
                                                                                 <a class="uk-link-heading" href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a>
-                                                                            {{-- @endif --}}
+                                                                            
                                                                         </h3>
                                                                         <ul class="uk-list uk-text-small tm-product-card-properties">
                                                                             <li>

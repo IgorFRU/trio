@@ -8,6 +8,7 @@ use App\Cart;
 use App\Category;
 use App\Deliverycategory;
 use App\Article;
+use App\Currencyrate;
 use App\Set;
 use App\Setting;
 use App\Product;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
 
 use App\MyClasses\Cbr;
+
+use App\Observers\CurrencyrateObserver;
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
@@ -57,6 +60,8 @@ class AppServiceProvider extends ServiceProvider
                     ->withPath('');
             });
         }
+
+        Currencyrate::observe(CurrencyrateObserver::class);
 
         Schema::defaultStringLength(191); //NEW: Increase StringLength
         date_default_timezone_set('Europe/Moscow');

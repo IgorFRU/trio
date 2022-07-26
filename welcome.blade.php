@@ -76,9 +76,9 @@
                                         @endif > 
                                     </div>
                                     <div class="recomended_products__item__title">
-                                        @if($product->category->parent_id)
+                                        {{-- @if($product->category->parent_id)
                                             <a href="{{ route('product.subcategory', ['category' => $product->category->slug, 'subcategory' => $product->category->parent_id, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a>
-                                        @else
+                                        @else --}}
                                             <a href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug, 'parameter' => '']) }}">{{ $product->product }}</a>
                                         @endif
                                     </div>                            

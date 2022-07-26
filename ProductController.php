@@ -196,7 +196,7 @@ class ProductController extends Controller
             'delimiter' => '',
             'productdifferents' => Productdifferent::get(),
         );
-        dd($data['productdifferents']);
+        // dd($data['productdifferents']);
         
         // dd($rr->category->first()->id);
         
@@ -302,6 +302,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        // dd($product);
         $images = ImageProduct::where('product_id', $product->id)->get();
         $imagesIdArray = $images->pluck('image_id');
         foreach ($images as $image) {

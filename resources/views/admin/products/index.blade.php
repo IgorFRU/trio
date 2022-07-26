@@ -110,7 +110,9 @@
                             </td>
                             <td>{{ $product->autoscu }}
                                 <br>
-                            {{ $product->scu ?? '' }}
+                                {{ $product->scu ?? '' }}
+                                <br>
+                                <i class="fas fa-eye"></i> {{ $product->views ?? '' }}
                             </td>
                             <td>
                                 {{ $product->product }}
@@ -136,7 +138,7 @@
                                                 <div class="p-1 bg-secondary text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</div>
                                         @endif
                                     @else
-                                        <span class="p-1 bg-success  text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!}</span> 
+                                        <span class="p-1 bg-success  text-white">{{ $product->price_number }} {!! $product->currency->css_style ?? $product->currency->currency_rus !!} ({{ $product->discount_price }} руб.)</span> 
                                     @endif
                                     
                                     <span class="not_click" data-id="{{ $product->id }}">

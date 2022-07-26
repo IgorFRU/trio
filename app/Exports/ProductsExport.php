@@ -86,7 +86,7 @@ class ProductsExport
         self::$column_values = ($column_values[0] != '') ? preg_split("/[,]/", $column_values[0]) : [] ;
         // dd(self::$column_numbers, $column_numbers);
         self::$date = \Carbon\Carbon::now()->toDateTimeString();
-        self::$fileName = 'Export_Stroy82_' . self::$date . '.xls';
+        self::$fileName = 'Export_ParketMir_' . self::$date . '.xls';
         self::$spreadsheet = new Spreadsheet();
         // $method = Str::camel($method);
         self::fillFile(self::$products);

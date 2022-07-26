@@ -6,10 +6,10 @@
 
 @section('content')
 <section class="uk-section uk-section-small">
-    <div class="uk-container uk-container-large">
+    <div class="uk-padding">
         <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid=''>
             <div class="uk-text-center uk-first-column">
-                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove">
+                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove" itemscope="" itemtype="http://schema.org/BreadcrumbList">
                     @component('components.breadcrumb')
                         @slot('main') <i class="fas fa-home"></i> @endslot
                         @slot('parent') Акции @endslot
@@ -35,11 +35,7 @@
                                         <article class="tm-product-card uk-first-column uk-padding-small">
                                             <div class="tm-product-card-media">
                                                 <div class="tm-ratio tm-ratio-4-3">
-                                                    <a class="tm-media-box" 
-                                                        @if($product->category->parent_id) href="{{ route('product.subcategory', ['category' => $product->category->slug, 'subcategory' => $product->category->parent_id, 'product' => $product->slug]) }}"
-                                                            @else href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}"
-                                                        @endif
-                                                    >
+                                                    <a class="tm-media-box" href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">
                                                         <div class="tm-product-card-labels">
                                                             @if ($product->recomended)
                                                                 <span uk-tooltip="Рекомендуем" class="uk-label uk-label-warning"><i class="far fa-thumbs-up"></i> Рекомендуем</span>

@@ -142,7 +142,6 @@ class ProductController extends Controller
             'delimiter' => '',
             'productdifferents' => Productdifferent::get(),
         );
-        // dd();
         
         return view('admin.products.create', $data);
     }
@@ -155,7 +154,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $product = Product::create($request->all());
 
         if (isset($request->parentproduct_id)) {
@@ -351,6 +349,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        // dd($product);
         $images = ImageProduct::where('product_id', $product->id)->get();
         $imagesIdArray = $images->pluck('image_id');
         foreach ($images as $image) {

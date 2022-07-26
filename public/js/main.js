@@ -471,6 +471,7 @@ $(document).ready(function() {
                 if (value.classList.contains('active')) {
                     value.classList.remove('active');
                 }
+                $('.confirm_property_button_mobile').addClass('active');
             });
 
             if (!confirm_property_button.classList.contains('active')) {
@@ -479,7 +480,6 @@ $(document).ready(function() {
 
 
         });
-
         confirm_property_button_all.forEach(function(button, i) {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -587,5 +587,12 @@ $(document).ready(function() {
             .replaceAll("\\}", "%7d") // Закрывающаяся фигурная скобка
             .replaceAll("~", "%7e"); // Тильда
     }
+
+    $('.sidebar_title').on('click', function() {
+        const body = $(this).parent().find('.sidebar_body');
+        const icon = $(this).find('i');
+        body.toggleClass('active');
+        icon.toggleClass('active');
+    });
 
 });

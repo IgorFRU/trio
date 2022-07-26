@@ -1295,6 +1295,195 @@ $(function() {
         });
     });
 
+    $('#manual_category').on('change', function() {
+        let manufactures_block = $('#manual_manufacture');
+        let options = manufactures_block.find('option');
+        options.each(function() {
+            $(this).remove();
+        });
+
+        let category_id = $(this).val();
+        manufactureSearch("/admin/manualcurrencyrates/get_manufactures", { id: category_id });
+    });
+
+    const manufactureSearch = async(url, data) => {
+        const response = await fetch(url, {
+            body: JSON.stringify(data),
+            method: 'POST',
+            credentials: "same-origin",
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                "Accept": "application/json",
+                "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+            }),
+
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
+        }
+        let manufactures = await response.json();
+        // console.log(manufactures);
+        let manufactures_block = $('#manual_manufacture');
+
+        $.each(manufactures, function(i, elem) {
+            manufactures_block.append(`<option value="${elem.id}">${elem.manufacture}</option>`);
+        });
+    }
+
+    $(`input[name='manualcurrencyrate_change']`).on('change', function() {
+        let val = this.val();
+        let id = input.data('id');
+        console.log(val, id);
+
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/admin/products/fastpriceedit/ajax",
+        //     data: {
+        //         id: id,
+        //         price: price,
+        //     },
+        //     headers: {
+        //         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        //     },
+        //     success: function(data) {
+        //         location.reload();
+        //     },
+        //     error: function(msg) {
+        //         console.log(msg);
+        //     }
+        // });
+    });
+
+    $('#manual_currency_rate_save').on('click', function(e) {
+        e.preventDefault();
+        const rates = $('input[name=rate]');
+        const row = $(this).parent()[0];
+        let flag = false;
+        // let rate_values = new Map();
+        let rate_values = {};
+        rates.each(function(i, elem) {
+            if ((elem.value != '') && ($.isNumeric(elem.value)) && (row.manufacture.value != '')) {
+                flag = true;
+                rate_values[$(elem).attr('data-id')] = elem.value;
+            } else {
+                // rate_values.set($(elem).attr('data-id'), elem.value);
+                // rate_values[$(elem).attr('data-id')] = elem.value;
+
+                // rate_values.push($(elem).attr('data-id'));
+                // rate_values[$(elem).attr('data-id')] = $(elem).value;
+            };
+        });
+
+        if (flag) {
+            let arr = {};
+            arr.category = row.category.value;
+            arr.manufacture = row.manufacture.value;
+            arr.rate_values = rate_values;
+
+
+            // console.log(data, data.rate_values.get('3'));
+            // console.log(data, data.rate_values['3']);
+            manualCurrencyRateSave("/admin/manualcurrencyrates/new", { data: arr });
+        }
+
+
+        // console.log(flag, rates[0].value, row, row.category.value, row.manufacture.value);
+    });
+
+    const manualCurrencyRateSave = async(url, data) => {
+        const response = await fetch(url, {
+            body: JSON.stringify(data),
+            method: 'POST',
+            credentials: "same-origin",
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                "Accept": "application/json",
+                "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+            }),
+
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
+        }
+
+        let line = await response.json();
+        location.reload();
+        // let manufactures_block = $('#manual_manufacture');
+
+        // $.each(manufactures, function(i, elem) {
+        //     manufactures_block.append(`<option value="${elem.id}">${elem.manufacture}</option>`);
+        // });
+    }
+
+    $('.manual_currency_rate_update').on('click', function(e) {
+        e.preventDefault();
+        const rate = $(this).parent().find('input[name="rate"]');
+        const rate_value = rate.val();
+        const currency_id = rate.data('id');
+        const category_id = $(this).parent().find('input[name="manual_category"]').data('id');
+        const manufacture_id = $(this).parent().find('input[name="manufacture"]').data('id');
+
+        if (rate_value != '' && $.isNumeric(rate_value) && currency_id != '' && category_id != '' && manufacture_id != '') {
+            manualCurrencyRateUpdate("/admin/manualcurrencyrates/fastupdate", { rate_value: rate_value, currency_id: currency_id, category_id: category_id, manufacture_id: manufacture_id });
+        }
+    });
+
+    const manualCurrencyRateUpdate = async(url, data) => {
+        const response = await fetch(url, {
+            body: JSON.stringify(data),
+            method: 'POST',
+            credentials: "same-origin",
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                "Accept": "application/json",
+                "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+            }),
+
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
+        }
+
+        let line = await response.json();
+        location.reload();
+        // let manufactures_block = $('#manual_manufacture');
+
+        // $.each(manufactures, function(i, elem) {
+        //     manufactures_block.append(`<option value="${elem.id}">${elem.manufacture}</option>`);
+        // });
+    }
+
+    // $('.manual_currency_rate_remove').on('click', function(e) {
+    //     e.preventDefault();
+    //     const id = $(this).data('id');
+    //     manualCurrencyRateRemove("/admin/manualcurrencyrates/fastremove", { id: id });
+    // });
+
+    // const manualCurrencyRateRemove = async(url, data) => {
+    //     const response = await fetch(url, {
+    //         body: JSON.stringify(data),
+    //         method: 'DELETE',
+    //         credentials: "same-origin",
+    //         headers: new Headers({
+    //             'Content-Type': 'application/json',
+    //             "Accept": "application/json",
+    //             "X-CSRF-Token": $('meta[name="csrf-token"]').attr('content')
+    //         }),
+
+    //     });
+
+    //     if (!response.ok) {
+    //         throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
+    //     }
+
+    //     let line = await response.json();
+    //     location.reload();
+    // }
+
+
     $('.productdifferentRemove').on('click', function() {
         const id = $(this).data('id');
         $.ajax({
@@ -1320,16 +1509,17 @@ $(function() {
             const value = $('#time_to_update_tomorrow').val();
             $.ajax({
                 type: "POST",
-                url: "/admin/settings/updatetime",
+                url: "/admin/currencies/updatetime",
+                // url: "/admin/products/productdifferent/destroy",
                 data: {
-                    value2: value,
+                    value: value,
                 },
                 headers: {
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(data) {
-                    console.log(data);
-                    // location.reload();
+                    // console.log(data);
+                    location.reload();
                 },
                 error: function(msg) {
                     console.log(msg);

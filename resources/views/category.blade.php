@@ -6,18 +6,21 @@
 
 @section('content')
 <section class="uk-section uk-section-small">
-    <div class="uk-container uk-container-large">
+    <div class="uk-padding">
         <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid=''>
             <div class="uk-text-center uk-first-column">
-                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove">
-                    @component('components.breadcrumb')
+                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    @component('components.breadcrumb', ['parents' => $category->all_parents])
                         @slot('main') <i class="fas fa-home"></i> @endslot
                         @slot('parent') Категории товаров @endslot
                             @slot('parent_route') {{ route('categories') }} @endslot 
-                        @isset($category->parents)
-                            @slot('parent2') {{ $category->parents->category }} @endslot
-                                @slot('parent2_route') {{ route('category', $category->parents->slug) }} @endslot        
-                        @endisset    
+                        @if(count($category->all_parents))
+                            
+                            {{-- @slot('count') {{ count($category->all_parents) }}
+                            @slot('parents') {{ $category->all_parents }} @endslot --}}
+                            {{-- @slot('parent2') {{ $category->parents->category }} @endslot
+                            @slot('parent2_route') {{ route('category', $category->parents->slug) }} @endslot         --}}
+                        @endif
                         @slot('active') {{ $category->category . ' ' . $manufactured_to_title }} @endslot
                     @endcomponent 
                 </ul>
@@ -84,7 +87,8 @@
                                                             <span class="uk-margin-small-right uk-visible@s">Сортировка:</span>
                                                             <div class="uk-form-controls">
                                                                 <select class="uk-select uk-form-small" id="products_sort">
-                                                                    <option @if ($sort == "nameAZ" || $sort == NULL) selected @endif value="nameAZ">По названию (А-Я)</option>
+                                                                    <option @if ($sort == "default" || $sort == NULL) selected @endif value="default">По умолчанию</option>
+                                                                    <option @if ($sort == "nameAZ") selected @endif value="nameAZ">По названию (А-Я)</option>
                                                                     <option @if ($sort == "nameZA") selected @endif value="nameZA">По названию (Я-А)</option>
                                                                     <option @if ($sort == "popular") selected @endif value="popular">По популярности</option>
                                                                     <option @if ($sort == "price_up") selected @endif value="price_up">Сначала дешевле</option>
@@ -126,11 +130,7 @@
                                                             <article class="tm-product-card uk-first-column uk-padding-small">
                                                                 <div class="tm-product-card-media">
                                                                     <div class="tm-ratio tm-ratio-4-3">
-                                                                        <a class="tm-media-box" 
-                                                                            @if($category->parent_id) href="{{ route('product.subcategory', ['category' => $category->slug, 'subcategory' => $category->parent_id, 'product' => $product->slug]) }}"
-                                                                                @else href="{{ route('product', ['category' => $category->slug, 'product' => $product->slug]) }}"
-                                                                            @endif
-                                                                        >
+                                                                        <a class="tm-media-box" href="{{ route('product', ['category' => $category->slug, 'product' => $product->slug]) }}" >
                                                                             <div class="tm-product-card-labels">
                                                                                 @if ($product->recomended)
                                                                                     <span uk-tooltip="Рекомендуем" class="uk-label uk-label-warning"><i class="far fa-thumbs-up"></i> Рекомендуем</span>
@@ -156,13 +156,28 @@
                                                                 <div class="tm-product-card-body">
                                                                     <div class="tm-product-card-info">
                                                                         <h3 class="tm-product-card-title">
-                                                                            {{-- @if($category->parent_id) --}}
-                                                                                {{-- <a class="uk-link-heading" href="{{ route('product.subcategory', ['category' => $category->slug, 'subcategory' => $category->parent_id, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a> --}}
-                                                                                {{-- @else --}}
                                                                                 <a class="uk-link-heading" href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">{{ $product->product }}{{ ', ' . $product->category->category ?? '' }}</a>
-                                                                            {{-- @endif --}}
+                                                                           
                                                                         </h3>
                                                                         <ul class="uk-list uk-text-small tm-product-card-properties">
+                                                                            @if ($product->size_l)
+                                                                                <li class="uk-margin-remove-top">
+                                                                                    <span class="uk-text-muted">длина: </span>
+                                                                                    <span>{{ $product->size_l }} {{ $product->rus_size_type . '.' }}</span>
+                                                                                </li>
+                                                                            @endif
+                                                                            @if ($product->size_w)
+                                                                                <li class="uk-margin-remove-top">
+                                                                                    <span class="uk-text-muted">ширина: </span>
+                                                                                    <span>{{ $product->size_w }} {{ $product->rus_size_type . '.' }}</span>
+                                                                                </li>
+                                                                            @endif
+                                                                            @if ($product->size_t)
+                                                                                <li class="uk-margin-remove-top">
+                                                                                    <span class="uk-text-muted">толщина: </span>
+                                                                                    <span>{{ $product->size_t }} {{ $product->rus_size_type . '.' }}</span>
+                                                                                </li>
+                                                                            @endif
                                                                             <li>
                                                                                 <span class="uk-text-muted">арт: </span>
                                                                                 <span>{{ $product->scu ?? ' - '}}</span>

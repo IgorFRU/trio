@@ -135,7 +135,8 @@
             <ul class="uk-navbar-nav nav-overlay">
                 <li>
                     <a href="#">
-                        <span class="uk-icon uk-margin-small-right" uk-icon="icon: location"></span>
+                        {{-- <span class="uk-icon uk-margin-small-right" uk-icon="icon: location"></span> --}}
+                        <span><i class="fas fa-location-arrow"></i></span>
                         <span class="uk-visible@l">пр. Победы, 129/2, Симферополь</span>                        
                     </a>
                     <div class="uk-navbar-dropdown">   
@@ -147,12 +148,14 @@
                 <li class="nav-overlay">
                     @if ($settings->phone_1 != NULL && $settings->phone_1 != '')
                         <a href="tel:{{ $settings->full_main_phone }}" class="uk-text-primary">
-                            <span class="uk-icon uk-margin-small-right" uk-icon="icon: phone"></span>
+                            {{-- <span class="uk-icon uk-margin-small-right" uk-icon="icon: phone"></span> --}}
+                            <span><i class="fas fa-phone"></i></span>
                             <span class="uk-visible@m">{{ $settings->main_phone }}</span>
                         </a>
                     @else
                         <a href="tel:+79788160166" class="uk-text-primary">
-                            <span class="uk-icon uk-margin-small-right" uk-icon="icon: phone"></span>
+                            {{-- <span class="uk-icon uk-margin-small-right" uk-icon="icon: phone"></span> --}}
+                            <span><i class="fas fa-phone"></i></span>
                             <span class="uk-visible@m">8(978) 816 01 66</span>
                         </a>
                     @endif
@@ -201,7 +204,8 @@
                 </li>
                 <li>                    
                     <a href="#question-modal" class="uk-text-primary" uk-toggle="target: #question-modal">
-                        <span class="uk-icon uk-margin-small-right" uk-icon="icon: mail"></span>
+                        {{-- <span class="uk-icon uk-margin-small-right" uk-icon="icon: mail"></span> --}}
+                        <span><i class="fas fa-envelope"></i></span>
                         <span class="uk-visible@l">Обратная связь</span>
                     </a>
                     

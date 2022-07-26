@@ -201,8 +201,10 @@ class MainController extends Controller
                 });
 
                 $products = ($_COOKIE['productsort'] == 'price_up') ? $products->sortBy('sort_price') : $products->sortByDesc('sort_price') ;
+            } elseif($_COOKIE['productsort'] == 'default') {
+                $products = Product::where('category_id', $category->id)->finaly()->published()->orderBy('recomended', 'DESC')->orderBy('price', 'ASC')->orderBy('product', 'ASC')->with('manufacture', 'images', 'unit', 'currency')->get();
             } else {
-                $products = Product::where('category_id', $category->id)->finaly()->published()->order('55')->with('manufacture', 'images', 'unit', 'currency')->get();
+                $products = Product::where('category_id', $category->id)->finaly()->published()->order()->with('manufacture', 'images', 'unit', 'currency')->get();
             }            
         }
         
@@ -613,5 +615,164 @@ class MainController extends Controller
         // $name = $request->productsort;
         // echo json_encode(array('productsort' => $_COOKIE['productsort'], 'products_per_page' => $_COOKIE['products_per_page']));
         // echo json_encode($name);
+    }
+
+    public function yandex() {
+        $today = Carbon::now();
+        $categories = Category::get();
+        $products = Product::finaly()->published()->where('price', '>',  0)->get();
+
+        // dd($categories);
+
+        // return view('services.yandex.yml.index', compact('products', 'today', 'categories'));
+        return response()->view('services.yandex.yml.index', compact('products', 'today', 'categories'))->header('Content-Type', 'text/xml');
+
+        $xw = xmlwriter_open_memory();
+        xmlwriter_set_indent($xw, 1);
+        $res = xmlwriter_set_indent_string($xw, ' ');
+
+        xmlwriter_start_document($xw, '1.0', 'UTF-8');
+        
+        xmlwriter_start_element($xw, 'yml_catalog');
+        
+            xmlwriter_start_attribute($xw, 'date');
+            xmlwriter_text($xw, $today);
+            xmlwriter_end_attribute($xw);       
+
+            xmlwriter_start_element($xw, 'shop');
+                xmlwriter_start_element($xw, 'name');
+                    xmlwriter_text($xw, 'Паркетный мир');
+                xmlwriter_end_element($xw);
+
+                xmlwriter_start_element($xw, 'company');
+                    xmlwriter_text($xw, 'ИП Дюндик Александр Константинович');
+                xmlwriter_end_element($xw);
+
+                xmlwriter_start_element($xw, 'url');
+                    xmlwriter_text($xw, url('/'));
+                xmlwriter_end_element($xw);
+
+                xmlwriter_start_element($xw, 'currencies');
+                    xmlwriter_start_element($xw, 'currency');
+                        xmlwriter_start_attribute($xw, 'id');
+                            xmlwriter_text($xw, 'RUR');
+                        xmlwriter_end_attribute($xw);
+                        xmlwriter_start_attribute($xw, 'rate');
+                            xmlwriter_text($xw, '1');
+                        xmlwriter_end_attribute($xw);
+                    xmlwriter_end_element($xw);
+                xmlwriter_end_element($xw);
+
+                xmlwriter_start_element($xw, 'categories');
+                    foreach ($categories as $category) {
+                        xmlwriter_start_element($xw, 'category');
+                            xmlwriter_start_attribute($xw, 'id');
+                                xmlwriter_text($xw, $category->id);
+                            xmlwriter_end_attribute($xw);
+
+                            if ($category->have_parent) {
+                                xmlwriter_start_attribute($xw, 'parentId');
+                                    xmlwriter_text($xw, $category->parent_id);
+                                xmlwriter_end_attribute($xw);
+                            }
+                            xmlwriter_text($xw, $category->category);
+                        xmlwriter_end_element($xw);
+                    }
+                xmlwriter_end_element($xw);
+
+                xmlwriter_start_element($xw, 'offers');
+                    foreach ($products as $product) {
+                        xmlwriter_start_element($xw, 'offer');
+                            xmlwriter_start_attribute($xw, 'id');
+                                xmlwriter_text($xw, $product->autoscu);
+                            xmlwriter_end_attribute($xw);
+                            
+                            xmlwriter_start_element($xw, 'name');
+                                xmlwriter_text($xw, $product->category->category . $product->manufacture->manufacture . $product->product);
+                            xmlwriter_end_element($xw);
+
+                            xmlwriter_start_element($xw, 'url');
+                                xmlwriter_text($xw, route('product', ['category' => $product->category->slug, 'product' => $product->slug]));
+                            xmlwriter_end_element($xw);
+
+                            xmlwriter_start_element($xw, 'price');
+                                xmlwriter_text($xw, $product->discount_price);
+                            xmlwriter_end_element($xw);
+
+                            if ($product->actually_discount) {
+                                xmlwriter_start_element($xw, 'oldprice');
+                                    xmlwriter_text($xw, $product->oldprice);
+                                xmlwriter_end_element($xw);
+                            }
+                            
+                            xmlwriter_start_element($xw, 'currencyId');
+                                xmlwriter_text($xw, 'RUR');
+                            xmlwriter_end_element($xw);
+
+                            xmlwriter_start_element($xw, 'categoryId');
+                                xmlwriter_text($xw, $product->category->id);
+                            xmlwriter_end_element($xw);
+
+                            xmlwriter_start_element($xw, 'category');
+                                xmlwriter_text($xw, $product->category->category);
+                            xmlwriter_end_element($xw);
+
+                            xmlwriter_start_element($xw, 'picture');
+                                if ($product->images->count()) {
+                                    xmlwriter_text($xw, asset('imgs/products') .'/' .$product->images[0]->image);
+                                }                                
+                            xmlwriter_end_element($xw);
+
+                            xmlwriter_start_element($xw, 'delivery');
+                                xmlwriter_text($xw, 'true');
+                            xmlwriter_end_element($xw);
+
+                            xmlwriter_start_element($xw, 'pickup');
+                                xmlwriter_text($xw, 'true');
+                            xmlwriter_end_element($xw);
+
+                            if (strtolower($product->delivery_time) == 'в наличии') {
+                                xmlwriter_start_element($xw, 'store');
+                                    xmlwriter_text($xw, 'true');
+                                xmlwriter_end_element($xw);
+                            }
+
+                            if ($product->packaging) {
+                                xmlwriter_start_element($xw, 'sales_notes');
+                                    xmlwriter_text($xw, 'Продаётся кратно упаковкам по ' . $product->unit_in_package  . ' ' .  $product->unit->unit );
+                                xmlwriter_end_element($xw);
+                            }
+
+                            xmlwriter_start_element($xw, 'sales_notes');
+                                xmlwriter_text($xw, 'Доставляем по Крыму транспортными компаниями и личным транспортом' );
+                            xmlwriter_end_element($xw);
+                        xmlwriter_end_element($xw);
+                    }
+                xmlwriter_end_element($xw);
+
+            xmlwriter_end_element($xw);
+
+        xmlwriter_end_element($xw);
+
+
+        xmlwriter_end_document($xw);
+
+        // return xmlwriter_output_memory($xw);
+        if (file_exists('yandex/xml/yandex.xml')) {
+            $xml = file_get_contents('yandex/xml/yandex.xml');
+            // dd($xml);
+        
+            // $current = file_get_contents($xml);
+            // $current .= $xw;
+            file_put_contents($xml, $xw);
+        }
+
+        // if (file_exists('yandex/xml/yandex.xml')) {
+        //     $xml = simplexml_load_file('yandex/xml/yandex.xml');
+        
+        //     print_r($xml);
+        // } else {
+        //     exit('Не удалось открыть файл test.xml.');
+        // }
     }
 }

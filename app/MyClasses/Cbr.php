@@ -25,7 +25,7 @@ class Cbr
     public static function configurate() {
         self::$today = Carbon::now()->format('d.m.Y');
         self::$tomorrow = Carbon::now()->addDay()->format('d.m.Y');
-        self::$time_to_update_tomorrow = Setting::first()->time_to_update_tomorrow;
+        self::$time_to_update_tomorrow = (Setting::first()->time_to_update_tomorrow != NULL) ? Setting::first()->time_to_update_tomorrow : 17 ;
 
         //выбор валют, которые нуждаются в обновлении курса. Основная валюта только одна и это обычно рубль. Относительно нее все курсы
 
@@ -58,7 +58,7 @@ class Cbr
         if (!Currencyrate::where('ondate', date("Y-m-d", strtotime($day)))->count()) {
 
             try {
-                self::$file = simplexml_load_file("http://www.cb2r.ru/scripts/XML_daily.asp?date_req=".$day);
+                self::$file = simplexml_load_file("http://www.cbr.ru/scripts/XML_daily.asp?date_req=".$day);
                 //self::$file = simplexml_load_file($day);
                 $content = [];
 

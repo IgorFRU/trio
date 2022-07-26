@@ -4,20 +4,19 @@
     <!-- <script src="{{ asset('js/discount_countdown.js') }}" defer></script> -->
 @endsection
 @section('content')
-
 <section class="uk-section uk-section-small">
-    <div class="uk-container">
+    <div class="uk-padding">
         <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid=''>
             <div class="uk-text-center uk-first-column">
-                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove">
-                    @component('components.breadcrumb')
+                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                    @component('components.breadcrumb', ['parents' => $product->category->all_parents, 'category' => $product->category])
                         @slot('main') <i class="fas fa-home"></i> @endslot
                         @slot('parent') Категории товаров @endslot
-                            @slot('parent_route') {{ route('categories') }} @endslot 
-                        @isset($product->category)
-                            @slot('parent2') {{ $product->category->category }} @endslot
-                                @slot('parent2_route') {{ route('category', $product->category->slug) }} @endslot        
-                        @endisset    
+                        @slot('parent_route') {{ route('categories') }} @endslot 
+                        {{-- @isset($product->category)
+                            @slot('parent_category') {{ $product->category->category }} @endslot
+                                @slot('parent_category_route') {{ route('category', $product->category->slug) }} @endslot        
+                        @endisset     --}}
                         @slot('active') {{ $product->product }} @endslot
                     @endcomponent 
                 </ul>
@@ -286,6 +285,35 @@
         </div>
     </div>
 </section>
+<schema>
+    <div class="cheaper-product-name">{{ $product->product ?? '' }}</div>
+    <div itemscope itemtype="http://schema.org/Product" class="microdata">
+        <meta itemprop="name" content="{{ $product->product ?? '' }}" />
+        <link itemprop="url" href="{{ Request::url() }}" />
+        <link itemprop="image" href="@if($product->images->count()){{ asset('imgs/products')}}/{{ $product->images[0]->image}}@endif" />
+        <meta itemprop="brand" content="@isset($product->manufacture)@if($product->manufacture->manufacture != '-'){{ $product->manufacture->manufacture }}@endif @endisset" />
+        <meta itemprop="model" content="" />
+        <meta itemprop="productID" content="{{ $product->autoscu ?? '' }}" />
+        <meta itemprop="category" content="{{ $product->category->category ?? '' }}" />
+
+        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <meta itemprop="priceCurrency" content="RUB" />
+            <meta itemprop="price" content="{{ $product->discount_price ?? '' }}" />
+            <link itemprop="availability" href="@if(strtolower($product->delivery_time) == 'в наличии')http://schema.org/InStock @else @endif http://schema.org/PreOrder">
+        </div>
+
+        <meta itemprop='description' data='second-test' content='{{ $product->description?? $meta_description ?? $local_title ?? '' }}'>
+    </div>
+    <div itemscope itemtype="http://schema.org/Organization">
+        <span itemprop="name">"Паркетный мир"</span>
+        <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+            <span itemprop="streetAddress">Проспект Победы, 129/2</span>
+            <span itemprop="addressLocality">Симферополь, Республика Крым</span>
+        </div>
+        <span itemprop="telephone">+7978 816 01 66</span>
+        <span itemprop="email">info(at)parketpro.com</span>
+    </div>
+</schema>
 
       
 @endsection

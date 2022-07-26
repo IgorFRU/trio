@@ -13,7 +13,7 @@
 </div>
 
 <section class="uk-section uk-section-default uk-section-small">
-    <div class="uk-container">
+    <div class="uk-padding">
         <h2 class="uk-text-muted uk-text-center uk-heading-line"><span>Что нас делает лучшими</span></h2>
 
         <div class="uk-grid-collapse uk-child-width-expand@m uk-text-center uk-margin-large-top" uk-grid>
@@ -38,7 +38,7 @@
 </section>
 
 <section class="uk-section uk-section-default uk-section-small">
-    <div class="uk-container">
+    <div class="uk-padding">
         <div class="uk-overflow-hidden uk-width-1-1">
             <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@m uk-margin" uk-grid>
                 <div class="uk-card-media-left uk-cover-container">
@@ -69,7 +69,7 @@
     </div>
 </section>
 
-<section class="uk-section uk-section-small">
+{{-- <section class="uk-section uk-section-small">
     <div class="bg-light-red">
         <div class="uk-container uk-padding text-white">
             <h2 class="text-center text-white mb-3">Антикризисное предложение: настоящий паркет под ключ - <span class="uk-text-bold">3990</span> руб. за м.кв.*</h2>
@@ -116,18 +116,18 @@
             </div>            
         </div>
     </div>
-</section>
+</section> --}}
 
 @if (isset($recomended_products) && count($recomended_products))
     <section class="uk-section uk-section-default uk-section-small">
-        <div class="uk-container">
+        <div class="uk-padding">
             <h2 class="uk-text-muted uk-text-center uk-heading-line"><span>Лучшее предложение</span></h2>
             <div uk-filter="target: .js-filter">
                 <ul class="uk-tab">
                     <li class="uk-active" uk-filter-control="[data-style='recomended']"><a href="#">Рекомендованые товары</a></li>
                     <li uk-filter-control="[data-style='discounted']"><a href="#">Товары со скидкой</a></li>
                 </ul>
-                <ul class="js-filter uk-child-width-1-3@m " uk-grid="masonry:true" uk-height-match=".uk-card-body" ui-grid>
+                <ul class="js-filter uk-child-width-1-4@m uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-5@l" uk-grid="masonry:true" uk-height-match=".uk-card-body" ui-grid>
                     @foreach ($recomended_products as $product)
                         <li data-style="recomended">
                             <div class="uk-card uk-card-default">
@@ -151,8 +151,7 @@
                                 </div>
 
                                 <div class="uk-card-body">
-                                    <h3 class="uk-card-title">{{ $product->product }} @if (isset($product->category))
-                                        {{ ', ' . $product->category->category }}
+                                    <h3 class="uk-card-title">{{ $product->product }}@if (isset($product->category)){{ ' - ' . $product->category->category }}
                                     @endif</h3>
                                     {{-- <p class="uk-text-truncate">{{ $product->description ?? '' }}</p> --}}
                                     <div class="uk-child-width-auto uk-flex-middle" uk-grid>
@@ -179,11 +178,9 @@
                                     
                                 <div class="uk-card-footer">
                                     <div class="uk-flex uk-flex-between">
-                                        @if($product->category->parent_id)
-                                            <a class="uk-button uk-button-default" href="{{ route('product.subcategory', ['category' => $product->category->slug, 'subcategory' => $product->category->parent_id, 'product' => $product->slug]) }}">Подробнее</a>
-                                        @else
+                                       
                                             <a class="uk-button uk-button-default" href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">Подробнее</a>
-                                        @endif
+                                        
                                         {{-- <button class="uk-button uk-button-primary uk-text-right">
                                             <span uk-icon="icon: cart;"></span>
                                         </button> --}}
@@ -244,11 +241,8 @@
                                     
                                 <div class="uk-card-footer">
                                     <div class="uk-flex uk-flex-between">
-                                        @if($product->category->parent_id)
-                                            <a class="uk-button uk-button-default" href="{{ route('product.subcategory', ['category' => $product->category->slug, 'subcategory' => $product->category->parent_id, 'product' => $product->slug]) }}">Подробнее</a>
-                                        @else
                                             <a class="uk-button uk-button-default" href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">Подробнее</a>
-                                        @endif
+                                        
                                         {{-- <button class="uk-button uk-button-primary uk-text-right">
                                             <span uk-icon="icon: cart;"></span>
                                         </button> --}}
@@ -268,7 +262,7 @@
 @endif
 
 <section class="uk-section uk-section-default uk-section-small">
-    <div class="uk-container">
+    <div class="uk-padding">
         <h2 class="uk-text-muted uk-text-center uk-heading-line"><span>Категории товаров</span></h2>
         <div class="uk-child-width-1-3@s" ui-grid  uk-grid="masonry:true">
             @forelse ($menus as $menu)
@@ -296,7 +290,7 @@
 </section>
 
 <section class="uk-section uk-section-default uk-section-small">
-    <div class="uk-container">
+    <div class="uk-padding">
         <h2 class="uk-text-muted uk-text-center uk-heading-line"><span>Услуги</span></h2>
         <h4 class="uk-text-muted uk-text-center">Наши специалисты выполняют работы по всему Крыму</h2>
 
@@ -358,14 +352,14 @@
             <li>
                 <div class="uk-grid-small" uk-grid>
                     <div class="uk-width-expand">Шлифовка паркета и нанесение финишного покрытия (лак/масло-воск) с материалами</div>
-                    <div>от 1400.00 р</div>
+                    <div>от 1800.00 р</div>
                 </div>
             </li>
         </ul>
     </div>
 </section>
 <section class="uk-section uk-section-default uk-section-small">
-    <div class="uk-container">
+    <div class="uk-padding">
         <h2 class="uk-text-muted uk-text-center uk-heading-line"><span>Услуги шлифовки паркета "под ключ"</span></h2>
         <p class="uk-text-muted uk-text-center">Мы используем только профессиональные химию и технологии!</p>
         <p class="uk-text-muted uk-text-center">Кроме приведённых ниже основных вариантов шлифовки паркета, есть и другие варианты и комбинации. Обращайтесь к нам, чтобы мы составили оптимальное предложение, исходя из ваших индивидуальных запросов и условий.</p>
@@ -379,7 +373,7 @@
                     <div class="uk-card-body uk-flex-1">
                         <div class="uk-flex uk-flex-middle uk-flex-center">
                             <span style="font-size: 4rem; font-weight: 200; line-height: 1em">
-                                1 400<span style="font-size: 0.5em">руб</span>
+                                1 800<span style="font-size: 0.5em">руб</span>
                             </span>
                         </div>
                         <div class="uk-text-small uk-text-center uk-text-muted">Цена за 1 м.кв., включающая материалы и работу</div>
@@ -403,7 +397,7 @@
                     <div class="uk-card-body uk-flex-1">
                         <div class="uk-flex uk-flex-middle uk-flex-center">
                             <span style="font-size: 4rem; font-weight: 200; line-height: 1em">
-                                2 000<span style="font-size: 0.5em">руб</span>
+                                2 800<span style="font-size: 0.5em">руб</span>
                             </span>
                         </div>
                         <div class="uk-text-small uk-text-center uk-text-muted">Цена за 1 м.кв., включающая материалы и работу</div>
@@ -431,7 +425,7 @@
                     <div class="uk-card-body uk-flex-1">
                         <div class="uk-flex uk-flex-middle uk-flex-center">
                             <span style="font-size: 4rem; font-weight: 200; line-height: 1em">
-                                2 800<span style="font-size: 0.5em">руб</span>
+                                4 000<span style="font-size: 0.5em">руб</span>
                             </span>
                         </div>
                         <div class="uk-text-small uk-text-center uk-text-muted">Цена за 1 м.кв., включающая материалы и работу</div>
@@ -466,7 +460,7 @@
 </section>
 
 <section class="uk-section">
-    <div class="uk-container">
+    <div class="uk-padding">
         <div class="uk-child-width-1-2" uk-grid>
             <div>
                 <h2 class="uk-text-muted uk-text-center uk-heading-line"><span>Сдаём в аренду шлифовальную машину барабанного типа</span></h2>
@@ -498,7 +492,7 @@
 </section>
 
 <section class="uk-section uk-section-primary uk-section-small uk-light">
-    <div class="uk-container">
+    <div class="uk-padding">
         <div class="uk-text-center">
             <div class="uk-h2 uk-margin-remove">Есть вопросы по товарам или услугам?</div>
         </div>
@@ -521,7 +515,7 @@
 </section>
 
 <section class="uk-section uk-section-small uk-mutted">
-    <div class="uk-container">
+    <div class="uk-padding">
         <h2 class="uk-text-small uk-text-muted">
             Купить паркет, ламинат, пробковый паркет, паркетную доску, инженерную доску, массив без покрытия, под лаком или маслом дешево с доставкой по Симферполю, в Севастополь, Ялту, Керчь, Евпаторию, Алушту, Феодосию, Джанкой, Саки. Продажа химии для укладки, реставрации паркета: лаки двухкомпонентные и однокомпонентные, уретановые, полиуретановые, на водной основе, грунтовки для паркета, шпаклевки, клей двухкомпонентный полиуретановый и полиуретан-эпоксидный, силановый, реактивный для любого вида паркета. Масла и воски цветные и бесцветные для внутренних и наружних работ. Пропитки для защиты древесины. Паркет из экзотических пород дерева: мербау, тик бирманский, палисандр, орех, ятоба, кемпас, бунга. Паркет в ванную комнату. Bona, Osmo, Loba, Polar wood, Haro, Komofloor, LabArte, Папа Карло, GreenLine, MGK floor, Lechner, Berger, Karelia, Finitura decor, Kastamonu. Скидки и акции. Профессиональная укладка и ремонт, циклевка любого вида паркета. Возмаожна безналичная оплата за работу.
         </h2>

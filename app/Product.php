@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Cache;
 
 use App\MyClasses\Cbr;
+use Illuminate\Queue\ManuallyFailedException;
 
 class Product extends Model
 {
@@ -106,6 +107,25 @@ class Product extends Model
     public function getCurrencyIdAttribute($value) {
         return $this->attributes['currency_id'];
         // return $value;
+    }
+
+    public function getRusSizeTypeAttribute() {
+        switch ($this->attributes['size_type']) {
+            case 'mm':
+                return 'мм';
+                break;
+            case 'cm':
+                return 'см';
+                break;
+            
+            case 'm':
+                return 'м';
+                break;
+                                    
+            default:
+                return '';
+                break;
+        }
     }
 
     public function getPriceNumberAttribute() {
@@ -205,12 +225,17 @@ class Product extends Model
 
     public function getPriceRubAttribute() {
         if ($this->currency->to_update) {
-            $hour = 60;
-            // dd($this->currency->currency);
-            return Cache::remember($this->currency->currency . date('Y-m-d'), $hour, function() {
-                return $this->currency->currencyrate->first()->value;
-            });
-            
+            // dd($this->category_id, $this->manufacture_id, $this->currency_id);
+            $manual_rate = Manualcurrencyrate::where('category_id', $this->category_id)->where('manufacture_id', $this->manufacture_id)->where('currency_id', $this->currency_id)->first();
+            if (isset($manual_rate)) {
+                return $manual_rate->rate;
+            } else {
+                $hour = 60;
+                // dd($this->currency->currency);
+                return Cache::remember($this->currency->currency . date('Y-m-d'), $hour, function() {
+                    return $this->currency->currencyrate->first()->value;
+                });  
+            }                      
         } else {
             return $this->price;
         }
@@ -238,12 +263,27 @@ class Product extends Model
     }
 
     public function getFullSizeAttribute() {
+        $size_type = '';
         $size = '';
         if ($this->size_type != '' && $this->size_type != NULL) {
-            $size_type = '(' . $this->size_type . ')';
-        } else {
-            $size_type = '';
-        }        
+            switch ($this->size_type) {
+                case 'mm':
+                    $size_type = ' мм';
+                    break;
+                case 'cm':
+                    $size_type = ' см';
+                    break;
+                
+                case 'm':
+                    $size_type = ' м';
+                    break;
+                                        
+                default:
+                    $size_type = ' ';
+                    break;
+            }
+        }
+        
         if ($this->size_l != '' && $this->size_w != NULL) {
             $size .= 'длина: ' . $this->size_l . $size_type . '. ';
         }
@@ -331,14 +371,13 @@ class Product extends Model
     // }
 
 
-    public function getOldPriceAttribute($value) {        
+    public function getOldPriceAttribute($value) {   
         if ($this->currency->to_update) {
-            $currencyrates = Cbr::getAssociate();
-            return self::floatToInt($this->price * $currencyrates[$this->currency->id]);
-        }
-        else {
+            return self::floatToInt($this->price * $this->price_rub);
+        } else {
             return self::floatToInt($this->price);
-        }
+        }     
+        
     }
 
     public function getPackagePriceAttribute($value) {
@@ -357,7 +396,7 @@ class Product extends Model
     public function scopeOrder($query) {
         $sort = (isset($_COOKIE['productsort'])) ? $sort = $_COOKIE['productsort'] : $sort = 'default';
 
-        switch ($sort) {
+        switch ($sort) {            
             case 'nameAZ':
                 $sort_column = 'product';
                 $sort_order = 'ASC';

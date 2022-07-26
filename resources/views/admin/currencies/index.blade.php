@@ -19,6 +19,7 @@
                         </div>
                     </div>
                     {{-- <input type="text" name="time_to_update_tomorrow" id="time_to_update_tomorrow" value=""> --}}
+                    <a href="{{ route('admin.manualcurrencyrates.index') }}" class="btn btn-primary">Ручные курсы</a>                
                     <a href="{{ route('admin.currencies.create') }}" class="btn btn-primary">Новая валюта</a>                
                 </div>
                 <div class="d-flex flex-wrap col-lg-12">

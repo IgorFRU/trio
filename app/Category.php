@@ -19,6 +19,7 @@ class Category extends Model
         'meta_description', 
         'meta_keywords',
         'subcategories',
+        'manualcurrencyrate',
     ];
 
     // public function setSlugAttribute($value) {
@@ -58,8 +59,21 @@ class Category extends Model
         return $this->belongsToMany(Option::class);
     }
 
+    // public function manufactures() {
+    //     return $this->hasManyThrough(Manufacture::class, Product::class, 'manufacture_id', 'id');
+    // }
+
+    // public function manufactures() {
+    //     return $this->belongsToMany(Manufacture::class, 'products', 'manufacture_id', 'id')->withPivot('manufacture_id');
+    // }
+
     public function manufactures() {
-        return $this->hasManyThrough(Manufacture::class, Product::class, 'manufacture_id', 'id');
+        $products = $this->products->pluck('manufacture_id')->unique('manufacture_id');
+        return Manufacture::wherein('id', $products)->get();
+    }
+
+    public function manualrates() {
+        return $this->hasMany(Manualcurrencyrate::class);
     }
 
     public function getShortDescriptionAttribute() {
@@ -169,5 +183,31 @@ class Category extends Model
         } else {
             return false;
         }
+    }
+
+    public function getHaveParentAttribute() {
+        return ($this->category_id) ? true : false ;
+    }
+
+    public function getParentIdAttribute() {
+        return $this->category_id;
+    }
+
+    public function getAllParentsAttribute() {
+        $array = []; 
+        if (isset($this->parents)) {
+            $category = $this;
+            // return $category->parents->category;                       
+            $flag = true;
+            $count = 0;
+            while ($flag) {
+                $count++;                
+                $category = $category->parents;
+                $array[$category->category] = $category->slug;
+                $flag = isset($category->parents);
+                
+            }
+        } 
+        return array_reverse($array);
     }
 }

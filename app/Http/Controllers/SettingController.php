@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Cache;
 
 class SettingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -102,8 +106,8 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Миграция выполнена!');
     }
 
-    public function updateTime(Request $request) {
-        echo json_encode('55');
+    public function updateTime(Request $request) {    
+        // return $request->value;
         Cache::forget('time_to_update_tomorrow');
         $settings = Setting::first();
         $settings->update(['time_to_update_tomorrow' => $request->value]);

@@ -126,7 +126,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        dd($category);
+        // dd($category);
         if ($category->image && file_exists(public_path('imgs/categories/'. $category->image))) {
             unlink(public_path('imgs/categories/'.$category->image));
         }

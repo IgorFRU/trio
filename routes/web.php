@@ -57,6 +57,8 @@ Route::middleware('blockip')->group(function(){
 
   Route::get('/sitemap.xml', 'MainController@sitemap')->name('sitemap');
   Route::get('/oneclick-purcache', 'SendmailController@oneclick')->name('oneclick_purcache');
+
+  Route::get('/services/yandex/yml.xml', 'MainController@yandex')->name('yml.yandex');
 });
 
 Route::prefix('admin')->name('admin.')->group(function(){
@@ -68,7 +70,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
   Route::get('/settings/clearcache', 'SettingController@clearCache')->name('clearcache'); // очистка всего кеша
   Route::get('/settings/migrate', 'SettingController@migrate')->name('migrate');
-  Route::post('/settings/updatetime', 'SettingController@updateTime');
+  Route::post('/currencies/updatetime', 'SettingController@updateTime');
     
   Route::post('/password/email', 'Auth\AdminForgotPasswordController@sendResetLinkEmail')->name('password.email');    
   Route::get('/password/reset', 'Auth\AdminForgotPasswordController@showLinkRequestForm')->name('password.request');    
@@ -84,11 +86,18 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::resource('/delivery', 'DeliveryController');
   Route::resource('/articles', 'ArticleController');
   Route::resource('/sets', 'SetController');
+
+  Route::resource('/manualcurrencyrates', 'ManualcurrencyrateController');
+  Route::post('/manualcurrencyrates/get_manufactures', 'ManualcurrencyrateController@getManufactures');
+  Route::post('/manualcurrencyrates/new', 'ManualcurrencyrateController@newOrUpdate')->name('manualcurrencyrates.new');
+  Route::post('/manualcurrencyrates/fastupdate', 'ManualcurrencyrateController@fastUpdate');
+
   Route::resource('/currencies', 'CurrencyController');
   Route::resource('/menus', 'MenuController');
   Route::post('/articles/addProducts', 'ArticleController@addProducts');
   Route::resource('/manufactures', 'ManufactureController');
   Route::resource('/blockip', 'BlackIpController');
+  
   Route::resource('/products', 'ProductController');
   Route::post('/products/search', 'ProductController@search');
   Route::post('/products/massdestroy', 'ProductController@massDestroy')->name('products.massdestroy');
@@ -125,6 +134,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::any('/import-export/export', 'ImportexportController@export')->name('import-export.export');
 
   Route::match(['get', 'post'], 'parser', 'ParserController@index')->name('parser');
+  
+  Route::get('/yandex', 'YMLController@settings')->name('yml.settings');
 });
 
 

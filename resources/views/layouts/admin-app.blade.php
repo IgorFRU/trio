@@ -128,7 +128,7 @@
                                         <span class="currency__child"> 
                                             <i class="fa fa-{{strtolower($value->currency->currency) ?? ''}}" aria-hidden="true"></i>
                                             <span class="currency__value">{{ $value->value ?? '-' }}</span>
-                                            <span                    
+                                            {{-- <span                    
                                             @if($value->value != -1)
                                                 @if(count($cbrTomorrow))
                                                     @if($value->value < $cbrTomorrow[$key]->value)
@@ -142,7 +142,7 @@
                                             @else                       
                                                 class="currency__grey"                       
                                             @endif>
-                                            </span>
+                                            </span> --}}
                                         </span>
                                     @endforeach
                                     @if(count($cbrTomorrow))

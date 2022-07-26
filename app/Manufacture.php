@@ -37,8 +37,16 @@ class Manufacture extends Model
         return $this->hasMany(Product::class);
     }
 
+    // public function categories() {
+    //     return $this->hasManyThrough(Category::class, Product::class, 'manufacture_id', 'category_id', 'id');
+    // }
+
     public function categories() {
-        return $this->hasManyThrough(Category::class, Product::class, 'manufacture_id', 'category_id', 'id');
+        return $this->belongsToMany(Category::class, 'products', 'category_id', 'id');
+    }
+
+    public function manualrates() {
+        return $this->hasMany(Manualcurrencyrate::class);
     }
 
     public function getShortDescriptionAttribute() {

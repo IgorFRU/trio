@@ -52,11 +52,8 @@
                                         </div>
                                         <div class="products__card__maininfo">
                                             <div class="products__card__title">
-                                                @if($product->category->parent_id)
-                                                <h3><a href="{{ route('product.subcategory', ['category' => $product->category->slug, 'subcategory' => $product->category->parent_id, 'product' => $product->slug]) }}">{{ $product->product }}</a></h3>
-                                                @else
                                                 <h3><a href="{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}">{{ $product->product }}</a></h3>
-                                                @endif
+                                                
                                             </div>
                 
                                         </div>

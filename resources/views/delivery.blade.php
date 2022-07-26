@@ -6,10 +6,10 @@
 
 @section('content')
 <section class="uk-section uk-section-small">
-    <div class="uk-container uk-container-large">
+    <div class="uk-padding">
         <div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid=''>
             <div class="uk-text-center uk-first-column">
-                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove">
+                <ul class="uk-breadcrumb uk-flex-center uk-margin-remove" itemscope="" itemtype="http://schema.org/BreadcrumbList">
                     @component('components.breadcrumb')
                         @slot('main') <i class="fas fa-home"></i> @endslot    
                         @slot('active') Доставка @endslot

@@ -13,6 +13,10 @@ class Currency extends Model
         return $this->hasMany(Product::class);
     }
 
+    // public function manualrate() {
+    //     return $this->hasMany(Manualcurrencyrate::class);
+    // }
+
     // public static function count() {
     //     return Currency::get()->count();
     // }
