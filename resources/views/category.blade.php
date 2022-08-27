@@ -24,7 +24,7 @@
                         @slot('active') {{ $category->category . ' ' . $manufactured_to_title }} @endslot
                     @endcomponent 
                 </ul>
-                <h1 class="uk-margin-small-top uk-margin-remove-bottom">{{ $category->category . ' ' . $manufactured_to_title }}</h1>
+                <h1 class="uk-margin-small-top uk-margin-remove-bottom">{{ $category->category . ' ' . $manufactured_to_title }} @if ($minimal_price) от <span class="price_value">{{ $minimal_price }}</span> рублей @endif</h1>
                 
                 <ul uk-accordion="multiple: true">
                     <li>

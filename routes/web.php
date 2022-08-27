@@ -80,6 +80,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::post('/properties/store',  'PropertyController@store');
   Route::post('/properties/destroy',  'PropertyController@destroy');
   Route::post('/uploadimg',  'ImageController@store');
+  Route::post('/properties/getpropertyvalues', 'PropertyController@getPropertyValues');
+
+  Route::post('/properties/masspropertyvaluesedit', 'PropertyvalueController@massPropertyValuesEdit');
   // Route::any('/updateimg/{id}',  'ImageController@update');
   Route::resource('/categories', 'CategoryController');
   Route::resource('/deliverycategories', 'DeliverycategoryController');
@@ -112,6 +115,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
   Route::post('/products/getcategoryproperties', 'ProductController@getCategoryProperties'); // во время создания товара при изменении категории подтягиваются параметры
   Route::post('/products/productdifferent/store',  'ProductdifferentController@store'); // добавление вариантов товара (масса, цвет, размер)
   Route::post('/products/productdifferent/destroy',  'ProductdifferentController@destroy'); // удаление вариантов товара (масса, цвет, размер)
+  Route::post('/products/modifyautoscu', 'ProductController@modifyAutoScu')->name('products.modifyautoscu');//изменяем существующие коды товаров
 
   Route::resource('/units', 'UnitController');
   Route::resource('/options', 'OptionController');

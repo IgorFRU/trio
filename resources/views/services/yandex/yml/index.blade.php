@@ -29,7 +29,7 @@
                     <url>{{ route('product', ['category' => $product->category->slug, 'product' => $product->slug]) }}</url>                    
                     <price>{{ $product->discount_price }}</price>
                     @if ($product->actually_discount)
-                        <oldprice>{{ $product->old_price }}</oldprice>
+                        <oldprice>{{ $product->old_price }}</oldprice>                        
                     @endif
                     <currencyId>RUR</currencyId>
                     <categoryId>{{ $product->category->id ?? '' }}</categoryId>
@@ -48,12 +48,16 @@
                     </delivery-options> --}}
                     
                     <delivery>true</delivery> 
-                    <pickup>true</pickup> 
-                    <store>@if(strtolower($product->delivery_time) == 'в наличии') true @else false @endif</store>
+                    <pickup>true</pickup>
+                    @if ($product->in_stock)
+                        <store>true</store>
+                    @else
+                        <store>false</store>
+                    @endif
                     {{-- <param name="Цвет">белый</param> --}}
                     {{-- <weight>3.6</weight> --}}
                     @if ($product->packaging)
-                        <sales_notes>Продаётся кратно упаковкам по {{ $product->unit_in_package }} {{ $product->unit->unit }}</sales_notes>  
+                        <sales_notes>Продаётся кратно упаковкам по {{ $product->unit_in_package }} {{ $product->unit->unit }}.</sales_notes>  
                     @endif
                     <sales_notes>Доставляем по Крыму транспортными компаниями и личным транспортом</sales_notes>                    
                     {{-- <dimensions>20.1/20.551/22.5</dimensions> --}}

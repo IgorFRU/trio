@@ -26,6 +26,7 @@ use Illuminate\Support\Arr;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -641,5 +642,28 @@ class ProductController extends Controller
         $product->update(['price' => $request->price]);
         
         return 0;
+    }
+
+    public function modifyAutoScu(Request $request) {
+       $operation = (isset($request->operation)) ? $request->operation : 'add' ;
+        $new_symbol = (isset($request->new_symbol)) ? $request->new_symbol : '' ;
+        $old_symbol = (isset($request->old_symbol)) ? $request->old_symbol : '' ;
+        $position = (isset($request->position)) ? $request->position : 0 ;
+
+        switch ($operation) {
+            case 'add':
+                # code...
+                break;
+            case 'only_numeric':                
+                $products = Product::get();                
+                foreach ($products as $product) {                    
+                    $product->update(['autoscu' => $product->autoscu . '1']);              
+                }
+                break;
+            default:
+                # code...
+                break;
+        }
+        return redirect()->route('admin.products.index');
     }
 }

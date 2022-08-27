@@ -10,6 +10,7 @@
                     </a>
                     {{-- <a class="uk-logo" href="index.html"><img src="images/logo-inverse.svg" alt="Logo" width="90" height="32"></a> --}}
                     <p class="uk-text-small">Продажа напольных покрытий в Крыму. Профессиональная укладка с использованием только профессиональных материалов. Доставка паркета по Симферополю и Крыму.</p>
+                    <iframe src="https://yandex.ru/sprav/widget/rating-badge/1042612800" width="150" height="50" frameborder="0"></iframe>
                 </div>
 
                 <nav class="uk-grid-small uk-child-width-1-2 uk-grid" uk-grid="">

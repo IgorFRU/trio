@@ -694,6 +694,8 @@ $(function() {
             if ($(this).data('import') == true) {
                 import_flag = true;
             }
+            const change = $(this).data('change');
+            const change_id = $(this).data('change_id');
 
             $.ajax({
                 type: "POST",
@@ -705,8 +707,19 @@ $(function() {
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(data) {
-
                     var data = $.parseJSON(data);
+                    if (change == 'select') {
+                        let to_insert = $(`#${change_id}`);
+                        to_insert.empty();
+                        to_insert.append("<option select='selected'></option>");
+                        if (data.length > 0) {
+                            data.forEach(element => {
+                                to_insert.append("<option value=" + element.id + ">" + element.property + "</option>");
+                            });
+                        } else {
+                            to_insert.append("<option >Вы еще не добавили ни одной характеристики для данной категории!</option>");
+                        }
+                    }
                     if (import_flag) {
                         // copy()
                         let to_insert = $('.import_products_properties');
@@ -735,6 +748,121 @@ $(function() {
                 }
             });
         }
+    });
+
+    $('select[name="properties_mass_edit"]').on('input', function() {
+        const properti_id = $(this).val();
+        const category_id = $('#category_id').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/properties/getpropertyvalues",
+            data: {
+                property_id: properti_id,
+                category_id: category_id
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                var data = $.parseJSON(data);
+                let to_insert = $('.old_property_values');
+                to_insert.empty();
+                $.each(data, function(key, value) {
+                    to_insert.append(`<span class="uk-margin-small" data-id=${this.id}><label><input class='uk-checkbox' type='checkbox' value=${this.id}>${this.value}</label></span>`);
+                });
+                // if (change == 'select') {
+                //     let to_insert = $(`#${change_id}`);
+                //     to_insert.empty();
+                //     if (data.length > 0) {
+                //         data.forEach(element => {
+                //             to_insert.append("<option value=" + element.id + ">" + element.property + "</option>");
+                //         });
+                //     } else {
+                //         to_insert.append("<option >Вы еще не добавили ни одной характеристики для данной категории!</option>");
+                //     }
+                // }
+
+            },
+            error: function(msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $('input[name="new_property_value"]').on('keyup', function() {
+        let new_value = $(this).val();
+        let old_values = $('.old_property_values span');
+        let ids = [];
+        if (new_value.length) {
+            old_values.each(function(i, elem) {
+                if ($(elem).children().children().prop('checked')) {
+                    ids.push($(elem).data('id'));
+                }
+            });
+
+            if (ids.length) {
+                $('.new_property_button').prop('disabled', false);
+                // $.ajax({
+                //     type: "POST",
+                //     url: "/admin/properties/masspropertyvaluesedit",
+                //     data: {
+                //         values: ids,
+                //         value: new_value
+                //     },
+                //     headers: {
+                //         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                //     },
+                //     success: function(data) {
+                //         window.reload();
+                //     },
+                //     error: function(msg) {
+                //         console.log(msg);
+                //     }
+                // });
+            } else {
+                $('.new_property_button').prop('disabled', true);
+            }
+        }
+    });
+
+    $('.new_property_button').on('click', function() {
+        let new_value = $('input[name="new_property_value"]').val();
+        let old_values = $('.old_property_values span');
+        let ids = [];
+        const category_id = $('#category_id').val();
+        if (new_value.length) {
+            old_values.each(function(i, elem) {
+                if ($(elem).children().children().prop('checked')) {
+                    ids.push(parseInt($(elem).data('id')));
+                }
+            });
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/properties/masspropertyvaluesedit",
+            data: {
+                ids: ids,
+                new_value: new_value,
+                category_id: category_id
+            },
+            headers: {
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                console.log(data);
+                // var data = $.parseJSON(data);
+
+                showAlert(data.type, data.msg);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            },
+            error: function(msg) {
+                console.log(msg);
+            }
+        });
     });
 
     $('.js_date_today').text(formatDate(new Date()));
@@ -1527,5 +1655,17 @@ $(function() {
             });
         }
     });
+
+    function showAlert(type, msg) {
+        const types = ['primary', 'success', 'warning', 'danger'];
+        if ($.inArray(type, types) == -1) {
+            const type = 'primary';
+        }
+
+        let block = $(`messeges > .uk-alert-${type}`);
+        console.log(block);
+        block.find('p').html(msg);
+        UIkit.alert(block[0]);
+    }
 
 });

@@ -342,5 +342,11 @@
             @yield('content')
         </main>
     </div>
+    <messeges>
+        <div uk-alert class="uk-alert-primary"><p></p></div>
+        <div uk-alert class="uk-alert-success"><p></p></div>
+        <div uk-alert class="uk-alert-warning"><p></p></div>
+        <div uk-alert class="uk-alert-danger"><p></p></div>
+    </messeges>
 </body>
 </html>

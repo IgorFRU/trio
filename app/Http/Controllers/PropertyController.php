@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Property;
+use App\Category;
 use Illuminate\Http\Request;
 
 class PropertyController extends Controller
@@ -102,5 +103,19 @@ class PropertyController extends Controller
         }
         echo json_encode($property);
 
+    }
+
+    public function getPropertyValues(Request $request) {
+        $category = Category::whereId($request->category_id)->first();
+        if ($category) {
+            $product_ids = $category->products->pluck('id');
+            $property = Property::whereId($request->property_id)->with('values')->firstOrFail();
+            $all_values = $property->values->whereIn('product_id', $product_ids);
+            $unique_values = $all_values->unique('value');
+            // echo json_encode(['unique_values' => $unique_values, 'category' => $category, 'product_ids' => $product_ids]);
+            echo json_encode($unique_values);
+        } else {
+            return 0;
+        }        
     }
 }

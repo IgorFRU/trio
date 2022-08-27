@@ -80,10 +80,12 @@ class Product extends Model
 
     public function setAutoscuAttribute($value) {
         if (!isset($this->id)) {
-            $this->attributes['autoscu'] = mt_rand(100, 999) . '-' . mt_rand(100, 999);
+            $this->attributes['autoscu'] = mt_rand(100000, 999999);
             while (Product::where('autoscu', $this->attributes['autoscu'])->count() > 0 ) {
-                $this->attributes['autoscu'] = mt_rand(100, 999) . '-' . mt_rand(100, 999);
+                $this->attributes['autoscu'] = mt_rand(100000, 999999);
             }
+        } else {
+            $this->attributes['autoscu'] = preg_replace("/[^0-9]/", "", $this->attributes['autoscu'] );
         }
     }
 
@@ -342,6 +344,15 @@ class Product extends Model
         }
     }
 
+    public function getInStockAttribute($value) {
+        if (trim(mb_strtolower($this->delivery_time)) === 'в наличии') {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+
     // public function getDiscountPriceAttribute($value) {        
     //     if ($this->currency->to_update) {
     //         $currencyrates = Cbr::getAssociate();
@@ -385,6 +396,15 @@ class Product extends Model
             return self::floatToInt($this->discount_price * $this->unit_in_package);
         } else {
             return $this->discount_price;
+        }
+        
+    }
+
+    public function getOldPackagePriceAttribute($value) {
+        if ($this->packaging) {
+            return self::floatToInt($this->old_price * $this->unit_in_package);
+        } else {
+            return $this->old_price;
         }
         
     }

@@ -41,6 +41,8 @@
                     </div>
 
                     <button class="btn btn-sm" data-toggle="modal" data-target="#productSearchModal"><i class="fas fa-search"></i> Поиск...</button>
+                    <button class="btn btn-sm" data-toggle="modal" data-target="#modifyAutoScu">Массовая замена</button>
+                    
 
                     <div class="row col-md-6">
                         <div class="col-md-5">
@@ -118,7 +120,13 @@
                                 {{ $product->product }}
                                 <p class="text-secondary">{{ $product->category->category ?? '' }}
                                     {{ ' / ' . $product->manufacture->manufacture ?? '' }}
-                                    {{ ' / ' . $product->delivery_time ?? '' }}</p>
+                                    {{ ' / ' . $product->delivery_time ?? '' }}
+                                </p>
+                                <span>@if ($product->in_stock)
+                                    В наличии
+                                @else
+                                    -
+                                @endif
                             </td>
                             <td>
                                 @if (!$product->complicated)
@@ -297,9 +305,9 @@
             </form>
         </div>
     </div>
-  </div>
+</div>
 
-  <div class="modal fade" id="productdifferentAddModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="productdifferentAddModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form action="" method="get">
@@ -334,6 +342,77 @@
                 </div>
             </form>
         </div>
+    </div>    
+</div>
+
+<div class="modal fade" id="modifyAutoScu" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Массовое изменение параметров продуктов (autoscu, etc.)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <form method="POST" action="{{ route('admin.products.modifyautoscu') }}">
+                        <input type="hidden" name="operation" value="only_numeric">
+                        {{-- <input type="hidden" name="_method" value="patch"> --}}
+                        @csrf
+                        <button type="submit" class="btn">
+                            <span class="btn btn-secondary">Оставить только цифровые символы у всех кодов товаров (autoscu) </span>
+                        </button>
+                    </form>
+                </div>
+                <hr>
+                <h4>Объединение и массовая правка значений характеристик товаров</h4>
+                <div class="form-group row">
+                    <label for="category_id" class="col-md-4 col-form-label">Выберите категорию</label>
+                    <div class="col-md-8">
+                        <select class="form-control" id="category_id" name="category_id" data-change="select" data-change_id="properties">
+                            <option selected="select"></option>
+                            @include('admin.categories.partials.child-categories', ['categories' => $categories])
+                        </select>
+                    </div> 
+                </div>
+                <div class="form-group row">
+                    <label for="category_id" class="col-md-4 col-form-label">Выберите характеристику</label>
+                    <div class="col-md-8">
+                        <select class="form-control" id="properties" name="properties_mass_edit">
+                            <option></option>
+                            
+                        </select>
+                    </div> 
+                </div>
+                <div uk-grid>
+                    <div>
+                        <h5>Характеристика</h5>
+                        <div class="old_property_values"></div>
+                    </div>
+                    <div>
+                        <h5>Новое значение характеристики</h5>
+                        <input class="uk-input uk-inline" id="form-stacked-text" type="text" name="new_property_value" placeholder="Новое значение...">
+                        <button class="uk-button uk-button-primary new_property_button" disabled>Заменить</button>
+                    </div>
+                </div>
+                
+                
+                <hr>
+                <div class="my-4">
+                    @isset($productdifferents)
+                        @foreach ($productdifferents as $item)
+                            <button type="button" class="btn btn-secondary">{{ $item->productdifferent }} 
+                                <span class="productdifferentRemove" data-id="{{ $item->id }}"><i class="fas fa-window-close"></i></span>
+                            </button>
+                        @endforeach
+                    @endisset
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 @endsection
